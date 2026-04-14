@@ -1,18 +1,36 @@
 import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings,
   Store, DollarSign, Tag, MessageSquare, CreditCard, ArrowDownToLine,
-  Star, FileText, Layers, AlertTriangle, ChevronLeft, Warehouse, UserCheck
+  Star, FileText, Layers, AlertTriangle, ChevronLeft, Warehouse, UserCheck, LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/contexts/I18nContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Module, ROLE_LABELS } from "@/lib/permissions";
+import { Badge } from "@/components/ui/badge";
 
-type SidebarItem = { label: string; href: string; icon: ReactNode };
+type SidebarItem = { label: string; href: string; icon: ReactNode; module?: Module };
 
-function useMenus() {
+function useRoleBasedMenus() {
   const { t } = useTranslation();
+  const { canAccess, roles, isAdmin } = useAuth();
 
+  // Menu principal pour l'espace gestion (tous les rôles sauf marketplace)
+  const managementMenu: SidebarItem[] = [
+    { label: "Tableau de bord", href: "/manage", icon: <LayoutDashboard className="h-4 w-4" />, module: 'dashboard' },
+    { label: "Ventes", href: "/manage/sales", icon: <FileText className="h-4 w-4" />, module: 'sales' },
+    { label: "Produits", href: "/manage/products", icon: <Package className="h-4 w-4" />, module: 'products' },
+    { label: "Clients", href: "/manage/clients", icon: <UserCheck className="h-4 w-4" />, module: 'clients' },
+    { label: "Stock", href: "/manage/stock", icon: <Warehouse className="h-4 w-4" />, module: 'stock' },
+    { label: "Paiements", href: "/manage/payments", icon: <CreditCard className="h-4 w-4" />, module: 'payments' },
+    { label: "Rapports", href: "/manage/reports", icon: <BarChart3 className="h-4 w-4" />, module: 'reports' },
+    { label: "Utilisateurs", href: "/manage/users", icon: <Users className="h-4 w-4" />, module: 'users' },
+    { label: "Paramètres", href: "/manage/settings", icon: <Settings className="h-4 w-4" />, module: 'settings' },
+  ].filter(item => !item.module || canAccess(item.module));
+
+  // Legacy vendor menu (pour rétro-compatibilité)
   const vendorMenu: SidebarItem[] = [
     { label: t("vendor.dashboard"), href: "/vendor", icon: <LayoutDashboard className="h-4 w-4" /> },
     { label: "Ventes", href: "/vendor/sales", icon: <FileText className="h-4 w-4" /> },
@@ -21,24 +39,14 @@ function useMenus() {
     { label: "Stock", href: "/vendor/stock", icon: <Warehouse className="h-4 w-4" /> },
     { label: t("vendor.orders"), href: "/vendor/orders", icon: <ShoppingBag className="h-4 w-4" /> },
     { label: t("vendor.finances"), href: "/vendor/finances", icon: <DollarSign className="h-4 w-4" /> },
-    { label: t("vendor.settings"), href: "/vendor/settings", icon: <Settings className="h-4 w-4" /> },
   ];
 
   const adminMenu: SidebarItem[] = [
     { label: t("vendor.dashboard"), href: "/admin", icon: <LayoutDashboard className="h-4 w-4" /> },
     { label: t("filter.vendors"), href: "/admin/vendors", icon: <Store className="h-4 w-4" /> },
-    { label: t("admin.shops"), href: "/admin/shops", icon: <Layers className="h-4 w-4" /> },
     { label: t("vendor.products"), href: "/admin/products", icon: <Package className="h-4 w-4" /> },
     { label: t("vendor.orders"), href: "/admin/orders", icon: <ShoppingBag className="h-4 w-4" /> },
     { label: t("admin.users"), href: "/admin/users", icon: <Users className="h-4 w-4" /> },
-    { label: t("admin.payments"), href: "/admin/payments", icon: <CreditCard className="h-4 w-4" /> },
-    { label: t("admin.withdrawalsAdmin"), href: "/admin/withdrawals", icon: <ArrowDownToLine className="h-4 w-4" /> },
-    { label: t("admin.categoriesAdmin"), href: "/admin/categories", icon: <Tag className="h-4 w-4" /> },
-    { label: t("admin.complaints"), href: "/admin/complaints", icon: <AlertTriangle className="h-4 w-4" /> },
-    { label: t("admin.reviews"), href: "/admin/reviews", icon: <Star className="h-4 w-4" /> },
-    { label: t("admin.cms"), href: "/admin/cms", icon: <FileText className="h-4 w-4" /> },
-    { label: t("admin.reports"), href: "/admin/reports", icon: <BarChart3 className="h-4 w-4" /> },
-    { label: t("vendor.settings"), href: "/admin/settings", icon: <Settings className="h-4 w-4" /> },
   ];
 
   const clientMenu: SidebarItem[] = [
@@ -46,24 +54,40 @@ function useMenus() {
     { label: t("client.myOrders"), href: "/account/orders", icon: <ShoppingBag className="h-4 w-4" /> },
     { label: t("client.wishlist"), href: "/wishlist", icon: <Star className="h-4 w-4" /> },
     { label: t("client.addresses"), href: "/account/addresses", icon: <FileText className="h-4 w-4" /> },
-    { label: t("admin.reviews"), href: "/account/reviews", icon: <MessageSquare className="h-4 w-4" /> },
     { label: t("client.myProfile"), href: "/account/profile", icon: <Users className="h-4 w-4" /> },
   ];
 
-  return { vendorMenu, adminMenu, clientMenu };
+  return { managementMenu, vendorMenu, adminMenu, clientMenu };
 }
 
 interface DashboardLayoutProps {
   children: ReactNode;
-  type: "vendor" | "admin" | "client";
+  type: "vendor" | "admin" | "client" | "manage";
   title: string;
 }
 
 export function DashboardLayout({ children, type, title }: DashboardLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const { vendorMenu, adminMenu, clientMenu } = useMenus();
-  const menu = type === "vendor" ? vendorMenu : type === "admin" ? adminMenu : clientMenu;
+  const { user, roles, logout } = useAuth();
+  const { managementMenu, vendorMenu, adminMenu, clientMenu } = useRoleBasedMenus();
+  
+  const menu = type === "manage" ? managementMenu 
+    : type === "vendor" ? vendorMenu 
+    : type === "admin" ? adminMenu 
+    : clientMenu;
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
+  const primaryRole = roles[0];
+  const displayName = user ? `${user.firstName} ${user.lastName}`.trim() || user.email : "";
+  const initials = user 
+    ? (user.firstName?.[0] || "") + (user.lastName?.[0] || "") || user.email?.[0]?.toUpperCase() || "U"
+    : "U";
 
   return (
     <div className="min-h-screen bg-background">
@@ -81,10 +105,21 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
         </Link>
         <div className="h-5 w-px bg-border" />
         <span className="font-heading font-semibold text-sm">{title}</span>
-        <div className="ms-auto flex items-center gap-2">
-          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground text-xs font-medium">U</span>
+        <div className="ms-auto flex items-center gap-3">
+          {primaryRole && (
+            <Badge variant="outline" className="text-xs hidden sm:inline-flex">
+              {ROLE_LABELS[primaryRole] || primaryRole}
+            </Badge>
+          )}
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground text-xs font-medium">{initials}</span>
+            </div>
+            <span className="text-sm hidden sm:inline font-medium">{displayName}</span>
           </div>
+          <button onClick={handleLogout} className="text-muted-foreground hover:text-foreground transition-colors" title="Déconnexion">
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </header>
       <div className="flex">

@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, roles } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -24,7 +24,10 @@ export default function LoginPage() {
     const result = await login(email, password);
     setLoading(false);
     if (result.success) {
-      navigate("/account");
+      // Rediriger selon le profil — on attend un instant pour que les rôles se chargent
+      setTimeout(() => {
+        navigate("/manage");
+      }, 300);
     } else {
       setError(result.error || "Erreur");
     }
