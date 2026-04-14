@@ -3,6 +3,7 @@ import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Globe, LogOut 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "@/contexts/I18nContext";
 
 const categories = [
   "Électronique", "Mode", "Maison", "Beauté", "Sports", "Alimentation", "Artisanat"
@@ -11,8 +12,8 @@ const categories = [
 export function MarketplaceHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [lang, setLang] = useState<"fr" | "ar">("fr");
   const { user, logout } = useAuth();
+  const { t, lang, setLang } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
@@ -26,30 +27,30 @@ export function MarketplaceHeader() {
 
         <div className="hidden md:flex flex-1 max-w-xl mx-4">
           <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Rechercher produits, boutiques..."
+              placeholder={t("search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-lg border bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full h-10 ps-10 pe-4 rounded-lg border bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
         </div>
 
         <nav className="hidden md:flex items-center gap-1">
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/categories">Catégories <ChevronDown className="ml-1 h-3 w-3" /></Link>
+            <Link to="/categories">{t("nav.categories")} <ChevronDown className="ms-1 h-3 w-3" /></Link>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/shops">Boutiques</Link>
+            <Link to="/shops">{t("nav.shops")}</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/promotions">Promos</Link>
+            <Link to="/promotions">{t("nav.promos")}</Link>
           </Button>
         </nav>
 
-        <div className="flex items-center gap-1 ml-auto">
+        <div className="flex items-center gap-1 ms-auto">
           <Button
             variant="ghost"
             size="sm"
@@ -65,7 +66,7 @@ export function MarketplaceHeader() {
           <Button variant="ghost" size="icon" className="relative" asChild>
             <Link to="/cart">
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-medium">3</span>
+              <span className="absolute -top-0.5 -end-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-medium">3</span>
             </Link>
           </Button>
 
@@ -90,7 +91,7 @@ export function MarketplaceHeader() {
             </div>
           ) : (
             <Button variant="ghost" size="sm" className="hidden md:flex" asChild>
-              <Link to="/login">Se connecter</Link>
+              <Link to="/login">{t("nav.login")}</Link>
             </Button>
           )}
           {!user && (
@@ -108,11 +109,11 @@ export function MarketplaceHeader() {
       {mobileOpen && (
         <div className="md:hidden border-t p-4 space-y-3 bg-card">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Rechercher..."
-              className="w-full h-10 pl-10 pr-4 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder={t("filter.search")}
+              className="w-full h-10 ps-10 pe-4 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
           <div className="flex flex-wrap gap-2">
@@ -123,22 +124,22 @@ export function MarketplaceHeader() {
             ))}
           </div>
           <div className="flex flex-col gap-1">
-            <Link to="/shops" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Boutiques</Link>
-            <Link to="/promotions" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Promotions</Link>
+            <Link to="/shops" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.shops")}</Link>
+            <Link to="/promotions" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.promotions")}</Link>
             {user ? (
               <>
-                <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Mon compte ({user.firstName})</Link>
-                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-left text-destructive" onClick={() => { logout(); setMobileOpen(false); }}>Déconnexion</button>
+                <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.myAccount")} ({user.firstName})</Link>
+                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-start text-destructive" onClick={() => { logout(); setMobileOpen(false); }}>{t("nav.logout")}</button>
               </>
             ) : (
               <>
-                <Link to="/login" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Se connecter</Link>
-                <Link to="/register" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Créer un compte</Link>
+                <Link to="/login" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.login")}</Link>
+                <Link to="/register" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.createAccount")}</Link>
               </>
             )}
             <button
-              className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-left flex items-center gap-2"
-              onClick={() => { setLang(lang === "fr" ? "ar" : "fr"); }}
+              className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-start flex items-center gap-2"
+              onClick={() => setLang(lang === "fr" ? "ar" : "fr")}
             >
               <Globe className="h-4 w-4" />
               {lang === "fr" ? "العربية" : "Français"}

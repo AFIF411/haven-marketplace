@@ -5,36 +5,38 @@ import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { ShopCard } from "@/components/marketplace/ShopCard";
 import { mockProducts, mockShops, mockCategories } from "@/data/mockData";
+import { useTranslation } from "@/contexts/I18nContext";
 import heroBanner from "@/assets/hero-banner.jpg";
 
-const features = [
-  { icon: Truck, title: "Livraison nationale", desc: "Vers toutes les 58 wilayas" },
-  { icon: Shield, title: "Paiement sécurisé", desc: "CCP, BaridiMob, à la livraison" },
-  { icon: CreditCard, title: "Satisfait ou remboursé", desc: "30 jours pour changer d'avis" },
-  { icon: Headphones, title: "Support 7j/7", desc: "Une équipe à votre écoute" },
-];
-
 export default function HomePage() {
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: Truck, title: t("home.features.delivery"), desc: t("home.features.deliveryDesc") },
+    { icon: Shield, title: t("home.features.payment"), desc: t("home.features.paymentDesc") },
+    { icon: CreditCard, title: t("home.features.refund"), desc: t("home.features.refundDesc") },
+    { icon: Headphones, title: t("home.features.support"), desc: t("home.features.supportDesc") },
+  ];
+
   return (
     <MarketplaceLayout>
-      {/* Hero */}
       <section className="relative overflow-hidden">
         <img src={heroBanner} alt="Souk DZ Marketplace" className="w-full h-[320px] md:h-[420px] object-cover" width={1920} height={800} />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 to-foreground/20 flex items-center">
           <div className="container">
             <div className="max-w-lg">
               <h1 className="font-heading text-3xl md:text-5xl font-bold text-card leading-tight">
-                Découvrez le meilleur de l'Algérie
+                {t("home.hero.title")}
               </h1>
               <p className="mt-3 text-card/80 text-sm md:text-base leading-relaxed">
-                Des milliers de boutiques algériennes réunies sur une seule plateforme. Qualité, authenticité et confiance — livraison dans les 58 wilayas.
+                {t("home.hero.subtitle")}
               </p>
               <div className="mt-6 flex gap-3">
                 <Button size="lg" asChild>
-                  <Link to="/products">Explorer <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <Link to="/products">{t("home.hero.explore")} <ArrowRight className="ms-2 h-4 w-4" /></Link>
                 </Button>
                 <Button size="lg" variant="outline" className="bg-card/10 border-card/30 text-card hover:bg-card/20" asChild>
-                  <Link to="/vendor/onboarding">Devenir vendeur</Link>
+                  <Link to="/vendor/onboarding">{t("home.hero.becomeVendor")}</Link>
                 </Button>
               </div>
             </div>
@@ -42,7 +44,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features bar */}
       <section className="border-b bg-card">
         <div className="container py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -61,12 +62,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Categories */}
       <section className="container py-10">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-heading text-xl font-bold">Catégories populaires</h2>
+          <h2 className="font-heading text-xl font-bold">{t("home.popularCategories")}</h2>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/categories">Voir tout <ArrowRight className="ml-1 h-3 w-3" /></Link>
+            <Link to="/categories">{t("common.seeAll")} <ArrowRight className="ms-1 h-3 w-3" /></Link>
           </Button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
@@ -76,18 +76,17 @@ export default function HomePage() {
                 <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
               </div>
               <p className="text-sm font-medium">{cat.name}</p>
-              <p className="text-xs text-muted-foreground">{cat.count.toLocaleString()} articles</p>
+              <p className="text-xs text-muted-foreground">{cat.count.toLocaleString()} {t("common.articles")}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Featured products */}
       <section className="container py-10">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-heading text-xl font-bold">Produits tendance</h2>
+          <h2 className="font-heading text-xl font-bold">{t("home.trendingProducts")}</h2>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/products">Voir tout <ArrowRight className="ml-1 h-3 w-3" /></Link>
+            <Link to="/products">{t("common.seeAll")} <ArrowRight className="ms-1 h-3 w-3" /></Link>
           </Button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -95,12 +94,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured shops */}
       <section className="container py-10">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-heading text-xl font-bold">Boutiques à découvrir</h2>
+          <h2 className="font-heading text-xl font-bold">{t("home.discoverShops")}</h2>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/shops">Voir tout <ArrowRight className="ml-1 h-3 w-3" /></Link>
+            <Link to="/shops">{t("common.seeAll")} <ArrowRight className="ms-1 h-3 w-3" /></Link>
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -108,17 +106,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="container py-10">
         <div className="rounded-xl bg-primary p-8 md:p-12 text-center">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground">
-            Ouvrez votre boutique gratuitement
+            {t("home.cta.title")}
           </h2>
           <p className="mt-2 text-primary-foreground/80 max-w-md mx-auto text-sm">
-            Rejoignez des milliers de vendeurs algériens et développez votre activité sur Souk DZ.
+            {t("home.cta.subtitle")}
           </p>
           <Button size="lg" variant="secondary" className="mt-6" asChild>
-            <Link to="/vendor/onboarding">Commencer maintenant</Link>
+            <Link to="/vendor/onboarding">{t("home.cta.button")}</Link>
           </Button>
         </div>
       </section>

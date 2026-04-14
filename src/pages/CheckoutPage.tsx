@@ -4,18 +4,18 @@ import { Check, CreditCard, Truck, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { wilayas, formatDZD } from "@/data/mockData";
-
-const steps = ["Adresse", "Livraison", "Paiement"];
+import { useTranslation } from "@/contexts/I18nContext";
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(0);
+  const { t } = useTranslation();
+  const steps = [t("checkout.address"), t("checkout.delivery"), t("checkout.payment")];
 
   return (
     <MarketplaceLayout>
       <div className="container py-8 max-w-3xl">
-        <h1 className="font-heading text-2xl font-bold mb-6">Checkout</h1>
+        <h1 className="font-heading text-2xl font-bold mb-6">{t("checkout.title")}</h1>
 
-        {/* Steps */}
         <div className="flex items-center gap-2 mb-8">
           {steps.map((s, i) => (
             <div key={s} className="flex items-center gap-2">
@@ -31,33 +31,33 @@ export default function CheckoutPage() {
         <div className="bg-card p-6 rounded-lg border space-y-4">
           {step === 0 && (
             <>
-              <h2 className="font-heading font-semibold flex items-center gap-2"><MapPin className="h-4 w-4" /> Adresse de livraison</h2>
+              <h2 className="font-heading font-semibold flex items-center gap-2"><MapPin className="h-4 w-4" /> {t("checkout.deliveryAddress")}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div><label className="text-sm font-medium mb-1 block">Prénom</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Mohamed" /></div>
-                <div><label className="text-sm font-medium mb-1 block">Nom</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Benali" /></div>
-                <div className="sm:col-span-2"><label className="text-sm font-medium mb-1 block">Adresse</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="123 Rue Didouche Mourad" /></div>
+                <div><label className="text-sm font-medium mb-1 block">{t("checkout.firstName")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Mohamed" /></div>
+                <div><label className="text-sm font-medium mb-1 block">{t("checkout.lastName")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Benali" /></div>
+                <div className="sm:col-span-2"><label className="text-sm font-medium mb-1 block">{t("checkout.addressField")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="123 Rue Didouche Mourad" /></div>
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Wilaya</label>
+                  <label className="text-sm font-medium mb-1 block">{t("checkout.wilaya")}</label>
                   <select className="w-full h-10 px-3 rounded-md border bg-background text-sm">
-                    <option value="">Sélectionner une wilaya</option>
+                    <option value="">{t("checkout.selectWilaya")}</option>
                     {wilayas.map((w, i) => (
                       <option key={w} value={w}>{String(i + 1).padStart(2, '0')} - {w}</option>
                     ))}
                   </select>
                 </div>
-                <div><label className="text-sm font-medium mb-1 block">Commune</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Sidi M'Hamed" /></div>
-                <div><label className="text-sm font-medium mb-1 block">Téléphone</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="05 XX XX XX XX" /></div>
+                <div><label className="text-sm font-medium mb-1 block">{t("checkout.commune")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Sidi M'Hamed" /></div>
+                <div><label className="text-sm font-medium mb-1 block">{t("checkout.phone")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="05 XX XX XX XX" /></div>
               </div>
             </>
           )}
           {step === 1 && (
             <>
-              <h2 className="font-heading font-semibold flex items-center gap-2"><Truck className="h-4 w-4" /> Mode de livraison</h2>
+              <h2 className="font-heading font-semibold flex items-center gap-2"><Truck className="h-4 w-4" /> {t("checkout.deliveryMode")}</h2>
               <div className="space-y-2">
                 {[
-                  { name: "Livraison à domicile", delay: "2-4 jours", price: "400 DA" },
-                  { name: "Livraison express", delay: "24h", price: "800 DA" },
-                  { name: "Point relais / bureau de poste", delay: "3-5 jours", price: "Gratuit" },
+                  { name: t("checkout.homeDelivery"), delay: "2-4 jours", price: "400 DA" },
+                  { name: t("checkout.expressDelivery"), delay: "24h", price: "800 DA" },
+                  { name: t("checkout.relayPoint"), delay: "3-5 jours", price: t("cart.free") },
                 ].map((m, i) => (
                   <label key={m.name} className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer hover:border-primary/50 transition-colors ${i === 0 ? 'border-primary bg-primary/5' : ''}`}>
                     <div className="flex items-center gap-3">
@@ -77,12 +77,12 @@ export default function CheckoutPage() {
           )}
           {step === 2 && (
             <>
-              <h2 className="font-heading font-semibold flex items-center gap-2"><CreditCard className="h-4 w-4" /> Paiement</h2>
+              <h2 className="font-heading font-semibold flex items-center gap-2"><CreditCard className="h-4 w-4" /> {t("checkout.paymentMethod")}</h2>
               <div className="space-y-3">
                 {[
-                  { name: "Paiement à la livraison", desc: "Payez en espèces à la réception" },
-                  { name: "CCP / BaridiMob", desc: "Transfert via votre compte postal" },
-                  { name: "Carte bancaire (CIB / Edahabia)", desc: "Paiement en ligne sécurisé" },
+                  { name: t("checkout.cod"), desc: t("checkout.codDesc") },
+                  { name: t("checkout.ccp"), desc: t("checkout.ccpDesc") },
+                  { name: t("checkout.card"), desc: t("checkout.cardDesc") },
                 ].map((m, i) => (
                   <label key={m.name} className={`flex items-center p-4 rounded-lg border cursor-pointer hover:border-primary/50 transition-colors ${i === 0 ? 'border-primary bg-primary/5' : ''}`}>
                     <div className="flex items-center gap-3">
@@ -101,11 +101,11 @@ export default function CheckoutPage() {
           )}
 
           <div className="flex justify-between pt-4 border-t">
-            {step > 0 ? <Button variant="outline" onClick={() => setStep(step - 1)}>Retour</Button> : <div />}
+            {step > 0 ? <Button variant="outline" onClick={() => setStep(step - 1)}>{t("checkout.back")}</Button> : <div />}
             {step < 2 ? (
-              <Button onClick={() => setStep(step + 1)}>Continuer</Button>
+              <Button onClick={() => setStep(step + 1)}>{t("checkout.continue")}</Button>
             ) : (
-              <Button asChild><Link to="/order-confirmation">Confirmer {formatDZD(17000)}</Link></Button>
+              <Button asChild><Link to="/order-confirmation">{t("checkout.confirm")} {formatDZD(17000)}</Link></Button>
             )}
           </div>
         </div>
