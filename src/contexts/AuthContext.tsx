@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { AppRole, Module, Action, hasPermission as checkPermission, canAccessModule as checkModule } from "@/lib/permissions";
 
 interface User {
   id: string;
@@ -8,20 +9,27 @@ interface User {
   lastName: string;
   email: string;
   phone: string;
+  status: string;
 }
 
 interface AuthContextType {
   user: User | null;
   supabaseUser: SupabaseUser | null;
+  roles: AppRole[];
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
+  hasPermission: (module: Module, action: Action) => boolean;
+  canAccess: (module: Module) => boolean;
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
+  refreshRoles: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-function parseUser(su: SupabaseUser): User {
+function parseUser(su: SupabaseUser, profile?: { status?: string }): User {
   const meta = su.user_metadata || {};
   return {
     id: su.id,
@@ -29,36 +37,64 @@ function parseUser(su: SupabaseUser): User {
     lastName: meta.last_name || meta.lastName || "",
     email: su.email || "",
     phone: meta.phone || "",
+    status: profile?.status || "active",
   };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
+  const [roles, setRoles] = useState<AppRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Charger les rôles depuis la DB
+  const fetchRoles = useCallback(async (userId: string) => {
+    const { data } = await supabase.rpc('get_user_roles', { _user_id: userId });
+    if (data && Array.isArray(data)) {
+      setRoles(data as AppRole[]);
+    } else {
+      setRoles([]);
+    }
+  }, []);
+
+  // Charger le profil
+  const fetchProfile = useCallback(async (userId: string) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('status')
+      .eq('user_id', userId)
+      .single();
+    return data;
+  }, []);
+
+  const setupUser = useCallback(async (su: SupabaseUser) => {
+    setSupabaseUser(su);
+    const profile = await fetchProfile(su.id);
+    setUser(parseUser(su, profile || undefined));
+    await fetchRoles(su.id);
+  }, [fetchProfile, fetchRoles]);
+
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
-        setSupabaseUser(session.user);
-        setUser(parseUser(session.user));
+        await setupUser(session.user);
       } else {
         setSupabaseUser(null);
         setUser(null);
+        setRoles([]);
       }
       setIsLoading(false);
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
-        setSupabaseUser(session.user);
-        setUser(parseUser(session.user));
+        await setupUser(session.user);
       }
       setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [setupUser]);
 
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -87,10 +123,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setUser(null);
     setSupabaseUser(null);
+    setRoles([]);
   };
 
+  const hasPermissionFn = useCallback((module: Module, action: Action) => {
+    return checkPermission(roles, module, action);
+  }, [roles]);
+
+  const canAccess = useCallback((module: Module) => {
+    return checkModule(roles, module);
+  }, [roles]);
+
+  const refreshRoles = useCallback(async () => {
+    if (user) await fetchRoles(user.id);
+  }, [user, fetchRoles]);
+
+  const isAdmin = roles.includes('admin') || roles.includes('super_admin');
+  const isSuperAdmin = roles.includes('super_admin');
+
   return (
-    <AuthContext.Provider value={{ user, supabaseUser, isLoading, login, register, logout }}>
+    <AuthContext.Provider value={{
+      user, supabaseUser, roles, isLoading,
+      login, register, logout,
+      hasPermission: hasPermissionFn, canAccess,
+      isAdmin, isSuperAdmin, refreshRoles,
+    }}>
       {children}
     </AuthContext.Provider>
   );
