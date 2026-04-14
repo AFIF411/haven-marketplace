@@ -2,32 +2,35 @@ import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { TrendingUp, ShoppingBag, DollarSign, Eye, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatDZD } from "@/data/mockData";
-
-const stats = [
-  { label: "Chiffre d'affaires", value: formatDZD(824500), change: "+12%", icon: DollarSign },
-  { label: "Commandes", value: "156", change: "+8%", icon: ShoppingBag },
-  { label: "Visiteurs", value: "3 240", change: "+15%", icon: Eye },
-  { label: "Produits actifs", value: "42", change: "+2", icon: Package },
-];
-
-const recentOrders = [
-  { id: "CMD-001", customer: "Amina K.", date: "Aujourd'hui", status: "new", total: 5900 },
-  { id: "CMD-002", customer: "Yacine M.", date: "Hier", status: "processing", total: 15400 },
-  { id: "CMD-003", customer: "Fatima R.", date: "Hier", status: "shipped", total: 3700 },
-  { id: "CMD-004", customer: "Karim D.", date: "Il y a 2j", status: "delivered", total: 11800 },
-];
-
-const statusColors: Record<string, "warning" | "default" | "success" | "pending"> = {
-  new: "warning", processing: "default", shipped: "default", delivered: "success"
-};
-const statusLabels: Record<string, string> = {
-  new: "Nouvelle", processing: "En préparation", shipped: "Expédiée", delivered: "Livrée"
-};
+import { useTranslation } from "@/contexts/I18nContext";
 
 export default function VendorDashboard() {
+  const { t } = useTranslation();
+
+  const stats = [
+    { label: t("vendor.revenue"), value: formatDZD(824500), change: "+12%", icon: DollarSign },
+    { label: t("client.orders"), value: "156", change: "+8%", icon: ShoppingBag },
+    { label: t("vendor.visitors"), value: "3 240", change: "+15%", icon: Eye },
+    { label: t("vendor.activeProducts"), value: "42", change: "+2", icon: Package },
+  ];
+
+  const recentOrders = [
+    { id: "CMD-001", customer: "Amina K.", date: t("admin.today"), status: "new", total: 5900 },
+    { id: "CMD-002", customer: "Yacine M.", date: t("admin.yesterday"), status: "processing", total: 15400 },
+    { id: "CMD-003", customer: "Fatima R.", date: t("admin.yesterday"), status: "shipped", total: 3700 },
+    { id: "CMD-004", customer: "Karim D.", date: t("admin.twoDaysAgo"), status: "delivered", total: 11800 },
+  ];
+
+  const statusColors: Record<string, "warning" | "default" | "success" | "pending"> = {
+    new: "warning", processing: "default", shipped: "default", delivered: "success"
+  };
+  const statusLabels: Record<string, string> = {
+    new: t("status.new"), processing: t("status.preparing"), shipped: t("status.shipped"), delivered: t("status.delivered")
+  };
+
   return (
-    <DashboardLayout type="vendor" title="Espace vendeur">
-      <h1 className="font-heading text-xl font-bold mb-6">Dashboard</h1>
+    <DashboardLayout type="vendor" title={t("sidebar.vendorSpace")}>
+      <h1 className="font-heading text-xl font-bold mb-6">{t("vendor.dashboard")}</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {stats.map(s => (
@@ -44,14 +47,14 @@ export default function VendorDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <h2 className="font-heading font-semibold mb-3">Commandes récentes</h2>
+          <h2 className="font-heading font-semibold mb-3">{t("vendor.recentOrders")}</h2>
           <div className="bg-card rounded-lg border overflow-hidden">
             <table className="w-full text-sm">
               <thead><tr className="border-b bg-secondary/50">
-                <th className="text-left px-4 py-2.5 font-medium">Commande</th>
-                <th className="text-left px-4 py-2.5 font-medium">Client</th>
-                <th className="text-left px-4 py-2.5 font-medium">Statut</th>
-                <th className="text-right px-4 py-2.5 font-medium">Total</th>
+                <th className="text-start px-4 py-2.5 font-medium">{t("table.order")}</th>
+                <th className="text-start px-4 py-2.5 font-medium">{t("table.customer")}</th>
+                <th className="text-start px-4 py-2.5 font-medium">{t("table.status")}</th>
+                <th className="text-end px-4 py-2.5 font-medium">{t("table.total")}</th>
               </tr></thead>
               <tbody>
                 {recentOrders.map(o => (
@@ -59,7 +62,7 @@ export default function VendorDashboard() {
                     <td className="px-4 py-3 font-mono text-xs text-primary">{o.id}</td>
                     <td className="px-4 py-3">{o.customer}</td>
                     <td className="px-4 py-3"><Badge variant={statusColors[o.status]}>{statusLabels[o.status]}</Badge></td>
-                    <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
+                    <td className="px-4 py-3 text-end font-medium">{formatDZD(o.total)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -68,7 +71,7 @@ export default function VendorDashboard() {
         </div>
 
         <div>
-          <h2 className="font-heading font-semibold mb-3">Aperçu ventes (7j)</h2>
+          <h2 className="font-heading font-semibold mb-3">{t("vendor.salesOverview")}</h2>
           <div className="bg-card rounded-lg border p-4 h-64 flex items-center justify-center">
             <div className="text-center text-muted-foreground">
               <div className="flex items-end justify-center gap-1 h-32 mb-4">
@@ -78,7 +81,7 @@ export default function VendorDashboard() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs">Sam Dim Lun Mar Mer Jeu Ven</p>
+              <p className="text-xs">{t("vendor.daysChart")}</p>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ const translations = {
   "nav.myAccount": { fr: "Mon compte", ar: "حسابي" },
   "nav.createAccount": { fr: "Créer un compte", ar: "إنشاء حساب" },
   "nav.promotions": { fr: "Promotions", ar: "العروض" },
+  "nav.products": { fr: "Produits", ar: "المنتجات" },
 
   // Home
   "home.hero.title": { fr: "Découvrez le meilleur de l'Algérie", ar: "اكتشفوا أفضل ما في الجزائر" },
@@ -33,8 +34,26 @@ const translations = {
   "home.cta.title": { fr: "Ouvrez votre boutique gratuitement", ar: "افتحوا متجركم مجاناً" },
   "home.cta.subtitle": { fr: "Rejoignez des milliers de vendeurs algériens et développez votre activité sur Souk DZ.", ar: "انضموا لآلاف البائعين الجزائريين وطوّروا نشاطكم على سوق DZ." },
   "home.cta.button": { fr: "Commencer maintenant", ar: "ابدأ الآن" },
+
+  // Common
   "common.seeAll": { fr: "Voir tout", ar: "عرض الكل" },
   "common.articles": { fr: "articles", ar: "منتج" },
+  "common.verified": { fr: "Vérifié", ar: "موثق" },
+  "common.reviews": { fr: "avis", ar: "تقييم" },
+  "common.products": { fr: "produits", ar: "منتج" },
+  "common.contact": { fr: "Contacter", ar: "تواصل" },
+  "common.home": { fr: "Accueil", ar: "الرئيسية" },
+  "common.apply": { fr: "Appliquer", ar: "تطبيق" },
+  "common.andMore": { fr: "& plus", ar: "و أكثر" },
+  "common.back": { fr: "Retour", ar: "رجوع" },
+  "common.continue": { fr: "Continuer", ar: "متابعة" },
+  "common.save": { fr: "Sauvegarder", ar: "حفظ" },
+  "common.add": { fr: "Ajouter", ar: "إضافة" },
+  "common.edit": { fr: "Modifier", ar: "تعديل" },
+  "common.delete": { fr: "Supprimer", ar: "حذف" },
+  "common.default": { fr: "Par défaut", ar: "افتراضي" },
+  "common.description": { fr: "Description", ar: "الوصف" },
+  "common.select": { fr: "Sélectionner", ar: "اختر" },
 
   // Product detail
   "product.inStock": { fr: "En stock", ar: "متوفر" },
@@ -46,6 +65,19 @@ const translations = {
   "product.similar": { fr: "Produits similaires", ar: "منتجات مشابهة" },
   "product.description": { fr: "Produit artisanal de haute qualité, fabriqué avec des matériaux soigneusement sélectionnés. Chaque pièce est unique et témoigne d'un savoir-faire traditionnel algérien allié à un design contemporain.", ar: "منتج حرفي عالي الجودة، مصنوع من مواد مختارة بعناية. كل قطعة فريدة وتشهد على حرفية تقليدية جزائرية ممزوجة بتصميم عصري." },
 
+  // Products page
+  "products.title": { fr: "Produits", ar: "المنتجات" },
+  "products.found": { fr: "produits trouvés", ar: "منتج تم العثور عليه" },
+  "products.price": { fr: "Prix", ar: "السعر" },
+  "products.minRating": { fr: "Note minimum", ar: "التقييم الأدنى" },
+  "products.relevance": { fr: "Pertinence", ar: "الصلة" },
+  "products.priceAsc": { fr: "Prix croissant", ar: "السعر تصاعدي" },
+  "products.priceDesc": { fr: "Prix décroissant", ar: "السعر تنازلي" },
+  "products.bestRated": { fr: "Mieux notés", ar: "الأعلى تقييماً" },
+  "products.newest": { fr: "Nouveautés", ar: "الأحدث" },
+  "products.min": { fr: "Min", ar: "أدنى" },
+  "products.max": { fr: "Max", ar: "أقصى" },
+
   // Cart
   "cart.title": { fr: "Mon panier", ar: "سلتي" },
   "cart.summary": { fr: "Récapitulatif", ar: "الملخص" },
@@ -56,7 +88,8 @@ const translations = {
   "cart.order": { fr: "Commander", ar: "طلب" },
   "cart.securePayment": { fr: "Paiement 100% sécurisé", ar: "دفع آمن 100%" },
   "cart.empty": { fr: "Votre panier est vide", ar: "سلتك فارغة" },
-  "nav.products": { fr: "Produits", ar: "المنتجات" },
+  "cart.emptyDesc": { fr: "Parcourez nos produits et ajoutez vos favoris", ar: "تصفح منتجاتنا وأضف مفضلاتك" },
+  "cart.browsProducts": { fr: "Parcourir les produits", ar: "تصفح المنتجات" },
 
   // Checkout
   "checkout.title": { fr: "Checkout", ar: "الدفع" },
@@ -141,6 +174,10 @@ const translations = {
   "client.add": { fr: "Ajouter", ar: "إضافة" },
   "client.edit": { fr: "Modifier", ar: "تعديل" },
   "client.default": { fr: "Par défaut", ar: "افتراضي" },
+  "client.firstName": { fr: "Prénom", ar: "الاسم" },
+  "client.lastName": { fr: "Nom", ar: "اللقب" },
+  "client.email": { fr: "Email", ar: "البريد الإلكتروني" },
+  "client.phone": { fr: "Téléphone", ar: "الهاتف" },
 
   // Status
   "status.delivered": { fr: "Livré", ar: "تم التوصيل" },
@@ -149,6 +186,10 @@ const translations = {
   "status.pending": { fr: "En attente", ar: "في الانتظار" },
   "status.new": { fr: "Nouvelle", ar: "جديد" },
   "status.preparing": { fr: "En préparation", ar: "قيد التحضير" },
+  "status.active": { fr: "Actif", ar: "نشط" },
+  "status.draft": { fr: "Brouillon", ar: "مسودة" },
+  "status.approved": { fr: "Approuvé", ar: "معتمد" },
+  "status.completed": { fr: "Complété", ar: "مكتمل" },
 
   // Table headers
   "table.order": { fr: "Commande", ar: "الطلب" },
@@ -178,6 +219,7 @@ const translations = {
 
   // Filters
   "filter.all": { fr: "Toutes", ar: "الكل" },
+  "filter.allM": { fr: "Tous", ar: "الكل" },
   "filter.inProgress": { fr: "En cours", ar: "قيد المعالجة" },
   "filter.shipped": { fr: "Expédiées", ar: "تم شحنها" },
   "filter.delivered": { fr: "Livrées", ar: "تم توصيلها" },
@@ -194,6 +236,7 @@ const translations = {
   "filter.clients": { fr: "Clients", ar: "الزبائن" },
   "filter.vendors": { fr: "Vendeurs", ar: "البائعون" },
   "filter.admins": { fr: "Admins", ar: "المشرفون" },
+  "filter.actifs": { fr: "Actifs", ar: "نشطون" },
 
   // Vendor
   "vendor.dashboard": { fr: "Dashboard", ar: "لوحة التحكم" },
@@ -234,6 +277,9 @@ const translations = {
   "vendor.transactions": { fr: "Transactions", ar: "المعاملات" },
   "vendor.requestWithdrawal": { fr: "Demander un retrait", ar: "طلب سحب" },
   "vendor.completed": { fr: "Complété", ar: "مكتمل" },
+  "vendor.sale": { fr: "Vente", ar: "بيع" },
+  "vendor.withdrawal": { fr: "Retrait", ar: "سحب" },
+  "vendor.daysChart": { fr: "Sam Dim Lun Mar Mer Jeu Ven", ar: "سبت أحد اثن ثلا أرب خمي جمع" },
 
   // Vendor onboarding
   "onboarding.title": { fr: "Ouvrez votre boutique", ar: "افتح متجرك" },
@@ -252,6 +298,14 @@ const translations = {
   "onboarding.accountHolder": { fr: "Titulaire du compte", ar: "صاحب الحساب" },
   "onboarding.ribOptional": { fr: "RIB bancaire (optionnel)", ar: "(اختياري) RIB بنكي" },
   "onboarding.createShop": { fr: "Créer ma boutique", ar: "إنشاء متجري" },
+  "onboarding.yourShop": { fr: "Votre boutique", ar: "متجرك" },
+  "onboarding.basicInfo": { fr: "Informations de base", ar: "المعلومات الأساسية" },
+  "onboarding.yourProducts": { fr: "Vos produits", ar: "منتجاتك" },
+  "onboarding.whatYouSell": { fr: "Ce que vous vendez", ar: "ما تبيعه" },
+  "onboarding.howToPay": { fr: "Comment être payé", ar: "كيف تُدفع لك" },
+  "onboarding.describeShop": { fr: "Décrivez votre boutique...", ar: "صف متجرك..." },
+  "onboarding.myShop": { fr: "Ma Boutique", ar: "متجري" },
+  "onboarding.wilaya": { fr: "Wilaya", ar: "الولاية" },
 
   // Admin
   "admin.dashboard": { fr: "Dashboard admin", ar: "لوحة تحكم المشرف" },
@@ -279,9 +333,14 @@ const translations = {
   "shops.search": { fr: "Rechercher une boutique...", ar: "البحث عن متجر..." },
   "shops.contact": { fr: "Contacter", ar: "تواصل" },
   "shops.productsOf": { fr: "Produits de", ar: "منتجات" },
+  "shops.allFilter": { fr: "Toutes", ar: "الكل" },
 
   // Categories
-  "categories.title": { fr: "Catégories", ar: "الفئات" },
+  "categories.title": { fr: "Toutes les catégories", ar: "جميع الفئات" },
+
+  // Promotions
+  "promotions.title": { fr: "Promotions en cours", ar: "العروض الحالية" },
+  "promotions.subtitle": { fr: "Profitez de réductions exclusives sur une sélection de produits", ar: "استفيدوا من تخفيضات حصرية على مجموعة مختارة من المنتجات" },
 
   // Footer
   "footer.description": { fr: "La marketplace algérienne multi-boutique où qualité et confiance se rencontrent.", ar: "السوق الجزائري متعدد المتاجر حيث تلتقي الجودة والثقة." },
@@ -304,6 +363,38 @@ const translations = {
   "sidebar.vendorSpace": { fr: "Espace vendeur", ar: "مساحة البائع" },
   "sidebar.administration": { fr: "Administration", ar: "الإدارة" },
   "sidebar.myAccount": { fr: "Mon compte", ar: "حسابي" },
+
+  // Mock category names (for translated display)
+  "cat.electronics": { fr: "Électronique", ar: "إلكترونيات" },
+  "cat.fashion": { fr: "Mode", ar: "أزياء" },
+  "cat.home": { fr: "Maison", ar: "منزل" },
+  "cat.beauty": { fr: "Beauté", ar: "جمال" },
+  "cat.sports": { fr: "Sports", ar: "رياضة" },
+  "cat.food": { fr: "Alimentation", ar: "تغذية" },
+  "cat.craft": { fr: "Artisanat", ar: "حرف يدوية" },
+  "cat.hightech": { fr: "High-Tech", ar: "تكنولوجيا" },
+  "cat.leather": { fr: "Maroquinerie", ar: "صناعة الجلود" },
+  "cat.wellness": { fr: "Bien-être", ar: "رفاهية" },
+
+  // Vendor product form
+  "vendor.productNamePlaceholder": { fr: "Ex: Sac en cuir artisanal", ar: "مثال: حقيبة جلدية حرفية" },
+  "vendor.descriptionPlaceholder": { fr: "Décrivez votre produit...", ar: "صف منتجك..." },
+  "vendor.imageLimit": { fr: "PNG, JPG jusqu'à 5 Mo", ar: "PNG، JPG حتى 5 ميغا" },
+
+  // Admin activity
+  "admin.activity.newShop": { fr: "Nouvelle boutique inscrite", ar: "متجر جديد مسجل" },
+  "admin.activity.orderValidation": { fr: "nécessite une validation", ar: "يحتاج تأكيد" },
+  "admin.activity.withdrawalRequest": { fr: "Retrait demandé par", ar: "طلب سحب من" },
+  "admin.activity.complaintResolved": { fr: "Réclamation résolue", ar: "شكوى محلولة" },
+  "admin.activity.reportedProduct": { fr: "Produit signalé dans boutique", ar: "منتج مُبلّغ عنه في متجر" },
+  "admin.ago5min": { fr: "Il y a 5 min", ar: "منذ 5 دقائق" },
+  "admin.ago15min": { fr: "Il y a 15 min", ar: "منذ 15 دقيقة" },
+  "admin.ago30min": { fr: "Il y a 30 min", ar: "منذ 30 دقيقة" },
+  "admin.ago1h": { fr: "Il y a 1h", ar: "منذ ساعة" },
+  "admin.ago2h": { fr: "Il y a 2h", ar: "منذ ساعتين" },
+  "admin.today": { fr: "Aujourd'hui", ar: "اليوم" },
+  "admin.yesterday": { fr: "Hier", ar: "أمس" },
+  "admin.twoDaysAgo": { fr: "Il y a 2j", ar: "منذ يومين" },
 } as const;
 
 type TranslationKey = keyof typeof translations;
