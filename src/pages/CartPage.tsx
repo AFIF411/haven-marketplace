@@ -1,16 +1,44 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Trash2, Minus, Plus, ArrowRight } from "lucide-react";
+import { Trash2, Minus, Plus, ArrowRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
-import { mockProducts, formatDZD } from "@/data/mockData";
+import { formatDZD } from "@/data/mockData";
 import { useTranslation } from "@/contexts/I18nContext";
-
-const cartItems = mockProducts.slice(0, 3).map((p, i) => ({ ...p, qty: i + 1 }));
 
 export default function CartPage() {
   const { t } = useTranslation();
+  const [cartItems, setCartItems] = useState<any[]>([]);
+
+  const updateQty = (id: string, delta: number) => {
+    setCartItems(prev => prev.map(item =>
+      item.id === id ? { ...item, qty: Math.max(1, item.qty + delta) } : item
+    ));
+  };
+
+  const removeItem = (id: string) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
   const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
   const shipping = subtotal > 5000 ? 0 : 400;
+
+  if (cartItems.length === 0) {
+    return (
+      <MarketplaceLayout>
+        <div className="container py-16 flex flex-col items-center justify-center text-center">
+          <div className="bg-muted rounded-full p-6 mb-6">
+            <ShoppingBag className="h-12 w-12 text-muted-foreground" />
+          </div>
+          <h1 className="font-heading text-2xl font-bold mb-2">{t("cart.title")}</h1>
+          <p className="text-muted-foreground mb-6">{t("cart.empty") || "Votre panier est vide"}</p>
+          <Button asChild size="lg">
+            <Link to="/products">{t("nav.products") || "Parcourir les produits"}</Link>
+          </Button>
+        </div>
+      </MarketplaceLayout>
+    );
+  }
 
   return (
     <MarketplaceLayout>
@@ -26,14 +54,14 @@ export default function CartPage() {
                   <p className="text-xs text-muted-foreground">{item.shop}</p>
                   <div className="flex items-center justify-between mt-3">
                     <div className="flex items-center border rounded-md">
-                      <Button variant="ghost" size="icon" className="h-8 w-8"><Minus className="h-3 w-3" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.id, -1)}><Minus className="h-3 w-3" /></Button>
                       <span className="w-8 text-center text-sm">{item.qty}</span>
-                      <Button variant="ghost" size="icon" className="h-8 w-8"><Plus className="h-3 w-3" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.id, 1)}><Plus className="h-3 w-3" /></Button>
                     </div>
                     <span className="font-heading font-bold">{formatDZD(item.price * item.qty)}</span>
                   </div>
                 </div>
-                <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-destructive">
+                <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-destructive" onClick={() => removeItem(item.id)}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
