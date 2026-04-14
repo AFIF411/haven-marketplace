@@ -1,9 +1,10 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { TrendingUp, Users, Store, ShoppingBag, DollarSign, Package, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { formatDZD } from "@/data/mockData";
 
 const stats = [
-  { label: "Chiffre d'affaires", value: "124 500 €", change: "+18%", icon: DollarSign },
+  { label: "Chiffre d'affaires", value: formatDZD(8245000), change: "+18%", icon: DollarSign },
   { label: "Commandes", value: "1 560", change: "+12%", icon: ShoppingBag },
   { label: "Utilisateurs", value: "8 430", change: "+25%", icon: Users },
   { label: "Boutiques", value: "156", change: "+8", icon: Store },
@@ -12,9 +13,9 @@ const stats = [
 ];
 
 const recentActivity = [
-  { text: "Nouvelle boutique inscrite : Atelier du Bois", time: "Il y a 5 min", type: "info" },
+  { text: "Nouvelle boutique inscrite : Atelier du Bois (Tizi Ouzou)", time: "Il y a 5 min", type: "info" },
   { text: "Commande CMD-1560 nécessite une validation", time: "Il y a 15 min", type: "warning" },
-  { text: "Retrait de 1200€ demandé par Maison Cuir", time: "Il y a 30 min", type: "info" },
+  { text: "Retrait de 80 000 DA demandé par Artisan Cuir Alger", time: "Il y a 30 min", type: "info" },
   { text: "Réclamation résolue #REC-045", time: "Il y a 1h", type: "success" },
   { text: "Produit signalé dans boutique Mode Express", time: "Il y a 2h", type: "warning" },
 ];

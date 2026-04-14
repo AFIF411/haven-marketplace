@@ -1,7 +1,7 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { mockOrders } from "@/data/mockData";
+import { mockOrders, formatDZD } from "@/data/mockData";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 
@@ -45,7 +45,7 @@ export default function ClientOrdersPage() {
                 <td className="px-4 py-3">{o.shop}</td>
                 <td className="px-4 py-3"><Badge variant={statusMap[o.status].variant}>{statusMap[o.status].label}</Badge></td>
                 <td className="px-4 py-3 text-muted-foreground">{o.items}</td>
-                <td className="px-4 py-3 text-right font-medium">{o.total} €</td>
+                <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
               </tr>
             ))}
           </tbody>

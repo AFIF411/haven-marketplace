@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown } from "lucide-react";
+import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -10,15 +10,16 @@ const categories = [
 export function MarketplaceHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [lang, setLang] = useState<"fr" | "ar">("fr");
 
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container flex h-16 items-center gap-4">
         <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-primary shrink-0">
           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground text-sm font-bold">M</span>
+            <span className="text-primary-foreground text-sm font-bold">S</span>
           </div>
-          Marché
+          Souk DZ
         </Link>
 
         <div className="hidden md:flex flex-1 max-w-xl mx-4">
@@ -47,6 +48,15 @@ export function MarketplaceHeader() {
         </nav>
 
         <div className="flex items-center gap-1 ml-auto">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="hidden md:flex items-center gap-1 text-xs"
+            onClick={() => setLang(lang === "fr" ? "ar" : "fr")}
+          >
+            <Globe className="h-4 w-4" />
+            {lang === "fr" ? "العربية" : "Français"}
+          </Button>
           <Button variant="ghost" size="icon" asChild>
             <Link to="/wishlist"><Heart className="h-5 w-5" /></Link>
           </Button>
@@ -86,6 +96,13 @@ export function MarketplaceHeader() {
             <Link to="/shops" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Boutiques</Link>
             <Link to="/promotions" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Promotions</Link>
             <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Mon compte</Link>
+            <button
+              className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-left flex items-center gap-2"
+              onClick={() => { setLang(lang === "fr" ? "ar" : "fr"); }}
+            >
+              <Globe className="h-4 w-4" />
+              {lang === "fr" ? "العربية" : "Français"}
+            </button>
           </div>
         </div>
       )}

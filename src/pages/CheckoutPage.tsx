@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Check, CreditCard, Truck, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { wilayas, formatDZD } from "@/data/mockData";
 
 const steps = ["Adresse", "Livraison", "Paiement"];
 
@@ -32,11 +33,20 @@ export default function CheckoutPage() {
             <>
               <h2 className="font-heading font-semibold flex items-center gap-2"><MapPin className="h-4 w-4" /> Adresse de livraison</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div><label className="text-sm font-medium mb-1 block">Prénom</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Jean" /></div>
-                <div><label className="text-sm font-medium mb-1 block">Nom</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Dupont" /></div>
-                <div className="sm:col-span-2"><label className="text-sm font-medium mb-1 block">Adresse</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="123 Rue de Paris" /></div>
-                <div><label className="text-sm font-medium mb-1 block">Ville</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Paris" /></div>
-                <div><label className="text-sm font-medium mb-1 block">Code postal</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="75001" /></div>
+                <div><label className="text-sm font-medium mb-1 block">Prénom</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Mohamed" /></div>
+                <div><label className="text-sm font-medium mb-1 block">Nom</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Benali" /></div>
+                <div className="sm:col-span-2"><label className="text-sm font-medium mb-1 block">Adresse</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="123 Rue Didouche Mourad" /></div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block">Wilaya</label>
+                  <select className="w-full h-10 px-3 rounded-md border bg-background text-sm">
+                    <option value="">Sélectionner une wilaya</option>
+                    {wilayas.map((w, i) => (
+                      <option key={w} value={w}>{String(i + 1).padStart(2, '0')} - {w}</option>
+                    ))}
+                  </select>
+                </div>
+                <div><label className="text-sm font-medium mb-1 block">Commune</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Sidi M'Hamed" /></div>
+                <div><label className="text-sm font-medium mb-1 block">Téléphone</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="05 XX XX XX XX" /></div>
               </div>
             </>
           )}
@@ -45,9 +55,9 @@ export default function CheckoutPage() {
               <h2 className="font-heading font-semibold flex items-center gap-2"><Truck className="h-4 w-4" /> Mode de livraison</h2>
               <div className="space-y-2">
                 {[
-                  { name: "Standard", delay: "3-5 jours", price: "Gratuit" },
-                  { name: "Express", delay: "1-2 jours", price: "9,99 €" },
-                  { name: "Point relais", delay: "4-6 jours", price: "Gratuit" },
+                  { name: "Livraison à domicile", delay: "2-4 jours", price: "400 DA" },
+                  { name: "Livraison express", delay: "24h", price: "800 DA" },
+                  { name: "Point relais / bureau de poste", delay: "3-5 jours", price: "Gratuit" },
                 ].map((m, i) => (
                   <label key={m.name} className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer hover:border-primary/50 transition-colors ${i === 0 ? 'border-primary bg-primary/5' : ''}`}>
                     <div className="flex items-center gap-3">
@@ -69,11 +79,23 @@ export default function CheckoutPage() {
             <>
               <h2 className="font-heading font-semibold flex items-center gap-2"><CreditCard className="h-4 w-4" /> Paiement</h2>
               <div className="space-y-3">
-                <div><label className="text-sm font-medium mb-1 block">Numéro de carte</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="4242 4242 4242 4242" /></div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div><label className="text-sm font-medium mb-1 block">Expiration</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="MM/AA" /></div>
-                  <div><label className="text-sm font-medium mb-1 block">CVV</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="123" /></div>
-                </div>
+                {[
+                  { name: "Paiement à la livraison", desc: "Payez en espèces à la réception" },
+                  { name: "CCP / BaridiMob", desc: "Transfert via votre compte postal" },
+                  { name: "Carte bancaire (CIB / Edahabia)", desc: "Paiement en ligne sécurisé" },
+                ].map((m, i) => (
+                  <label key={m.name} className={`flex items-center p-4 rounded-lg border cursor-pointer hover:border-primary/50 transition-colors ${i === 0 ? 'border-primary bg-primary/5' : ''}`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`h-4 w-4 rounded-full border-2 ${i === 0 ? 'border-primary bg-primary' : 'border-border'}`}>
+                        {i === 0 && <div className="h-1.5 w-1.5 rounded-full bg-primary-foreground m-auto mt-[3px]" />}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{m.name}</p>
+                        <p className="text-xs text-muted-foreground">{m.desc}</p>
+                      </div>
+                    </div>
+                  </label>
+                ))}
               </div>
             </>
           )}
@@ -83,7 +105,7 @@ export default function CheckoutPage() {
             {step < 2 ? (
               <Button onClick={() => setStep(step + 1)}>Continuer</Button>
             ) : (
-              <Button asChild><Link to="/order-confirmation">Payer 257,99 €</Link></Button>
+              <Button asChild><Link to="/order-confirmation">Confirmer {formatDZD(17000)}</Link></Button>
             )}
           </div>
         </div>

@@ -2,12 +2,13 @@ import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { DollarSign, TrendingUp, ArrowDownToLine, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { formatDZD } from "@/data/mockData";
 
 const transactions = [
-  { id: "TRX-001", type: "Vente", date: "15/01/2024", amount: 234, commission: 23.4, net: 210.6, status: "completed" },
-  { id: "TRX-002", type: "Vente", date: "14/01/2024", amount: 89, commission: 8.9, net: 80.1, status: "completed" },
-  { id: "TRX-003", type: "Retrait", date: "10/01/2024", amount: -500, commission: 0, net: -500, status: "pending" },
-  { id: "TRX-004", type: "Vente", date: "08/01/2024", amount: 156, commission: 15.6, net: 140.4, status: "completed" },
+  { id: "TRX-001", type: "Vente", date: "15/01/2024", amount: 15400, commission: 1540, net: 13860, status: "completed" },
+  { id: "TRX-002", type: "Vente", date: "14/01/2024", amount: 5900, commission: 590, net: 5310, status: "completed" },
+  { id: "TRX-003", type: "Retrait", date: "10/01/2024", amount: -50000, commission: 0, net: -50000, status: "pending" },
+  { id: "TRX-004", type: "Vente", date: "08/01/2024", amount: 10200, commission: 1020, net: 9180, status: "completed" },
 ];
 
 export default function VendorFinancesPage() {
@@ -17,10 +18,10 @@ export default function VendorFinancesPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Solde disponible", value: "2 340 €", icon: DollarSign },
-          { label: "En attente", value: "450 €", icon: CreditCard },
-          { label: "CA total", value: "12 450 €", icon: TrendingUp },
-          { label: "Retraits", value: "8 200 €", icon: ArrowDownToLine },
+          { label: "Solde disponible", value: formatDZD(154000), icon: DollarSign },
+          { label: "En attente", value: formatDZD(29500), icon: CreditCard },
+          { label: "CA total", value: formatDZD(824500), icon: TrendingUp },
+          { label: "Retraits", value: formatDZD(540000), icon: ArrowDownToLine },
         ].map(s => (
           <div key={s.label} className="bg-card p-4 rounded-lg border">
             <s.icon className="h-5 w-5 text-primary mb-2" />
@@ -51,9 +52,9 @@ export default function VendorFinancesPage() {
                 <td className="px-4 py-3 font-mono text-xs">{t.id}</td>
                 <td className="px-4 py-3">{t.type}</td>
                 <td className="px-4 py-3 text-muted-foreground">{t.date}</td>
-                <td className="px-4 py-3 text-right font-medium">{t.amount > 0 ? '+' : ''}{t.amount} €</td>
-                <td className="px-4 py-3 text-right text-muted-foreground">{t.commission > 0 ? `-${t.commission}` : '-'} €</td>
-                <td className="px-4 py-3 text-right font-medium">{t.net > 0 ? '+' : ''}{t.net} €</td>
+                <td className="px-4 py-3 text-right font-medium">{t.amount > 0 ? '+' : ''}{formatDZD(t.amount)}</td>
+                <td className="px-4 py-3 text-right text-muted-foreground">{t.commission > 0 ? `-${formatDZD(t.commission)}` : '-'}</td>
+                <td className="px-4 py-3 text-right font-medium">{t.net > 0 ? '+' : ''}{formatDZD(t.net)}</td>
                 <td className="px-4 py-3"><Badge variant={t.status === 'completed' ? 'success' : 'warning'}>{t.status === 'completed' ? 'Complété' : 'En attente'}</Badge></td>
               </tr>
             ))}

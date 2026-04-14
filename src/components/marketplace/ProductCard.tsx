@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Heart, Star, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { formatDZD } from "@/data/mockData";
 
 interface ProductCardProps {
   id: string;
@@ -44,9 +45,9 @@ export function ProductCard({ id, name, price, originalPrice, image, rating, rev
         </div>
         <div className="flex items-center justify-between mt-2">
           <div className="flex items-baseline gap-1.5">
-            <span className="font-heading font-bold text-base">{price.toLocaleString('fr-FR')} €</span>
+            <span className="font-heading font-bold text-base">{formatDZD(price)}</span>
             {originalPrice && (
-              <span className="text-xs text-muted-foreground line-through">{originalPrice.toLocaleString('fr-FR')} €</span>
+              <span className="text-xs text-muted-foreground line-through">{formatDZD(originalPrice)}</span>
             )}
           </div>
           <Button size="icon" variant="ghost" className="h-8 w-8">

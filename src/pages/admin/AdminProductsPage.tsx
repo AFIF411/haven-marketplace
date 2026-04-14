@@ -1,8 +1,8 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Check, X, Eye } from "lucide-react";
-import { mockProducts } from "@/data/mockData";
+import { Search, X, Eye } from "lucide-react";
+import { mockProducts, formatDZD } from "@/data/mockData";
 
 export default function AdminProductsPage() {
   return (
@@ -36,7 +36,7 @@ export default function AdminProductsPage() {
                   <span className="font-medium line-clamp-1">{p.name}</span>
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{p.shop}</td>
-                <td className="px-4 py-3">{p.price} €</td>
+                <td className="px-4 py-3">{formatDZD(p.price)}</td>
                 <td className="px-4 py-3"><Badge variant="success">Approuvé</Badge></td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-1">

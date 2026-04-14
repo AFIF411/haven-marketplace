@@ -2,13 +2,14 @@ import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { formatDZD } from "@/data/mockData";
 
 const orders = [
-  { id: "CMD-V-001", customer: "Marie Lambert", date: "15/01/2024", items: 2, status: "new", total: 234 },
-  { id: "CMD-V-002", customer: "Pierre Martin", date: "14/01/2024", items: 1, status: "processing", total: 89 },
-  { id: "CMD-V-003", customer: "Sophie Roux", date: "13/01/2024", items: 3, status: "shipped", total: 156 },
-  { id: "CMD-V-004", customer: "Lucas Durand", date: "12/01/2024", items: 1, status: "delivered", total: 45 },
-  { id: "CMD-V-005", customer: "Emma Petit", date: "11/01/2024", items: 2, status: "delivered", total: 312 },
+  { id: "CMD-V-001", customer: "Amina Khelifi", date: "15/01/2024", items: 2, status: "new", total: 15400 },
+  { id: "CMD-V-002", customer: "Yacine Mansouri", date: "14/01/2024", items: 1, status: "processing", total: 5900 },
+  { id: "CMD-V-003", customer: "Fatima Rahmani", date: "13/01/2024", items: 3, status: "shipped", total: 10200 },
+  { id: "CMD-V-004", customer: "Karim Derradji", date: "12/01/2024", items: 1, status: "delivered", total: 3000 },
+  { id: "CMD-V-005", customer: "Nadia Boudiaf", date: "11/01/2024", items: 2, status: "delivered", total: 20500 },
 ];
 
 const statusMap: Record<string, { label: string; variant: "warning" | "default" | "success" | "pending" }> = {
@@ -51,7 +52,7 @@ export default function VendorOrdersPage() {
                 <td className="px-4 py-3 text-muted-foreground">{o.date}</td>
                 <td className="px-4 py-3 text-muted-foreground">{o.items}</td>
                 <td className="px-4 py-3"><Badge variant={statusMap[o.status].variant}>{statusMap[o.status].label}</Badge></td>
-                <td className="px-4 py-3 text-right font-medium">{o.total} €</td>
+                <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
               </tr>
             ))}
           </tbody>

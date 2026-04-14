@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { ProductCard } from "@/components/marketplace/ProductCard";
-import { mockProducts } from "@/data/mockData";
+import { mockProducts, formatDZD } from "@/data/mockData";
 
 export default function ProductDetailPage() {
   const [qty, setQty] = useState(1);
@@ -55,10 +55,10 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="flex items-baseline gap-3 mt-4">
-              <span className="font-heading text-3xl font-bold">{product.price} €</span>
+              <span className="font-heading text-3xl font-bold">{formatDZD(product.price)}</span>
               {product.originalPrice && (
                 <>
-                  <span className="text-lg text-muted-foreground line-through">{product.originalPrice} €</span>
+                  <span className="text-lg text-muted-foreground line-through">{formatDZD(product.originalPrice)}</span>
                   <Badge variant="destructive">-{Math.round((1 - product.price / product.originalPrice) * 100)}%</Badge>
                 </>
               )}
@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
 
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               Produit artisanal de haute qualité, fabriqué avec des matériaux soigneusement sélectionnés. 
-              Chaque pièce est unique et témoigne d'un savoir-faire traditionnel allié à un design contemporain.
+              Chaque pièce est unique et témoigne d'un savoir-faire traditionnel algérien allié à un design contemporain.
             </p>
 
             <div className="mt-6 space-y-4">
@@ -91,7 +91,7 @@ export default function ProductDetailPage() {
 
             <div className="mt-6 space-y-2 border-t pt-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Truck className="h-4 w-4 text-primary" /> Livraison gratuite dès 50 €
+                <Truck className="h-4 w-4 text-primary" /> Livraison vers les 58 wilayas
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Shield className="h-4 w-4 text-primary" /> Retour gratuit sous 30 jours
