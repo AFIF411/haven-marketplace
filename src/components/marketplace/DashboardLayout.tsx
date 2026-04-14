@@ -19,17 +19,17 @@ function useRoleBasedMenus() {
   const { canAccess } = useAuth();
 
   // Menu principal pour l'espace gestion (tous les rôles sauf marketplace)
-  const managementMenu: SidebarItem[] = [
-    { label: "Tableau de bord", href: "/manage", icon: <LayoutDashboard className="h-4 w-4" />, module: 'dashboard' },
-    { label: "Ventes", href: "/manage/sales", icon: <FileText className="h-4 w-4" />, module: 'sales' },
-    { label: "Produits", href: "/manage/products", icon: <Package className="h-4 w-4" />, module: 'products' },
-    { label: "Clients", href: "/manage/clients", icon: <UserCheck className="h-4 w-4" />, module: 'clients' },
-    { label: "Stock", href: "/manage/stock", icon: <Warehouse className="h-4 w-4" />, module: 'stock' },
-    { label: "Paiements", href: "/manage/payments", icon: <CreditCard className="h-4 w-4" />, module: 'payments' },
-    { label: "Rapports", href: "/manage/reports", icon: <BarChart3 className="h-4 w-4" />, module: 'reports' },
-    { label: "Utilisateurs", href: "/manage/users", icon: <Users className="h-4 w-4" />, module: 'users' },
-    { label: "Paramètres", href: "/manage/settings", icon: <Settings className="h-4 w-4" />, module: 'settings' },
-  ].filter(item => !item.module || canAccess(item.module));
+  const managementMenu = ([
+    { label: "Tableau de bord", href: "/manage", icon: <LayoutDashboard className="h-4 w-4" />, module: 'dashboard' as Module },
+    { label: "Ventes", href: "/manage/sales", icon: <FileText className="h-4 w-4" />, module: 'sales' as Module },
+    { label: "Produits", href: "/manage/products", icon: <Package className="h-4 w-4" />, module: 'products' as Module },
+    { label: "Clients", href: "/manage/clients", icon: <UserCheck className="h-4 w-4" />, module: 'clients' as Module },
+    { label: "Stock", href: "/manage/stock", icon: <Warehouse className="h-4 w-4" />, module: 'stock' as Module },
+    { label: "Paiements", href: "/manage/payments", icon: <CreditCard className="h-4 w-4" />, module: 'payments' as Module },
+    { label: "Rapports", href: "/manage/reports", icon: <BarChart3 className="h-4 w-4" />, module: 'reports' as Module },
+    { label: "Utilisateurs", href: "/manage/users", icon: <Users className="h-4 w-4" />, module: 'users' as Module },
+    { label: "Paramètres", href: "/manage/settings", icon: <Settings className="h-4 w-4" />, module: 'settings' as Module },
+  ] as SidebarItem[]).filter(item => !item.module || canAccess(item.module));
 
   // Legacy vendor menu (pour rétro-compatibilité)
   const vendorMenu: SidebarItem[] = [
