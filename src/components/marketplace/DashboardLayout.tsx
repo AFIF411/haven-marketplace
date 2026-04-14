@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings,
   Store, DollarSign, Tag, MessageSquare, CreditCard, ArrowDownToLine,
-  Star, FileText, Layers, AlertTriangle, ChevronLeft
+  Star, FileText, Layers, AlertTriangle, ChevronLeft, Warehouse, UserCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/contexts/I18nContext";
@@ -15,13 +15,12 @@ function useMenus() {
 
   const vendorMenu: SidebarItem[] = [
     { label: t("vendor.dashboard"), href: "/vendor", icon: <LayoutDashboard className="h-4 w-4" /> },
-    { label: t("vendor.myShop"), href: "/vendor/shop", icon: <Store className="h-4 w-4" /> },
+    { label: "Ventes", href: "/vendor/sales", icon: <FileText className="h-4 w-4" /> },
     { label: t("vendor.products"), href: "/vendor/products", icon: <Package className="h-4 w-4" /> },
+    { label: "Clients", href: "/vendor/clients", icon: <UserCheck className="h-4 w-4" /> },
+    { label: "Stock", href: "/vendor/stock", icon: <Warehouse className="h-4 w-4" /> },
     { label: t("vendor.orders"), href: "/vendor/orders", icon: <ShoppingBag className="h-4 w-4" /> },
-    { label: t("vendor.customers"), href: "/vendor/customers", icon: <Users className="h-4 w-4" /> },
-    { label: t("vendor.promotions"), href: "/vendor/promotions", icon: <Tag className="h-4 w-4" /> },
     { label: t("vendor.finances"), href: "/vendor/finances", icon: <DollarSign className="h-4 w-4" /> },
-    { label: t("vendor.stats"), href: "/vendor/stats", icon: <BarChart3 className="h-4 w-4" /> },
     { label: t("vendor.settings"), href: "/vendor/settings", icon: <Settings className="h-4 w-4" /> },
   ];
 
