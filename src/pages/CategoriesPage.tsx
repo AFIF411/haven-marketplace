@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { mockCategories } from "@/data/mockData";
+import { useTranslation } from "@/contexts/I18nContext";
 
 export default function CategoriesPage() {
+  const { t } = useTranslation();
+
   return (
     <MarketplaceLayout>
       <div className="container py-8">
-        <h1 className="font-heading text-2xl font-bold mb-6">Toutes les catégories</h1>
+        <h1 className="font-heading text-2xl font-bold mb-6">{t("categories.title")}</h1>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {mockCategories.map(cat => (
             <Link key={cat.name} to={`/products?category=${cat.name.toLowerCase()}`} className="group bg-card rounded-lg border shadow-card hover:shadow-card-hover transition-all overflow-hidden">
@@ -15,7 +18,7 @@ export default function CategoriesPage() {
               </div>
               <div className="p-4">
                 <h3 className="font-heading font-semibold">{cat.name}</h3>
-                <p className="text-sm text-muted-foreground">{cat.count.toLocaleString()} articles</p>
+                <p className="text-sm text-muted-foreground">{cat.count.toLocaleString()} {t("common.articles")}</p>
               </div>
             </Link>
           ))}

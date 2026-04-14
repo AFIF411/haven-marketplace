@@ -4,31 +4,38 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Search, Edit, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { mockProducts, formatDZD } from "@/data/mockData";
+import { useTranslation } from "@/contexts/I18nContext";
 
 export default function VendorProductsPage() {
+  const { t } = useTranslation();
+
   return (
-    <DashboardLayout type="vendor" title="Espace vendeur">
+    <DashboardLayout type="vendor" title={t("sidebar.vendorSpace")}>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-xl font-bold">Mes produits</h1>
-        <Button size="sm" asChild><Link to="/vendor/products/new"><Plus className="mr-1 h-4 w-4" /> Ajouter</Link></Button>
+        <h1 className="font-heading text-xl font-bold">{t("vendor.myProducts")}</h1>
+        <Button size="sm" asChild><Link to="/vendor/products/new"><Plus className="me-1 h-4 w-4" /> {t("common.add")}</Link></Button>
       </div>
       <div className="flex items-center gap-3 mb-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input className="w-full h-9 pl-10 pr-3 rounded-md border bg-background text-sm" placeholder="Rechercher un produit..." />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input className="w-full h-9 ps-10 pe-3 rounded-md border bg-background text-sm" placeholder={t("vendor.searchProduct")} />
         </div>
-        <select className="h-9 px-3 rounded-md border text-sm bg-background"><option>Tous les statuts</option><option>Actif</option><option>Brouillon</option></select>
+        <select className="h-9 px-3 rounded-md border text-sm bg-background">
+          <option>{t("filter.allStatus")}</option>
+          <option>{t("filter.active")}</option>
+          <option>{t("filter.draft")}</option>
+        </select>
       </div>
       <div className="bg-card rounded-lg border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead><tr className="border-b bg-secondary/50">
-              <th className="text-left px-4 py-2.5 font-medium">Produit</th>
-              <th className="text-left px-4 py-2.5 font-medium">Prix</th>
-              <th className="text-left px-4 py-2.5 font-medium">Stock</th>
-              <th className="text-left px-4 py-2.5 font-medium">Statut</th>
-              <th className="text-left px-4 py-2.5 font-medium">Ventes</th>
-              <th className="text-right px-4 py-2.5 font-medium">Actions</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.product")}</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.price")}</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.stock")}</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.status")}</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.sales")}</th>
+              <th className="text-end px-4 py-2.5 font-medium">{t("table.actions")}</th>
             </tr></thead>
             <tbody>
               {mockProducts.map(p => (
@@ -41,9 +48,9 @@ export default function VendorProductsPage() {
                   </td>
                   <td className="px-4 py-3">{formatDZD(p.price)}</td>
                   <td className="px-4 py-3">{Math.floor(Math.random() * 100)}</td>
-                  <td className="px-4 py-3"><Badge variant="success">Actif</Badge></td>
+                  <td className="px-4 py-3"><Badge variant="success">{t("status.active")}</Badge></td>
                   <td className="px-4 py-3 text-muted-foreground">{p.reviews}</td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-end">
                     <div className="flex justify-end gap-1">
                       <Button size="icon" variant="ghost" className="h-8 w-8"><Eye className="h-3.5 w-3.5" /></Button>
                       <Button size="icon" variant="ghost" className="h-8 w-8"><Edit className="h-3.5 w-3.5" /></Button>

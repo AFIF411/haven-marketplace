@@ -4,22 +4,24 @@ import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { Store, Package, CreditCard, Check, ArrowRight } from "lucide-react";
 import { wilayas } from "@/data/mockData";
-
-const steps = [
-  { icon: Store, title: "Votre boutique", desc: "Informations de base" },
-  { icon: Package, title: "Vos produits", desc: "Ce que vous vendez" },
-  { icon: CreditCard, title: "Paiement", desc: "Comment être payé" },
-];
+import { useTranslation } from "@/contexts/I18nContext";
 
 export default function VendorOnboardingPage() {
   const [step, setStep] = useState(0);
+  const { t } = useTranslation();
+
+  const steps = [
+    { icon: Store, title: t("onboarding.yourShop"), desc: t("onboarding.basicInfo") },
+    { icon: Package, title: t("onboarding.yourProducts"), desc: t("onboarding.whatYouSell") },
+    { icon: CreditCard, title: t("checkout.payment"), desc: t("onboarding.howToPay") },
+  ];
 
   return (
     <MarketplaceLayout>
       <div className="container py-12 max-w-2xl">
         <div className="text-center mb-8">
-          <h1 className="font-heading text-2xl font-bold">Ouvrez votre boutique</h1>
-          <p className="text-sm text-muted-foreground mt-1">En quelques minutes, commencez à vendre sur Souk DZ</p>
+          <h1 className="font-heading text-2xl font-bold">{t("onboarding.title")}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t("onboarding.subtitle")}</p>
         </div>
 
         <div className="flex items-center justify-center gap-4 mb-8">
@@ -37,15 +39,15 @@ export default function VendorOnboardingPage() {
         <div className="bg-card rounded-lg border p-6 space-y-4">
           {step === 0 && (
             <>
-              <h2 className="font-heading font-semibold">Informations de la boutique</h2>
-              <div><label className="text-sm font-medium mb-1 block">Nom de la boutique</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Ma Boutique" /></div>
-              <div><label className="text-sm font-medium mb-1 block">Description</label><textarea className="w-full px-3 py-2 rounded-md border bg-background text-sm min-h-[80px]" placeholder="Décrivez votre boutique..." /></div>
+              <h2 className="font-heading font-semibold">{t("onboarding.shopInfo")}</h2>
+              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.shopName")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder={t("onboarding.myShop")} /></div>
+              <div><label className="text-sm font-medium mb-1 block">{t("common.description")}</label><textarea className="w-full px-3 py-2 rounded-md border bg-background text-sm min-h-[80px]" placeholder={t("onboarding.describeShop")} /></div>
               <div className="grid grid-cols-2 gap-3">
-                <div><label className="text-sm font-medium mb-1 block">Catégorie principale</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm"><option>Mode</option><option>Maison</option><option>Artisanat</option><option>Alimentation</option></select></div>
+                <div><label className="text-sm font-medium mb-1 block">{t("onboarding.mainCategory")}</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm"><option>{t("cat.fashion")}</option><option>{t("cat.home")}</option><option>{t("cat.craft")}</option><option>{t("cat.food")}</option></select></div>
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Wilaya</label>
+                  <label className="text-sm font-medium mb-1 block">{t("onboarding.wilaya")}</label>
                   <select className="w-full h-10 px-3 rounded-md border bg-background text-sm">
-                    <option value="">Sélectionner</option>
+                    <option value="">{t("common.select")}</option>
                     {wilayas.map((w, i) => (
                       <option key={w} value={w}>{String(i + 1).padStart(2, '0')} - {w}</option>
                     ))}
@@ -56,12 +58,12 @@ export default function VendorOnboardingPage() {
           )}
           {step === 1 && (
             <>
-              <h2 className="font-heading font-semibold">Type de produits</h2>
-              <p className="text-sm text-muted-foreground">Quels types de produits comptez-vous vendre ?</p>
+              <h2 className="font-heading font-semibold">{t("onboarding.productType")}</h2>
+              <p className="text-sm text-muted-foreground">{t("onboarding.productTypeDesc")}</p>
               <div className="grid grid-cols-2 gap-3">
-                {["Produits physiques", "Produits digitaux", "Services", "Artisanat traditionnel"].map(t => (
-                  <label key={t} className="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:border-primary/50">
-                    <input type="checkbox" className="rounded" /><span className="text-sm">{t}</span>
+                {[t("onboarding.physicalProducts"), t("onboarding.digitalProducts"), t("onboarding.services"), t("onboarding.traditionalCraft")].map(item => (
+                  <label key={item} className="flex items-center gap-2 p-3 rounded-lg border cursor-pointer hover:border-primary/50">
+                    <input type="checkbox" className="rounded" /><span className="text-sm">{item}</span>
                   </label>
                 ))}
               </div>
@@ -69,19 +71,19 @@ export default function VendorOnboardingPage() {
           )}
           {step === 2 && (
             <>
-              <h2 className="font-heading font-semibold">Informations de paiement</h2>
-              <div><label className="text-sm font-medium mb-1 block">Numéro CCP</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="XXXXXXXX clé XX" /></div>
-              <div><label className="text-sm font-medium mb-1 block">Titulaire du compte</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Nom complet" /></div>
-              <div><label className="text-sm font-medium mb-1 block">RIB bancaire (optionnel)</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="XXXXXXXXXXXXXXXXXXXX" /></div>
+              <h2 className="font-heading font-semibold">{t("onboarding.paymentInfo")}</h2>
+              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.ccpNumber")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="XXXXXXXX clé XX" /></div>
+              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.accountHolder")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" /></div>
+              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.ribOptional")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="XXXXXXXXXXXXXXXXXXXX" /></div>
             </>
           )}
 
           <div className="flex justify-between pt-4 border-t">
-            {step > 0 ? <Button variant="outline" onClick={() => setStep(step - 1)}>Retour</Button> : <div />}
+            {step > 0 ? <Button variant="outline" onClick={() => setStep(step - 1)}>{t("common.back")}</Button> : <div />}
             {step < 2 ? (
-              <Button onClick={() => setStep(step + 1)}>Continuer <ArrowRight className="ml-1 h-4 w-4" /></Button>
+              <Button onClick={() => setStep(step + 1)}>{t("common.continue")} <ArrowRight className="ms-1 h-4 w-4" /></Button>
             ) : (
-              <Button asChild><Link to="/vendor">Créer ma boutique</Link></Button>
+              <Button asChild><Link to="/vendor">{t("onboarding.createShop")}</Link></Button>
             )}
           </div>
         </div>

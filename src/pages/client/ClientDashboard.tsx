@@ -4,28 +4,30 @@ import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { mockOrders, formatDZD } from "@/data/mockData";
 import { useAuth } from "@/contexts/AuthContext";
-
-const statusMap: Record<string, { label: string; variant: "success" | "warning" | "pending" | "default" }> = {
-  delivered: { label: "Livré", variant: "success" },
-  shipped: { label: "Expédié", variant: "default" },
-  processing: { label: "En cours", variant: "warning" },
-  pending: { label: "En attente", variant: "pending" },
-};
+import { useTranslation } from "@/contexts/I18nContext";
 
 export default function ClientDashboard() {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   if (!user) return <Navigate to="/login" replace />;
 
+  const statusMap: Record<string, { label: string; variant: "success" | "warning" | "pending" | "default" }> = {
+    delivered: { label: t("status.delivered"), variant: "success" },
+    shipped: { label: t("status.shipped"), variant: "default" },
+    processing: { label: t("status.processing"), variant: "warning" },
+    pending: { label: t("status.pending"), variant: "pending" },
+  };
+
   return (
-    <DashboardLayout type="client" title="Mon compte">
-      <h1 className="font-heading text-xl font-bold mb-6">Bonjour, {user.firstName} 👋</h1>
+    <DashboardLayout type="client" title={t("sidebar.myAccount")}>
+      <h1 className="font-heading text-xl font-bold mb-6">{t("client.hello")}, {user.firstName} 👋</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Commandes", value: "12", icon: ShoppingBag },
-          { label: "Wishlist", value: "8", icon: Heart },
-          { label: "Adresses", value: "2", icon: MapPin },
-          { label: "Avis donnés", value: "5", icon: Star },
+          { label: t("client.orders"), value: "12", icon: ShoppingBag },
+          { label: t("client.wishlist"), value: "8", icon: Heart },
+          { label: t("client.addresses"), value: "2", icon: MapPin },
+          { label: t("client.reviewsGiven"), value: "5", icon: Star },
         ].map(s => (
           <div key={s.label} className="bg-card p-4 rounded-lg border">
             <s.icon className="h-5 w-5 text-primary mb-2" />
@@ -35,15 +37,15 @@ export default function ClientDashboard() {
         ))}
       </div>
 
-      <h2 className="font-heading font-semibold mb-3">Commandes récentes</h2>
+      <h2 className="font-heading font-semibold mb-3">{t("client.recentOrders")}</h2>
       <div className="bg-card rounded-lg border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead><tr className="border-b bg-secondary/50">
-              <th className="text-left px-4 py-2.5 font-medium">Commande</th>
-              <th className="text-left px-4 py-2.5 font-medium">Date</th>
-              <th className="text-left px-4 py-2.5 font-medium">Statut</th>
-              <th className="text-right px-4 py-2.5 font-medium">Total</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.order")}</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.date")}</th>
+              <th className="text-start px-4 py-2.5 font-medium">{t("table.status")}</th>
+              <th className="text-end px-4 py-2.5 font-medium">{t("table.total")}</th>
             </tr></thead>
             <tbody>
               {mockOrders.map(o => (
@@ -51,7 +53,7 @@ export default function ClientDashboard() {
                   <td className="px-4 py-3"><Link to={`/account/orders/${o.id}`} className="font-mono text-primary hover:underline text-xs">{o.id}</Link></td>
                   <td className="px-4 py-3 text-muted-foreground">{o.date}</td>
                   <td className="px-4 py-3"><Badge variant={statusMap[o.status].variant}>{statusMap[o.status].label}</Badge></td>
-                  <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
+                  <td className="px-4 py-3 text-end font-medium">{formatDZD(o.total)}</td>
                 </tr>
               ))}
             </tbody>
