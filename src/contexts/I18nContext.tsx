@@ -55,6 +55,8 @@ const translations = {
   "cart.total": { fr: "Total", ar: "المجموع" },
   "cart.order": { fr: "Commander", ar: "طلب" },
   "cart.securePayment": { fr: "Paiement 100% sécurisé", ar: "دفع آمن 100%" },
+  "cart.empty": { fr: "Votre panier est vide", ar: "سلتك فارغة" },
+  "nav.products": { fr: "Produits", ar: "المنتجات" },
 
   // Checkout
   "checkout.title": { fr: "Checkout", ar: "الدفع" },
