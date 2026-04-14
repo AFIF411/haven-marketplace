@@ -13,7 +13,6 @@ export default function VendorOnboardingPage() {
   const steps = [
     { icon: Store, title: t("onboarding.yourShop"), desc: t("onboarding.basicInfo") },
     { icon: Package, title: t("onboarding.yourProducts"), desc: t("onboarding.whatYouSell") },
-    { icon: CreditCard, title: t("checkout.payment"), desc: t("onboarding.howToPay") },
   ];
 
   return (
@@ -69,18 +68,10 @@ export default function VendorOnboardingPage() {
               </div>
             </>
           )}
-          {step === 2 && (
-            <>
-              <h2 className="font-heading font-semibold">{t("onboarding.paymentInfo")}</h2>
-              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.ccpNumber")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="XXXXXXXX clé XX" /></div>
-              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.accountHolder")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" /></div>
-              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.ribOptional")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="XXXXXXXXXXXXXXXXXXXX" /></div>
-            </>
-          )}
 
           <div className="flex justify-between pt-4 border-t">
             {step > 0 ? <Button variant="outline" onClick={() => setStep(step - 1)}>{t("common.back")}</Button> : <div />}
-            {step < 2 ? (
+            {step < 1 ? (
               <Button onClick={() => setStep(step + 1)}>{t("common.continue")} <ArrowRight className="ms-1 h-4 w-4" /></Button>
             ) : (
               <Button asChild><Link to="/vendor">{t("onboarding.createShop")}</Link></Button>
