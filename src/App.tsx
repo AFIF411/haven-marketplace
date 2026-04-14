@@ -30,10 +30,13 @@ import ClientAddressesPage from "./pages/client/ClientAddressesPage";
 
 import VendorOnboardingPage from "./pages/vendor/VendorOnboardingPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
-import VendorProductsPage from "./pages/vendor/VendorProductsPage";
+import VendorProductsManager from "./pages/vendor/VendorProductsManager";
 import VendorAddProductPage from "./pages/vendor/VendorAddProductPage";
 import VendorOrdersPage from "./pages/vendor/VendorOrdersPage";
 import VendorFinancesPage from "./pages/vendor/VendorFinancesPage";
+import VendorClientsPage from "./pages/vendor/VendorClientsPage";
+import VendorSalesManager from "./pages/vendor/VendorSalesManager";
+import VendorStockPage from "./pages/vendor/VendorStockPage";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminVendorsPage from "./pages/admin/AdminVendorsPage";
@@ -72,10 +75,13 @@ const App = () => (
               <Route path="/wishlist" element={<WishlistPage />} />
               <Route path="/vendor/onboarding" element={<VendorOnboardingPage />} />
               <Route path="/vendor" element={<VendorDashboard />} />
-              <Route path="/vendor/products" element={<VendorProductsPage />} />
+              <Route path="/vendor/products" element={<VendorProductsManager />} />
               <Route path="/vendor/products/new" element={<VendorAddProductPage />} />
               <Route path="/vendor/orders" element={<VendorOrdersPage />} />
               <Route path="/vendor/finances" element={<VendorFinancesPage />} />
+              <Route path="/vendor/clients" element={<VendorClientsPage />} />
+              <Route path="/vendor/sales" element={<VendorSalesManager />} />
+              <Route path="/vendor/stock" element={<VendorStockPage />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/vendors" element={<AdminVendorsPage />} />
               <Route path="/admin/products" element={<AdminProductsPage />} />

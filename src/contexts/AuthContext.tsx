@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface User {
   id: string;
@@ -11,6 +12,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  supabaseUser: SupabaseUser | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => Promise<{ success: boolean; error?: string }>;
@@ -19,68 +21,76 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const STORAGE_KEY = "soukdz_user";
-const ACCOUNTS_KEY = "soukdz_accounts";
-
-function getAccounts(): Record<string, { user: User; password: string }> {
-  try {
-    return JSON.parse(localStorage.getItem(ACCOUNTS_KEY) || "{}");
-  } catch { return {}; }
-}
-
-function saveAccounts(accounts: Record<string, { user: User; password: string }>) {
-  localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+function parseUser(su: SupabaseUser): User {
+  const meta = su.user_metadata || {};
+  return {
+    id: su.id,
+    firstName: meta.first_name || meta.firstName || "",
+    lastName: meta.last_name || meta.lastName || "",
+    email: su.email || "",
+    phone: meta.phone || "",
+  };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try { setUser(JSON.parse(stored)); } catch {}
-    }
-    setIsLoading(false);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setSupabaseUser(session.user);
+        setUser(parseUser(session.user));
+      } else {
+        setSupabaseUser(null);
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setSupabaseUser(session.user);
+        setUser(parseUser(session.user));
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
-    await new Promise(r => setTimeout(r, 600));
-    const accounts = getAccounts();
-    const account = accounts[email.toLowerCase()];
-    if (!account) return { success: false, error: "Aucun compte trouvé avec cet email" };
-    if (account.password !== password) return { success: false, error: "Mot de passe incorrect" };
-    setUser(account.user);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(account.user));
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { success: false, error: error.message };
     return { success: true };
   };
 
   const register = async (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => {
-    await new Promise(r => setTimeout(r, 600));
-    const accounts = getAccounts();
-    const key = data.email.toLowerCase();
-    if (accounts[key]) return { success: false, error: "Un compte existe déjà avec cet email" };
-    const newUser: User = {
-      id: crypto.randomUUID(),
-      firstName: data.firstName,
-      lastName: data.lastName,
+    const { error } = await supabase.auth.signUp({
       email: data.email,
-      phone: data.phone,
-    };
-    accounts[key] = { user: newUser, password: data.password };
-    saveAccounts(accounts);
-    setUser(newUser);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
+      password: data.password,
+      options: {
+        data: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          phone: data.phone,
+        },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    if (error) return { success: false, error: error.message };
     return { success: true };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem(STORAGE_KEY);
+    setSupabaseUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, supabaseUser, isLoading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
