@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { I18nProvider } from "@/contexts/I18nContext";
 import NotFound from "./pages/NotFound.tsx";
 
 import HomePage from "./pages/HomePage";
@@ -48,8 +49,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <I18nProvider>
         <AuthProvider>
-        <Routes>
           {/* Public */}
           <Route path="/" element={<HomePage />} />
           <Route path="/categories" element={<CategoriesPage />} />
@@ -92,6 +93,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         </AuthProvider>
+        </I18nProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
