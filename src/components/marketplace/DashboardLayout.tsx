@@ -2,20 +2,21 @@ import { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings,
-  Store, DollarSign, Tag, MessageSquare, CreditCard, ArrowDownToLine,
-  Star, FileText, Layers, AlertTriangle, ChevronLeft, Warehouse, UserCheck, LogOut
+  Store, DollarSign, CreditCard,
+  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/contexts/I18nContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Module, ROLE_LABELS } from "@/lib/permissions";
 import { Badge } from "@/components/ui/badge";
+import type { Module } from "@/lib/permissions";
+import { ROLE_LABELS } from "@/lib/permissions";
 
 type SidebarItem = { label: string; href: string; icon: ReactNode; module?: Module };
 
 function useRoleBasedMenus() {
   const { t } = useTranslation();
-  const { canAccess, roles, isAdmin } = useAuth();
+  const { canAccess } = useAuth();
 
   // Menu principal pour l'espace gestion (tous les rôles sauf marketplace)
   const managementMenu: SidebarItem[] = [
