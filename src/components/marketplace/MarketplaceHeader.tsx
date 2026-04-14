@@ -63,10 +63,9 @@ export function MarketplaceHeader() {
           <Button variant="ghost" size="icon" asChild>
             <Link to="/wishlist"><Heart className="h-5 w-5" /></Link>
           </Button>
-          <Button variant="ghost" size="icon" className="relative" asChild>
+          <Button variant="ghost" size="icon" asChild>
             <Link to="/cart">
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-0.5 -end-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-medium">3</span>
             </Link>
           </Button>
 
