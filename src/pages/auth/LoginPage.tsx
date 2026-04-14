@@ -10,7 +10,7 @@ export default function LoginPage() {
     <MarketplaceLayout>
       <div className="container py-16 max-w-sm">
         <h1 className="font-heading text-2xl font-bold text-center">Connexion</h1>
-        <p className="text-sm text-muted-foreground text-center mt-1">Accédez à votre compte</p>
+        <p className="text-sm text-muted-foreground text-center mt-1">Accédez à votre compte Souk DZ</p>
         <form className="mt-6 space-y-4">
           <div><label className="text-sm font-medium mb-1 block">Email</label><input type="email" className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="vous@email.com" /></div>
           <div className="relative"><label className="text-sm font-medium mb-1 block">Mot de passe</label><input type={showPw ? "text" : "password"} className="w-full h-10 px-3 pr-10 rounded-md border bg-background text-sm" placeholder="••••••••" />

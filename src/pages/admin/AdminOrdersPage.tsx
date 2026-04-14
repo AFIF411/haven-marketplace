@@ -1,13 +1,13 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { formatDZD } from "@/data/mockData";
 
 const orders = [
-  { id: "CMD-001", buyer: "Jean D.", seller: "Maison Cuir", date: "15/01", items: 2, status: "delivered", total: 234, commission: 23.4 },
-  { id: "CMD-002", buyer: "Marie L.", seller: "Temps Naturel", date: "14/01", items: 1, status: "shipped", total: 89, commission: 8.9 },
-  { id: "CMD-003", buyer: "Pierre M.", seller: "L'Atelier", date: "13/01", items: 3, status: "processing", total: 156, commission: 15.6 },
-  { id: "CMD-004", buyer: "Sophie R.", seller: "Terre & Feu", date: "12/01", items: 1, status: "pending", total: 45, commission: 4.5 },
+  { id: "CMD-001", buyer: "Mohamed B.", seller: "Artisan Cuir Alger", date: "15/01", items: 2, status: "delivered", total: 15400, commission: 1540 },
+  { id: "CMD-002", buyer: "Amina K.", seller: "Temps Naturel DZ", date: "14/01", items: 1, status: "shipped", total: 5900, commission: 590 },
+  { id: "CMD-003", buyer: "Yacine M.", seller: "L'Atelier", date: "13/01", items: 3, status: "processing", total: 10200, commission: 1020 },
+  { id: "CMD-004", buyer: "Fatima R.", seller: "Terre & Feu", date: "12/01", items: 1, status: "pending", total: 3000, commission: 300 },
 ];
 
 const statusMap: Record<string, { label: string; variant: "success" | "warning" | "pending" | "default" }> = {
@@ -46,8 +46,8 @@ export default function AdminOrdersPage() {
                 <td className="px-4 py-3">{o.seller}</td>
                 <td className="px-4 py-3 text-muted-foreground">{o.date}</td>
                 <td className="px-4 py-3"><Badge variant={statusMap[o.status].variant}>{statusMap[o.status].label}</Badge></td>
-                <td className="px-4 py-3 text-right font-medium">{o.total} €</td>
-                <td className="px-4 py-3 text-right text-primary font-medium">{o.commission} €</td>
+                <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
+                <td className="px-4 py-3 text-right text-primary font-medium">{formatDZD(o.commission)}</td>
               </tr>
             ))}
           </tbody>

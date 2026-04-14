@@ -16,12 +16,12 @@ export function MarketplaceFooter() {
           <div className="md:col-span-1">
             <Link to="/" className="font-heading text-lg font-bold text-primary flex items-center gap-2">
               <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground text-xs font-bold">M</span>
+                <span className="text-primary-foreground text-xs font-bold">S</span>
               </div>
-              Marché
+              Souk DZ
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              La marketplace multi-boutique où qualité et confiance se rencontrent.
+              La marketplace algérienne multi-boutique où qualité et confiance se rencontrent.
             </p>
           </div>
           <div>
@@ -50,7 +50,7 @@ export function MarketplaceFooter() {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Marché. Tous droits réservés.
+          © {new Date().getFullYear()} Souk DZ. Tous droits réservés.
         </div>
       </div>
     </footer>

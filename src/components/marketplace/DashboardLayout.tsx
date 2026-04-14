@@ -65,6 +65,13 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
           <span className="hidden sm:inline">Retour au site</span>
         </Link>
         <div className="h-5 w-px bg-border" />
+        <Link to="/" className="font-heading font-bold text-primary text-sm flex items-center gap-1.5">
+          <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground text-[10px] font-bold">S</span>
+          </div>
+          Souk DZ
+        </Link>
+        <div className="h-5 w-px bg-border" />
         <span className="font-heading font-semibold text-sm">{title}</span>
         <div className="ml-auto flex items-center gap-2">
           <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">

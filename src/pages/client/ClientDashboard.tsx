@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { ShoppingBag, Heart, MapPin, Star, Package } from "lucide-react";
+import { ShoppingBag, Heart, MapPin, Star } from "lucide-react";
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
-import { mockOrders } from "@/data/mockData";
+import { mockOrders, formatDZD } from "@/data/mockData";
 
 const statusMap: Record<string, { label: string; variant: "success" | "warning" | "pending" | "default" }> = {
   delivered: { label: "Livré", variant: "success" },
@@ -14,7 +14,7 @@ const statusMap: Record<string, { label: string; variant: "success" | "warning" 
 export default function ClientDashboard() {
   return (
     <DashboardLayout type="client" title="Mon compte">
-      <h1 className="font-heading text-xl font-bold mb-6">Bonjour, Jean 👋</h1>
+      <h1 className="font-heading text-xl font-bold mb-6">Bonjour, Mohamed 👋</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Commandes", value: "12", icon: ShoppingBag },
@@ -46,7 +46,7 @@ export default function ClientDashboard() {
                   <td className="px-4 py-3"><Link to={`/account/orders/${o.id}`} className="font-mono text-primary hover:underline text-xs">{o.id}</Link></td>
                   <td className="px-4 py-3 text-muted-foreground">{o.date}</td>
                   <td className="px-4 py-3"><Badge variant={statusMap[o.status].variant}>{statusMap[o.status].label}</Badge></td>
-                  <td className="px-4 py-3 text-right font-medium">{o.total} €</td>
+                  <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
                 </tr>
               ))}
             </tbody>

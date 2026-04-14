@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import { Trash2, Minus, Plus, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
-import { mockProducts } from "@/data/mockData";
+import { mockProducts, formatDZD } from "@/data/mockData";
 
 const cartItems = mockProducts.slice(0, 3).map((p, i) => ({ ...p, qty: i + 1 }));
 
 export default function CartPage() {
   const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
-  const shipping = subtotal > 50 ? 0 : 5.99;
+  const shipping = subtotal > 5000 ? 0 : 400;
 
   return (
     <MarketplaceLayout>
@@ -28,7 +28,7 @@ export default function CartPage() {
                       <span className="w-8 text-center text-sm">{item.qty}</span>
                       <Button variant="ghost" size="icon" className="h-8 w-8"><Plus className="h-3 w-3" /></Button>
                     </div>
-                    <span className="font-heading font-bold">{(item.price * item.qty).toLocaleString('fr-FR')} €</span>
+                    <span className="font-heading font-bold">{formatDZD(item.price * item.qty)}</span>
                   </div>
                 </div>
                 <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-destructive">
@@ -40,10 +40,10 @@ export default function CartPage() {
           <div className="bg-card p-6 rounded-lg border h-fit sticky top-20">
             <h3 className="font-heading font-semibold mb-4">Récapitulatif</h3>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Sous-total</span><span>{subtotal.toLocaleString('fr-FR')} €</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Livraison</span><span>{shipping === 0 ? 'Gratuit' : `${shipping} €`}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Sous-total</span><span>{formatDZD(subtotal)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Livraison</span><span>{shipping === 0 ? 'Gratuit' : formatDZD(shipping)}</span></div>
               <div className="border-t pt-2 flex justify-between font-heading font-bold text-base">
-                <span>Total</span><span>{(subtotal + shipping).toLocaleString('fr-FR')} €</span>
+                <span>Total</span><span>{formatDZD(subtotal + shipping)}</span>
               </div>
             </div>
             <Button className="w-full mt-4" size="lg" asChild>

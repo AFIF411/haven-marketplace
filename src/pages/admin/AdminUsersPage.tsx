@@ -1,14 +1,14 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Users as UsersIcon } from "lucide-react";
+import { Search } from "lucide-react";
 
 const users = [
-  { id: 1, name: "Jean Dupont", email: "jean@email.com", role: "client", joined: "15/12/2023", orders: 12 },
-  { id: 2, name: "Marie Lambert", email: "marie@email.com", role: "client", joined: "20/11/2023", orders: 8 },
-  { id: 3, name: "Pierre Martin", email: "pierre@email.com", role: "vendor", joined: "01/10/2023", orders: 0 },
-  { id: 4, name: "Sophie Roux", email: "sophie@email.com", role: "client", joined: "15/09/2023", orders: 23 },
-  { id: 5, name: "Lucas Durand", email: "lucas@email.com", role: "vendor", joined: "01/08/2023", orders: 0 },
+  { id: 1, name: "Mohamed Benali", email: "mohamed@email.com", role: "client", joined: "15/12/2023", orders: 12 },
+  { id: 2, name: "Amina Khelifi", email: "amina@email.com", role: "client", joined: "20/11/2023", orders: 8 },
+  { id: 3, name: "Yacine Mansouri", email: "yacine@email.com", role: "vendor", joined: "01/10/2023", orders: 0 },
+  { id: 4, name: "Fatima Rahmani", email: "fatima@email.com", role: "client", joined: "15/09/2023", orders: 23 },
+  { id: 5, name: "Karim Derradji", email: "karim@email.com", role: "vendor", joined: "01/08/2023", orders: 0 },
 ];
 
 export default function AdminUsersPage() {

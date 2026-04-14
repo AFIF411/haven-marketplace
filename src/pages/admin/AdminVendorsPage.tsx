@@ -2,7 +2,7 @@ import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, Eye, Ban, Check } from "lucide-react";
-import { mockShops } from "@/data/mockData";
+import { mockShops, formatDZD } from "@/data/mockData";
 
 export default function AdminVendorsPage() {
   return (
@@ -38,7 +38,7 @@ export default function AdminVendorsPage() {
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{s.category}</td>
                 <td className="px-4 py-3">{s.products}</td>
-                <td className="px-4 py-3">{(s.reviews * 12).toLocaleString()} €</td>
+                <td className="px-4 py-3">{formatDZD(s.reviews * 800)}</td>
                 <td className="px-4 py-3"><Badge variant={s.verified ? "success" : "warning"}>{s.verified ? "Vérifié" : "En attente"}</Badge></td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-1">

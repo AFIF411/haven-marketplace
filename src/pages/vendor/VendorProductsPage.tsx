@@ -1,9 +1,9 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Edit, Eye, MoreHorizontal } from "lucide-react";
+import { Plus, Search, Edit, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
-import { mockProducts } from "@/data/mockData";
+import { mockProducts, formatDZD } from "@/data/mockData";
 
 export default function VendorProductsPage() {
   return (
@@ -39,7 +39,7 @@ export default function VendorProductsPage() {
                       <span className="font-medium line-clamp-1">{p.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3">{p.price} €</td>
+                  <td className="px-4 py-3">{formatDZD(p.price)}</td>
                   <td className="px-4 py-3">{Math.floor(Math.random() * 100)}</td>
                   <td className="px-4 py-3"><Badge variant="success">Actif</Badge></td>
                   <td className="px-4 py-3 text-muted-foreground">{p.reviews}</td>

@@ -1,6 +1,6 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import { Upload, X } from "lucide-react";
+import { Upload } from "lucide-react";
 
 export default function VendorAddProductPage() {
   return (
@@ -12,7 +12,7 @@ export default function VendorAddProductPage() {
           <div><label className="text-sm font-medium mb-1 block">Nom du produit</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Ex: Sac en cuir artisanal" /></div>
           <div><label className="text-sm font-medium mb-1 block">Description</label><textarea className="w-full px-3 py-2 rounded-md border bg-background text-sm min-h-[100px]" placeholder="Décrivez votre produit..." /></div>
           <div className="grid grid-cols-2 gap-3">
-            <div><label className="text-sm font-medium mb-1 block">Catégorie</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm"><option>Mode</option><option>Maison</option><option>Beauté</option></select></div>
+            <div><label className="text-sm font-medium mb-1 block">Catégorie</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm"><option>Mode</option><option>Maison</option><option>Beauté</option><option>Artisanat</option></select></div>
             <div><label className="text-sm font-medium mb-1 block">Sous-catégorie</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm"><option>Sacs</option><option>Accessoires</option></select></div>
           </div>
         </div>
@@ -29,8 +29,8 @@ export default function VendorAddProductPage() {
         <div className="bg-card rounded-lg border p-6 space-y-4">
           <h2 className="font-heading font-semibold">Prix et stock</h2>
           <div className="grid grid-cols-2 gap-3">
-            <div><label className="text-sm font-medium mb-1 block">Prix (€)</label><input type="number" className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="0.00" /></div>
-            <div><label className="text-sm font-medium mb-1 block">Prix barré (€)</label><input type="number" className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Optionnel" /></div>
+            <div><label className="text-sm font-medium mb-1 block">Prix (DA)</label><input type="number" className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="0" /></div>
+            <div><label className="text-sm font-medium mb-1 block">Prix barré (DA)</label><input type="number" className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="Optionnel" /></div>
             <div><label className="text-sm font-medium mb-1 block">Stock</label><input type="number" className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="0" /></div>
             <div><label className="text-sm font-medium mb-1 block">SKU</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder="REF-001" /></div>
           </div>

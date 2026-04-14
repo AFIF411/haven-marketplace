@@ -8,10 +8,10 @@ import { mockProducts, mockShops, mockCategories } from "@/data/mockData";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const features = [
-  { icon: Truck, title: "Livraison rapide", desc: "Expédition sous 48h" },
-  { icon: Shield, title: "Paiement sécurisé", desc: "Transactions protégées" },
+  { icon: Truck, title: "Livraison nationale", desc: "Vers toutes les 58 wilayas" },
+  { icon: Shield, title: "Paiement sécurisé", desc: "CCP, BaridiMob, à la livraison" },
   { icon: CreditCard, title: "Satisfait ou remboursé", desc: "30 jours pour changer d'avis" },
-  { icon: Headphones, title: "Support 24/7", desc: "Une équipe à votre écoute" },
+  { icon: Headphones, title: "Support 7j/7", desc: "Une équipe à votre écoute" },
 ];
 
 export default function HomePage() {
@@ -19,15 +19,15 @@ export default function HomePage() {
     <MarketplaceLayout>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <img src={heroBanner} alt="Marketplace" className="w-full h-[320px] md:h-[420px] object-cover" width={1920} height={800} />
+        <img src={heroBanner} alt="Souk DZ Marketplace" className="w-full h-[320px] md:h-[420px] object-cover" width={1920} height={800} />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 to-foreground/20 flex items-center">
           <div className="container">
             <div className="max-w-lg">
               <h1 className="font-heading text-3xl md:text-5xl font-bold text-card leading-tight">
-                Découvrez des produits uniques
+                Découvrez le meilleur de l'Algérie
               </h1>
               <p className="mt-3 text-card/80 text-sm md:text-base leading-relaxed">
-                Des milliers de boutiques indépendantes réunies sur une seule plateforme. Qualité, authenticité et confiance.
+                Des milliers de boutiques algériennes réunies sur une seule plateforme. Qualité, authenticité et confiance — livraison dans les 58 wilayas.
               </p>
               <div className="mt-6 flex gap-3">
                 <Button size="lg" asChild>
@@ -115,7 +115,7 @@ export default function HomePage() {
             Ouvrez votre boutique gratuitement
           </h2>
           <p className="mt-2 text-primary-foreground/80 max-w-md mx-auto text-sm">
-            Rejoignez des milliers de vendeurs et développez votre activité sur notre marketplace.
+            Rejoignez des milliers de vendeurs algériens et développez votre activité sur Souk DZ.
           </p>
           <Button size="lg" variant="secondary" className="mt-6" asChild>
             <Link to="/vendor/onboarding">Commencer maintenant</Link>

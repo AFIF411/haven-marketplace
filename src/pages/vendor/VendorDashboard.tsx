@@ -1,19 +1,20 @@
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
-import { TrendingUp, ShoppingBag, DollarSign, Eye, Package, Users } from "lucide-react";
+import { TrendingUp, ShoppingBag, DollarSign, Eye, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { formatDZD } from "@/data/mockData";
 
 const stats = [
-  { label: "Chiffre d'affaires", value: "12 450 €", change: "+12%", icon: DollarSign },
+  { label: "Chiffre d'affaires", value: formatDZD(824500), change: "+12%", icon: DollarSign },
   { label: "Commandes", value: "156", change: "+8%", icon: ShoppingBag },
   { label: "Visiteurs", value: "3 240", change: "+15%", icon: Eye },
   { label: "Produits actifs", value: "42", change: "+2", icon: Package },
 ];
 
 const recentOrders = [
-  { id: "CMD-001", customer: "Marie L.", date: "Aujourd'hui", status: "new", total: 89 },
-  { id: "CMD-002", customer: "Pierre M.", date: "Hier", status: "processing", total: 234 },
-  { id: "CMD-003", customer: "Sophie R.", date: "Hier", status: "shipped", total: 56 },
-  { id: "CMD-004", customer: "Lucas D.", date: "Il y a 2j", status: "delivered", total: 178 },
+  { id: "CMD-001", customer: "Amina K.", date: "Aujourd'hui", status: "new", total: 5900 },
+  { id: "CMD-002", customer: "Yacine M.", date: "Hier", status: "processing", total: 15400 },
+  { id: "CMD-003", customer: "Fatima R.", date: "Hier", status: "shipped", total: 3700 },
+  { id: "CMD-004", customer: "Karim D.", date: "Il y a 2j", status: "delivered", total: 11800 },
 ];
 
 const statusColors: Record<string, "warning" | "default" | "success" | "pending"> = {
@@ -58,7 +59,7 @@ export default function VendorDashboard() {
                     <td className="px-4 py-3 font-mono text-xs text-primary">{o.id}</td>
                     <td className="px-4 py-3">{o.customer}</td>
                     <td className="px-4 py-3"><Badge variant={statusColors[o.status]}>{statusLabels[o.status]}</Badge></td>
-                    <td className="px-4 py-3 text-right font-medium">{o.total} €</td>
+                    <td className="px-4 py-3 text-right font-medium">{formatDZD(o.total)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -77,7 +78,7 @@ export default function VendorDashboard() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs">Lun Mar Mer Jeu Ven Sam Dim</p>
+              <p className="text-xs">Sam Dim Lun Mar Mer Jeu Ven</p>
             </div>
           </div>
         </div>
