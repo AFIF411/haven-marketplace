@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Globe } from "lucide-react";
+import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Globe, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const categories = [
   "Électronique", "Mode", "Maison", "Beauté", "Sports", "Alimentation", "Artisanat"
@@ -11,6 +12,7 @@ export function MarketplaceHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [lang, setLang] = useState<"fr" | "ar">("fr");
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
@@ -66,9 +68,37 @@ export function MarketplaceHeader() {
               <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-medium">3</span>
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link to="/account"><User className="h-5 w-5" /></Link>
-          </Button>
+
+          {user ? (
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="sm" className="hidden md:flex items-center gap-2" asChild>
+                <Link to="/account">
+                  <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+                    <span className="text-primary-foreground text-[10px] font-bold">
+                      {user.firstName[0]}{user.lastName[0]}
+                    </span>
+                  </div>
+                  <span className="text-sm">{user.firstName}</span>
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" className="hidden md:flex" onClick={logout}>
+                <LogOut className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon" className="md:hidden" asChild>
+                <Link to="/account"><User className="h-5 w-5" /></Link>
+              </Button>
+            </div>
+          ) : (
+            <Button variant="ghost" size="sm" className="hidden md:flex" asChild>
+              <Link to="/login">Se connecter</Link>
+            </Button>
+          )}
+          {!user && (
+            <Button variant="ghost" size="icon" className="md:hidden" asChild>
+              <Link to="/login"><User className="h-5 w-5" /></Link>
+            </Button>
+          )}
+
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
@@ -95,7 +125,17 @@ export function MarketplaceHeader() {
           <div className="flex flex-col gap-1">
             <Link to="/shops" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Boutiques</Link>
             <Link to="/promotions" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Promotions</Link>
-            <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Mon compte</Link>
+            {user ? (
+              <>
+                <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Mon compte ({user.firstName})</Link>
+                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-left text-destructive" onClick={() => { logout(); setMobileOpen(false); }}>Déconnexion</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Se connecter</Link>
+                <Link to="/register" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Créer un compte</Link>
+              </>
+            )}
             <button
               className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-left flex items-center gap-2"
               onClick={() => { setLang(lang === "fr" ? "ar" : "fr"); }}

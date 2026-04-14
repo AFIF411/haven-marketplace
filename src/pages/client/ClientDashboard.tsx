@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ShoppingBag, Heart, MapPin, Star } from "lucide-react";
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { mockOrders, formatDZD } from "@/data/mockData";
+import { useAuth } from "@/contexts/AuthContext";
 
 const statusMap: Record<string, { label: string; variant: "success" | "warning" | "pending" | "default" }> = {
   delivered: { label: "Livré", variant: "success" },
@@ -12,9 +13,13 @@ const statusMap: Record<string, { label: string; variant: "success" | "warning" 
 };
 
 export default function ClientDashboard() {
+  const { user } = useAuth();
+
+  if (!user) return <Navigate to="/login" replace />;
+
   return (
     <DashboardLayout type="client" title="Mon compte">
-      <h1 className="font-heading text-xl font-bold mb-6">Bonjour, Mohamed 👋</h1>
+      <h1 className="font-heading text-xl font-bold mb-6">Bonjour, {user.firstName} 👋</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Commandes", value: "12", icon: ShoppingBag },
