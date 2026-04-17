@@ -51,6 +51,12 @@ import AdminProductsPage from "./pages/admin/AdminProductsPage";
 import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 
+// Nouvelles pages
+import StorefrontPage from "./pages/StorefrontPage";
+import ProductFormPage from "./pages/vendor/ProductFormPage";
+import VendorOrderDetailPage from "./pages/vendor/VendorOrderDetailPage";
+import VendorPageBuilderPage from "./pages/vendor/VendorPageBuilderPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
