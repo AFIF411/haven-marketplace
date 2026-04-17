@@ -14,7 +14,7 @@ export default function AdminCategoriesPage() {
       />
       <div className="bg-card rounded-lg border p-8">
         <EmptyState
-          icon={FolderTree}
+          icon={<FolderTree className="h-10 w-10" />}
           title="Arborescence à construire"
           description="Créez vos catégories racines puis ajoutez des sous-catégories par glisser-déposer."
         />

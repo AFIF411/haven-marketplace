@@ -11,7 +11,7 @@ export default function AdminReviewsPage() {
         description="Approuver, signaler ou supprimer les avis clients"
       />
       <div className="bg-card rounded-lg border p-8">
-        <EmptyState icon={Star} title="Aucun avis à modérer" description="Les avis signalés apparaîtront ici." />
+        <EmptyState icon={<Star className="h-10 w-10" />} title="Aucun avis à modérer" description="Les avis signalés apparaîtront ici." />
       </div>
     </DashboardLayout>
   );

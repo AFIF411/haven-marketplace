@@ -12,7 +12,7 @@ export default function AdminShopsPage() {
       />
       <div className="bg-card rounded-lg border p-8">
         <EmptyState
-          icon={Store}
+          icon={<Store className="h-10 w-10" />}
           title="Aucune boutique en attente"
           description="Les nouvelles demandes d'inscription apparaîtront ici pour validation."
         />

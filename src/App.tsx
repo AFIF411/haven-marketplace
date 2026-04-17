@@ -50,6 +50,16 @@ import AdminVendorsPage from "./pages/admin/AdminVendorsPage";
 import AdminProductsPage from "./pages/admin/AdminProductsPage";
 import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminCategoriesPage from "./pages/admin/AdminCategoriesPage";
+import AdminShopsPage from "./pages/admin/AdminShopsPage";
+import AdminPromotionsPage from "./pages/admin/AdminPromotionsPage";
+import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
+import AdminReportsPage from "./pages/admin/AdminReportsPage";
+import VendorShopSettingsPage from "./pages/vendor/VendorShopSettingsPage";
+import VendorPromotionsPage from "./pages/vendor/VendorPromotionsPage";
+import VendorReviewsPage from "./pages/vendor/VendorReviewsPage";
+import VendorAnalyticsPage from "./pages/vendor/VendorAnalyticsPage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 
 // Nouvelles pages
 import StorefrontPage from "./pages/StorefrontPage";
@@ -85,6 +95,7 @@ const App = () => (
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
               {/* Espace client (authentifié) */}
@@ -118,6 +129,10 @@ const App = () => (
               <Route path="/vendor/clients" element={<ProtectedRoute><VendorClientsPage /></ProtectedRoute>} />
               <Route path="/vendor/sales" element={<ProtectedRoute><VendorSalesManager /></ProtectedRoute>} />
               <Route path="/vendor/stock" element={<ProtectedRoute><VendorStockPage /></ProtectedRoute>} />
+              <Route path="/vendor/settings" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorShopSettingsPage /></ProtectedRoute>} />
+              <Route path="/vendor/promotions" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPromotionsPage /></ProtectedRoute>} />
+              <Route path="/vendor/reviews" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorReviewsPage /></ProtectedRoute>} />
+              <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><VendorAnalyticsPage /></ProtectedRoute>} />
 
               {/* Admin legacy */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminDashboard /></ProtectedRoute>} />
@@ -125,6 +140,11 @@ const App = () => (
               <Route path="/admin/products" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminProductsPage /></ProtectedRoute>} />
               <Route path="/admin/orders" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminOrdersPage /></ProtectedRoute>} />
               <Route path="/admin/users" element={<ProtectedRoute module="users"><AdminUsersPage /></ProtectedRoute>} />
+              <Route path="/admin/categories" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminCategoriesPage /></ProtectedRoute>} />
+              <Route path="/admin/shops" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminShopsPage /></ProtectedRoute>} />
+              <Route path="/admin/promotions" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminPromotionsPage /></ProtectedRoute>} />
+              <Route path="/admin/reviews" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReviewsPage /></ProtectedRoute>} />
+              <Route path="/admin/reports" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReportsPage /></ProtectedRoute>} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>

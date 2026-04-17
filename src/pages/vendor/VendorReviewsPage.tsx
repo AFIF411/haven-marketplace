@@ -8,7 +8,7 @@ export default function VendorReviewsPage() {
     <DashboardLayout type="vendor" title="Avis clients">
       <PageHeader title="Avis clients" description="Réponses et suivi des évaluations de vos produits" />
       <div className="bg-card rounded-lg border p-8">
-        <EmptyState icon={Star} title="Pas encore d'avis" description="Vos premiers avis clients s'afficheront ici." />
+        <EmptyState icon={<Star className="h-10 w-10" />} title="Pas encore d'avis" description="Vos premiers avis clients s'afficheront ici." />
       </div>
     </DashboardLayout>
   );

@@ -13,7 +13,7 @@ export default function AdminPromotionsPage() {
         actions={<Button><Plus className="h-4 w-4 me-2" />Nouvelle promotion</Button>}
       />
       <div className="bg-card rounded-lg border p-8">
-        <EmptyState icon={Tag} title="Aucune promotion active" description="Créez des codes promo applicables à toute la marketplace." />
+        <EmptyState icon={<Tag className="h-10 w-10" />} title="Aucune promotion active" description="Créez des codes promo applicables à toute la marketplace." />
       </div>
     </DashboardLayout>
   );
