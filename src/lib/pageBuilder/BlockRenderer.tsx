@@ -39,10 +39,18 @@ export function BlockRenderer({ block }: { block: PageBlock }) {
           ) : (
             <div className={cn("grid gap-4", cols === 2 && "grid-cols-2", cols === 3 && "grid-cols-2 md:grid-cols-3", cols === 4 && "grid-cols-2 md:grid-cols-4")}>
               {(products || []).map(pr => (
-                <ProductCard key={pr.id} product={{
-                  id: pr.id, name: pr.name, price: pr.price, originalPrice: pr.originalPrice,
-                  image: pr.images[0]?.url || "", rating: pr.rating, reviews: pr.reviewsCount, shop: pr.shopName, badge: pr.badge,
-                }} />
+                <ProductCard
+                  key={pr.id}
+                  id={pr.id}
+                  name={pr.name}
+                  price={pr.price}
+                  originalPrice={pr.originalPrice}
+                  image={pr.images[0]?.url || ""}
+                  rating={pr.rating}
+                  reviews={pr.reviewsCount}
+                  shop={pr.shopName}
+                  badge={pr.badge}
+                />
               ))}
             </div>
           )}
