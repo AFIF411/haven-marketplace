@@ -60,7 +60,7 @@ export function BlockRenderer({ block }: { block: PageBlock }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {((p.items as Array<{ name: string; text: string; rating: number }>) || []).map((it, i) => (
               <div key={i} className="bg-card border rounded-lg p-4">
-                <div className="text-amber-500 mb-2">{"★".repeat(it.rating)}</div>
+                <div className="text-warning mb-2">{"★".repeat(it.rating)}</div>
                 <p className="text-sm">{it.text}</p>
                 <p className="text-xs text-muted-foreground mt-2">— {it.name}</p>
               </div>
