@@ -51,6 +51,12 @@ import AdminProductsPage from "./pages/admin/AdminProductsPage";
 import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 
+// Nouvelles pages
+import StorefrontPage from "./pages/StorefrontPage";
+import ProductFormPage from "./pages/vendor/ProductFormPage";
+import VendorOrderDetailPage from "./pages/vendor/VendorOrderDetailPage";
+import VendorPageBuilderPage from "./pages/vendor/VendorPageBuilderPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -73,6 +79,7 @@ const App = () => (
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+              <Route path="/shop/:slug" element={<StorefrontPage />} />
 
               {/* Auth */}
               <Route path="/login" element={<LoginPage />} />
@@ -91,12 +98,16 @@ const App = () => (
               <Route path="/manage" element={<ProtectedRoute module="dashboard"><VendorDashboard /></ProtectedRoute>} />
               <Route path="/manage/sales" element={<ProtectedRoute module="sales"><VendorSalesManager /></ProtectedRoute>} />
               <Route path="/manage/products" element={<ProtectedRoute module="products"><VendorProductsManager /></ProtectedRoute>} />
-              <Route path="/manage/products/new" element={<ProtectedRoute module="products" action="add"><VendorAddProductPage /></ProtectedRoute>} />
+              <Route path="/manage/products/new" element={<ProtectedRoute module="products" action="add"><ProductFormPage mode="create" /></ProtectedRoute>} />
+              <Route path="/manage/products/:id/edit" element={<ProtectedRoute module="products" action="edit"><ProductFormPage mode="edit" /></ProtectedRoute>} />
               <Route path="/manage/clients" element={<ProtectedRoute module="clients"><VendorClientsPage /></ProtectedRoute>} />
               <Route path="/manage/stock" element={<ProtectedRoute module="stock"><VendorStockPage /></ProtectedRoute>} />
               <Route path="/manage/payments" element={<ProtectedRoute module="payments"><VendorFinancesPage /></ProtectedRoute>} />
               <Route path="/manage/users" element={<ProtectedRoute module="users"><AdminUsersPage /></ProtectedRoute>} />
 
+              {/* Vendor — nouvelles pages */}
+              <Route path="/vendor/orders/:id" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><VendorOrderDetailPage /></ProtectedRoute>} />
+              <Route path="/vendor/page-builder" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPageBuilderPage /></ProtectedRoute>} />
               {/* Vendor legacy routes (rétro-compatibilité) */}
               <Route path="/vendor/onboarding" element={<VendorOnboardingPage />} />
               <Route path="/vendor" element={<ProtectedRoute><VendorDashboard /></ProtectedRoute>} />
