@@ -56,7 +56,7 @@ export default function ProductFormPage({ mode }: ProductFormProps) {
       name: form.name, description: form.description, price: Number(form.price), originalPrice: form.originalPrice ? Number(form.originalPrice) : undefined,
       stock: Number(form.stock), sku: form.sku, categoryId: form.categoryId, status: form.status as ProductStatus,
     });
-    if (!parsed.success) { toast({ title: "Champs manquants", description: parsed.error.errors[0].message, variant: "destructive" }); return; }
+    if (!parsed.success) { toast({ title: "Champs manquants", description: parsed.error.issues[0].message, variant: "destructive" }); return; }
 
     setSubmitting(true);
     try {
