@@ -97,3 +97,28 @@ export function BlocksList({ blocks }: { blocks: PageBlock[] }) {
     </div>
   );
 }
+
+function ProductGridBlock({ title, ids, columns }: { title?: string; ids: string[]; columns: number }) {
+  const { data: products } = useProductsByIds(ids);
+  return (
+    <div>
+      {title ? <h3 className="font-heading text-xl font-bold mb-4">{title}</h3> : null}
+      {ids.length === 0 ? (
+        <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">Aucun produit sélectionné</div>
+      ) : (
+        <div className={cn("grid gap-4",
+          columns === 2 && "grid-cols-2",
+          columns === 3 && "grid-cols-2 md:grid-cols-3",
+          columns === 4 && "grid-cols-2 md:grid-cols-4")}>
+          {(products || []).map(pr => (
+            <ProductCard
+              key={pr.id} id={pr.id} name={pr.name} price={pr.price}
+              originalPrice={pr.originalPrice} image={pr.images[0]?.url || ""}
+              rating={pr.rating} reviews={pr.reviewsCount} shop={pr.shopName} badge={pr.badge}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
