@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { PageHeader } from "@/components/common/PageHeader";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -97,7 +98,7 @@ export default function AdminCategoriesPage() {
             </TableHeader>
             <TableBody>
               {tree.map(c => (
-                <FragmentRow key={c.id}>
+                <Fragment key={c.id}>
                   <TableRow>
                     <TableCell><span className="me-2">{c.icon}</span>{c.name}</TableCell>
                     <TableCell className="text-muted-foreground text-sm">{c.slug}</TableCell>
@@ -119,7 +120,7 @@ export default function AdminCategoriesPage() {
                       </TableCell>
                     </TableRow>
                   ))}
-                </>
+                </Fragment>
               ))}
             </TableBody>
           </Table>
