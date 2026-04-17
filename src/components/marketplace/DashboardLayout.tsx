@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings,
-  Store, DollarSign, CreditCard,
-  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut
+  Store, DollarSign, CreditCard, Layout, Tag,
+  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut, FolderTree
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/contexts/I18nContext";
@@ -40,13 +40,23 @@ function useRoleBasedMenus() {
     { label: "Stock", href: "/vendor/stock", icon: <Warehouse className="h-4 w-4" /> },
     { label: t("vendor.orders"), href: "/vendor/orders", icon: <ShoppingBag className="h-4 w-4" /> },
     { label: t("vendor.finances"), href: "/vendor/finances", icon: <DollarSign className="h-4 w-4" /> },
+    { label: "Page Builder", href: "/vendor/page-builder", icon: <Layout className="h-4 w-4" /> },
+    { label: "Promotions", href: "/vendor/promotions", icon: <Tag className="h-4 w-4" /> },
+    { label: "Avis", href: "/vendor/reviews", icon: <Star className="h-4 w-4" /> },
+    { label: "Analytics", href: "/vendor/analytics", icon: <BarChart3 className="h-4 w-4" /> },
+    { label: "Paramètres", href: "/vendor/settings", icon: <Settings className="h-4 w-4" /> },
   ];
 
   const adminMenu: SidebarItem[] = [
     { label: t("vendor.dashboard"), href: "/admin", icon: <LayoutDashboard className="h-4 w-4" /> },
     { label: t("filter.vendors"), href: "/admin/vendors", icon: <Store className="h-4 w-4" /> },
+    { label: "Boutiques", href: "/admin/shops", icon: <Store className="h-4 w-4" /> },
+    { label: "Catégories", href: "/admin/categories", icon: <FolderTree className="h-4 w-4" /> },
     { label: t("vendor.products"), href: "/admin/products", icon: <Package className="h-4 w-4" /> },
     { label: t("vendor.orders"), href: "/admin/orders", icon: <ShoppingBag className="h-4 w-4" /> },
+    { label: "Promotions", href: "/admin/promotions", icon: <Tag className="h-4 w-4" /> },
+    { label: "Avis", href: "/admin/reviews", icon: <Star className="h-4 w-4" /> },
+    { label: "Rapports", href: "/admin/reports", icon: <BarChart3 className="h-4 w-4" /> },
     { label: t("admin.users"), href: "/admin/users", icon: <Users className="h-4 w-4" /> },
   ];
 
