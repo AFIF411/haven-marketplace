@@ -26,37 +26,8 @@ export function BlockRenderer({ block }: { block: PageBlock }) {
         </div>
       );
 
-    case "product_grid": {
-      const ids = (p.productIds as string[]) || [];
-      const cols = Number(p.columns) || 4;
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const { data: products } = useProductsByIds(ids);
-      return (
-        <div>
-          {p.title ? <h3 className="font-heading text-xl font-bold mb-4">{p.title as string}</h3> : null}
-          {ids.length === 0 ? (
-            <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">Aucun produit sélectionné</div>
-          ) : (
-            <div className={cn("grid gap-4", cols === 2 && "grid-cols-2", cols === 3 && "grid-cols-2 md:grid-cols-3", cols === 4 && "grid-cols-2 md:grid-cols-4")}>
-              {(products || []).map(pr => (
-                <ProductCard
-                  key={pr.id}
-                  id={pr.id}
-                  name={pr.name}
-                  price={pr.price}
-                  originalPrice={pr.originalPrice}
-                  image={pr.images[0]?.url || ""}
-                  rating={pr.rating}
-                  reviews={pr.reviewsCount}
-                  shop={pr.shopName}
-                  badge={pr.badge}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    }
+    case "product_grid":
+      return <ProductGridBlock title={p.title as string} ids={(p.productIds as string[]) || []} columns={Number(p.columns) || 4} />;
 
     case "category_grid":
       return (
