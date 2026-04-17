@@ -97,8 +97,8 @@ export default function AdminCategoriesPage() {
             </TableHeader>
             <TableBody>
               {tree.map(c => (
-                <>
-                  <TableRow key={c.id}>
+                <FragmentRow key={c.id}>
+                  <TableRow>
                     <TableCell><span className="me-2">{c.icon}</span>{c.name}</TableCell>
                     <TableCell className="text-muted-foreground text-sm">{c.slug}</TableCell>
                     <TableCell>{c.children.length}</TableCell>
