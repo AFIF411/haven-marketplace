@@ -96,6 +96,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, [setupUser]);
 
+  // Synchronisation temps réel des rôles : si un admin modifie les rôles
+  // de l'utilisateur courant, le frontend les recharge automatiquement.
+  useEffect(() => {
+    if (!supabaseUser?.id) return;
+    const userId = supabaseUser.id;
+
+    const channel = supabase
+      .channel(`user_roles:${userId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'user_roles', filter: `user_id=eq.${userId}` },
+        () => { fetchRoles(userId); }
+      )
+      .subscribe();
+
+    // Re-sync à chaque retour d'onglet et toutes les 60s en filet de sécurité
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') fetchRoles(userId);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    const interval = window.setInterval(() => fetchRoles(userId), 60_000);
+
+    return () => {
+      supabase.removeChannel(channel);
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.clearInterval(interval);
+    };
+  }, [supabaseUser?.id, fetchRoles]);
+
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { success: false, error: error.message };
