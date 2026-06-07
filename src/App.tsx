@@ -8,6 +8,7 @@ import { I18nProvider } from "@/contexts/I18nContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import { RoleSwitcher } from "@/components/common/RoleSwitcher";
 
 // Marketplace pages
 import HomePage from "./pages/HomePage";
@@ -148,6 +149,7 @@ const App = () => (
 
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <RoleSwitcher />
           </AuthProvider>
         </I18nProvider>
       </BrowserRouter>
