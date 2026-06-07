@@ -88,7 +88,7 @@ export function MarketplaceHeader() {
                   <span className="text-sm">{user.firstName}</span>
                 </Link>
               </Button>
-              <Button variant="ghost" size="icon" className="hidden md:flex" onClick={logout}>
+              <Button variant="ghost" size="icon" className="hidden md:flex" onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
               </Button>
               <Button variant="ghost" size="icon" className="md:hidden" asChild>
