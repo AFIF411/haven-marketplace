@@ -14,6 +14,13 @@ export function MarketplaceHeader() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
   const { t, lang, setLang } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    setMobileOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
