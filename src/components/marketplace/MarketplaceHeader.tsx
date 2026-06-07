@@ -135,7 +135,7 @@ export function MarketplaceHeader() {
             {user ? (
               <>
                 <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.myAccount")} ({user.firstName})</Link>
-                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-start text-destructive" onClick={() => { logout(); setMobileOpen(false); }}>{t("nav.logout")}</button>
+                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-start text-destructive" onClick={handleLogout}>{t("nav.logout")}</button>
               </>
             ) : (
               <>
