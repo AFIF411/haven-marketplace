@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Globe, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -14,6 +14,13 @@ export function MarketplaceHeader() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
   const { t, lang, setLang } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    setMobileOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
@@ -81,7 +88,7 @@ export function MarketplaceHeader() {
                   <span className="text-sm">{user.firstName}</span>
                 </Link>
               </Button>
-              <Button variant="ghost" size="icon" className="hidden md:flex" onClick={logout}>
+              <Button variant="ghost" size="icon" className="hidden md:flex" onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
               </Button>
               <Button variant="ghost" size="icon" className="md:hidden" asChild>
@@ -128,7 +135,7 @@ export function MarketplaceHeader() {
             {user ? (
               <>
                 <Link to="/account" className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>{t("nav.myAccount")} ({user.firstName})</Link>
-                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-start text-destructive" onClick={() => { logout(); setMobileOpen(false); }}>{t("nav.logout")}</button>
+                <button className="text-sm py-2 px-3 rounded-md hover:bg-accent transition-colors text-start text-destructive" onClick={handleLogout}>{t("nav.logout")}</button>
               </>
             ) : (
               <>
