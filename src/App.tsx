@@ -240,8 +240,9 @@ const App = () => (
               <Route path="/admin/support" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminSupportPage /></ProtectedRoute>} />
               <Route path="/admin/moderation" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReportsModerationPage /></ProtectedRoute>} />
               <Route path="/admin/notifications" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminNotificationsPage /></ProtectedRoute>} />
-              <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['super_admin']}><AdminSettingsPage /></ProtectedRoute>} />
-              <Route path="/admin/roles" element={<ProtectedRoute allowedRoles={['super_admin']}><AdminRolesPage /></ProtectedRoute>} />
+              <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><AdminSettingsPage /></ProtectedRoute>} />
+              <Route path="/admin/roles" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><AdminRolesPage /></ProtectedRoute>} />
+              <Route path="/admin/reports-moderation" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><AdminReportsModerationPage /></ProtectedRoute>} />
 
 
               <Route path="*" element={<NotFound />} />
