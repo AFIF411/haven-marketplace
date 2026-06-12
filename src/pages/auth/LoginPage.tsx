@@ -16,6 +16,13 @@ export default function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const redirectForRoles = (userRoles: string[]) => {
+    if (userRoles.includes("super_admin") || userRoles.includes("admin")) return "/admin";
+    if (userRoles.includes("viewer")) return "/account";
+    if (userRoles.includes("vendeur")) return "/vendor";
+    return "/manage";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -24,13 +31,20 @@ export default function LoginPage() {
     const result = await login(email, password);
     setLoading(false);
     if (result.success) {
-      // Rediriger selon le profil — on attend un instant pour que les rôles se chargent
-      setTimeout(() => {
-        navigate("/manage");
-      }, 300);
+      const acc = DEMO_ACCOUNTS.find(a => a.email.toLowerCase() === email.toLowerCase());
+      navigate(acc ? redirectForRoles(acc.roles) : "/manage");
     } else {
       setError(result.error || "Erreur");
     }
+  };
+
+  const quickLogin = async (acc: typeof DEMO_ACCOUNTS[number]) => {
+    setError(""); setLoading(true);
+    setEmail(acc.email); setPassword(acc.password);
+    const result = await login(acc.email, acc.password);
+    setLoading(false);
+    if (result.success) navigate(redirectForRoles(acc.roles));
+    else setError(result.error || "Erreur");
   };
 
   return (
