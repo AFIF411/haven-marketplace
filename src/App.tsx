@@ -68,6 +68,55 @@ import ProductFormPage from "./pages/vendor/ProductFormPage";
 import VendorOrderDetailPage from "./pages/vendor/VendorOrderDetailPage";
 import VendorPageBuilderPage from "./pages/vendor/VendorPageBuilderPage";
 
+// Pages publiques additionnelles
+import AboutPage from "./pages/public/AboutPage";
+import ContactPage from "./pages/public/ContactPage";
+import FaqPage from "./pages/public/FaqPage";
+import TermsPage from "./pages/public/TermsPage";
+import PrivacyPage from "./pages/public/PrivacyPage";
+import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
+
+// Client additionnel
+import ClientOrderDetailPage from "./pages/client/ClientOrderDetailPage";
+import OrderTrackingPage from "./pages/client/OrderTrackingPage";
+import NotificationsPage from "./pages/client/NotificationsPage";
+import SupportPage from "./pages/client/SupportPage";
+import PaymentHistoryPage from "./pages/client/PaymentHistoryPage";
+
+// Vendor additionnel
+import VendorSubscriptionPage from "./pages/vendor/VendorSubscriptionPage";
+import VendorExpensesPage from "./pages/vendor/VendorExpensesPage";
+import VendorSuppliersPage from "./pages/vendor/VendorSuppliersPage";
+import VendorShippingPage from "./pages/vendor/VendorShippingPage";
+import AIShopGeneratorPage from "./pages/vendor/AIShopGeneratorPage";
+
+// IA
+import AIAssistantPage from "./pages/ai/AIAssistantPage";
+import AIGenerateDescriptionPage from "./pages/ai/AIGenerateDescriptionPage";
+import AIGenerateCategoriesPage from "./pages/ai/AIGenerateCategoriesPage";
+import AIGeneratePagePage from "./pages/ai/AIGeneratePagePage";
+import AISuggestionsPage from "./pages/ai/AISuggestionsPage";
+import AIHistoryPage from "./pages/ai/AIHistoryPage";
+import AISettingsPage from "./pages/ai/AISettingsPage";
+
+// Admin additionnel
+import AdminPaymentsPage from "./pages/admin/AdminPaymentsPage";
+import AdminShippingPage from "./pages/admin/AdminShippingPage";
+import AdminWilayasPage from "./pages/admin/AdminWilayasPage";
+import AdminSaasPlansPage from "./pages/admin/AdminSaasPlansPage";
+import AdminSupportPage from "./pages/admin/AdminSupportPage";
+import AdminReportsModerationPage from "./pages/admin/AdminReportsModerationPage";
+import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
+import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
+import AdminRolesPage from "./pages/admin/AdminRolesPage";
+
+// Paiement & Système
+import InvoicePage from "./pages/payment/InvoicePage";
+import PaymentResultPage from "./pages/payment/PaymentResultPage";
+import MaintenancePage from "./pages/system/MaintenancePage";
+import ServerErrorPage from "./pages/system/ServerErrorPage";
+import TrackPackagePage from "./pages/system/TrackPackagePage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -92,18 +141,36 @@ const App = () => (
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
               <Route path="/shop/:slug" element={<StorefrontPage />} />
 
+              {/* Pages publiques additionnelles */}
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/faq" element={<FaqPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/track" element={<TrackPackagePage />} />
+              <Route path="/maintenance" element={<MaintenancePage />} />
+              <Route path="/500" element={<ServerErrorPage />} />
+              <Route path="/payment/result" element={<PaymentResultPage />} />
+              <Route path="/invoice/:id" element={<InvoicePage />} />
+
               {/* Auth */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
               {/* Espace client (authentifié) */}
               <Route path="/account" element={<ProtectedRoute><ClientDashboard /></ProtectedRoute>} />
               <Route path="/account/orders" element={<ProtectedRoute><ClientOrdersPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id" element={<ProtectedRoute><ClientOrderDetailPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id/tracking" element={<ProtectedRoute><OrderTrackingPage /></ProtectedRoute>} />
               <Route path="/account/profile" element={<ProtectedRoute><ClientProfilePage /></ProtectedRoute>} />
               <Route path="/account/addresses" element={<ProtectedRoute><ClientAddressesPage /></ProtectedRoute>} />
+              <Route path="/account/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+              <Route path="/account/support" element={<ProtectedRoute><SupportPage /></ProtectedRoute>} />
+              <Route path="/account/payments" element={<ProtectedRoute><PaymentHistoryPage /></ProtectedRoute>} />
               <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
 
               {/* Espace gestion unifié — protégé par module */}
@@ -134,6 +201,20 @@ const App = () => (
               <Route path="/vendor/promotions" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPromotionsPage /></ProtectedRoute>} />
               <Route path="/vendor/reviews" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorReviewsPage /></ProtectedRoute>} />
               <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><VendorAnalyticsPage /></ProtectedRoute>} />
+              <Route path="/vendor/subscription" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorSubscriptionPage /></ProtectedRoute>} />
+              <Route path="/vendor/expenses" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','comptable']}><VendorExpensesPage /></ProtectedRoute>} />
+              <Route path="/vendor/suppliers" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','magasinier']}><VendorSuppliersPage /></ProtectedRoute>} />
+              <Route path="/vendor/shipping" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorShippingPage /></ProtectedRoute>} />
+              <Route path="/vendor/ai-shop" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIShopGeneratorPage /></ProtectedRoute>} />
+
+              {/* IA */}
+              <Route path="/ai/assistant" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><AIAssistantPage /></ProtectedRoute>} />
+              <Route path="/ai/generate-description" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIGenerateDescriptionPage /></ProtectedRoute>} />
+              <Route path="/ai/generate-categories" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIGenerateCategoriesPage /></ProtectedRoute>} />
+              <Route path="/ai/generate-page" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIGeneratePagePage /></ProtectedRoute>} />
+              <Route path="/ai/suggestions" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><AISuggestionsPage /></ProtectedRoute>} />
+              <Route path="/ai/history" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIHistoryPage /></ProtectedRoute>} />
+              <Route path="/ai/settings" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AISettingsPage /></ProtectedRoute>} />
 
               {/* Admin legacy */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminDashboard /></ProtectedRoute>} />
@@ -146,6 +227,16 @@ const App = () => (
               <Route path="/admin/promotions" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminPromotionsPage /></ProtectedRoute>} />
               <Route path="/admin/reviews" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReviewsPage /></ProtectedRoute>} />
               <Route path="/admin/reports" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReportsPage /></ProtectedRoute>} />
+              <Route path="/admin/payments" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminPaymentsPage /></ProtectedRoute>} />
+              <Route path="/admin/shipping" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminShippingPage /></ProtectedRoute>} />
+              <Route path="/admin/wilayas" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminWilayasPage /></ProtectedRoute>} />
+              <Route path="/admin/saas-plans" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminSaasPlansPage /></ProtectedRoute>} />
+              <Route path="/admin/support" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminSupportPage /></ProtectedRoute>} />
+              <Route path="/admin/moderation" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReportsModerationPage /></ProtectedRoute>} />
+              <Route path="/admin/notifications" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminNotificationsPage /></ProtectedRoute>} />
+              <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['super_admin']}><AdminSettingsPage /></ProtectedRoute>} />
+              <Route path="/admin/roles" element={<ProtectedRoute allowedRoles={['super_admin']}><AdminRolesPage /></ProtectedRoute>} />
+
 
               <Route path="*" element={<NotFound />} />
             </Routes>
