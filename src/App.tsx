@@ -141,18 +141,36 @@ const App = () => (
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
               <Route path="/shop/:slug" element={<StorefrontPage />} />
 
+              {/* Pages publiques additionnelles */}
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/faq" element={<FaqPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/track" element={<TrackPackagePage />} />
+              <Route path="/maintenance" element={<MaintenancePage />} />
+              <Route path="/500" element={<ServerErrorPage />} />
+              <Route path="/payment/result" element={<PaymentResultPage />} />
+              <Route path="/invoice/:id" element={<InvoicePage />} />
+
               {/* Auth */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
               {/* Espace client (authentifié) */}
               <Route path="/account" element={<ProtectedRoute><ClientDashboard /></ProtectedRoute>} />
               <Route path="/account/orders" element={<ProtectedRoute><ClientOrdersPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id" element={<ProtectedRoute><ClientOrderDetailPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id/tracking" element={<ProtectedRoute><OrderTrackingPage /></ProtectedRoute>} />
               <Route path="/account/profile" element={<ProtectedRoute><ClientProfilePage /></ProtectedRoute>} />
               <Route path="/account/addresses" element={<ProtectedRoute><ClientAddressesPage /></ProtectedRoute>} />
+              <Route path="/account/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+              <Route path="/account/support" element={<ProtectedRoute><SupportPage /></ProtectedRoute>} />
+              <Route path="/account/payments" element={<ProtectedRoute><PaymentHistoryPage /></ProtectedRoute>} />
               <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
 
               {/* Espace gestion unifié — protégé par module */}
