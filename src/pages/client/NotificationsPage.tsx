@@ -1,4 +1,4 @@
-import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Bell, Package, Tag, Truck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
