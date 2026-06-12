@@ -201,6 +201,20 @@ const App = () => (
               <Route path="/vendor/promotions" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPromotionsPage /></ProtectedRoute>} />
               <Route path="/vendor/reviews" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorReviewsPage /></ProtectedRoute>} />
               <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><VendorAnalyticsPage /></ProtectedRoute>} />
+              <Route path="/vendor/subscription" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorSubscriptionPage /></ProtectedRoute>} />
+              <Route path="/vendor/expenses" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','comptable']}><VendorExpensesPage /></ProtectedRoute>} />
+              <Route path="/vendor/suppliers" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','magasinier']}><VendorSuppliersPage /></ProtectedRoute>} />
+              <Route path="/vendor/shipping" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorShippingPage /></ProtectedRoute>} />
+              <Route path="/vendor/ai-shop" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIShopGeneratorPage /></ProtectedRoute>} />
+
+              {/* IA */}
+              <Route path="/ai/assistant" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><AIAssistantPage /></ProtectedRoute>} />
+              <Route path="/ai/generate-description" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIGenerateDescriptionPage /></ProtectedRoute>} />
+              <Route path="/ai/generate-categories" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIGenerateCategoriesPage /></ProtectedRoute>} />
+              <Route path="/ai/generate-page" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIGeneratePagePage /></ProtectedRoute>} />
+              <Route path="/ai/suggestions" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><AISuggestionsPage /></ProtectedRoute>} />
+              <Route path="/ai/history" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIHistoryPage /></ProtectedRoute>} />
+              <Route path="/ai/settings" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AISettingsPage /></ProtectedRoute>} />
 
               {/* Admin legacy */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminDashboard /></ProtectedRoute>} />
@@ -213,6 +227,16 @@ const App = () => (
               <Route path="/admin/promotions" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminPromotionsPage /></ProtectedRoute>} />
               <Route path="/admin/reviews" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReviewsPage /></ProtectedRoute>} />
               <Route path="/admin/reports" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReportsPage /></ProtectedRoute>} />
+              <Route path="/admin/payments" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminPaymentsPage /></ProtectedRoute>} />
+              <Route path="/admin/shipping" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminShippingPage /></ProtectedRoute>} />
+              <Route path="/admin/wilayas" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminWilayasPage /></ProtectedRoute>} />
+              <Route path="/admin/saas-plans" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminSaasPlansPage /></ProtectedRoute>} />
+              <Route path="/admin/support" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminSupportPage /></ProtectedRoute>} />
+              <Route path="/admin/moderation" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminReportsModerationPage /></ProtectedRoute>} />
+              <Route path="/admin/notifications" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminNotificationsPage /></ProtectedRoute>} />
+              <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['super_admin']}><AdminSettingsPage /></ProtectedRoute>} />
+              <Route path="/admin/roles" element={<ProtectedRoute allowedRoles={['super_admin']}><AdminRolesPage /></ProtectedRoute>} />
+
 
               <Route path="*" element={<NotFound />} />
             </Routes>
