@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 
 const suggestions = [
   { icon: TrendingUp, type: "Croissance", text: "Ajoutez 3 produits dans la catégorie 'Accessoires' — forte demande ce mois.", color: "text-primary" },
-  { icon: AlertCircle, type: "Stock", text: "5 produits ont un stock < 10 unités. Pensez à réapprovisionner.", color: "text-orange-500" },
-  { icon: Sparkles, type: "Marketing", text: "Lancez une promotion -15% sur la collection été pour booster vos ventes.", color: "text-purple-500" },
-  { icon: Lightbulb, type: "SEO", text: "12 produits n'ont pas de description détaillée. L'IA peut les générer en 1 clic.", color: "text-blue-500" },
+  { icon: AlertCircle, type: "Stock", text: "5 produits ont un stock < 10 unités. Pensez à réapprovisionner.", color: "text-warning" },
+  { icon: Sparkles, type: "Marketing", text: "Lancez une promotion -15% sur la collection été pour booster vos ventes.", color: "text-primary" },
+  { icon: Lightbulb, type: "SEO", text: "12 produits n'ont pas de description détaillée. L'IA peut les générer en 1 clic.", color: "text-primary" },
 ];
 
 export default function AISuggestionsPage() {
