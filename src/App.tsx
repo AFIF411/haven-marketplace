@@ -161,51 +161,57 @@ const App = () => (
               <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-              {/* Espace client (authentifié) */}
-              <Route path="/account" element={<ProtectedRoute><ClientDashboard /></ProtectedRoute>} />
-              <Route path="/account/orders" element={<ProtectedRoute><ClientOrdersPage /></ProtectedRoute>} />
-              <Route path="/account/orders/:id" element={<ProtectedRoute><ClientOrderDetailPage /></ProtectedRoute>} />
-              <Route path="/account/orders/:id/tracking" element={<ProtectedRoute><OrderTrackingPage /></ProtectedRoute>} />
-              <Route path="/account/profile" element={<ProtectedRoute><ClientProfilePage /></ProtectedRoute>} />
-              <Route path="/account/addresses" element={<ProtectedRoute><ClientAddressesPage /></ProtectedRoute>} />
-              <Route path="/account/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
-              <Route path="/account/support" element={<ProtectedRoute><SupportPage /></ProtectedRoute>} />
-              <Route path="/account/payments" element={<ProtectedRoute><PaymentHistoryPage /></ProtectedRoute>} />
-              <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
+              {/* ============================================================
+                  ESPACE CLIENT — réservé aux clients (et admin pour preview)
+                  ============================================================ */}
+              <Route path="/account" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><ClientDashboard /></ProtectedRoute>} />
+              <Route path="/account/orders" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><ClientOrdersPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><ClientOrderDetailPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id/tracking" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><OrderTrackingPage /></ProtectedRoute>} />
+              <Route path="/account/profile" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><ClientProfilePage /></ProtectedRoute>} />
+              <Route path="/account/addresses" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><ClientAddressesPage /></ProtectedRoute>} />
+              <Route path="/account/notifications" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><NotificationsPage /></ProtectedRoute>} />
+              <Route path="/account/support" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><SupportPage /></ProtectedRoute>} />
+              <Route path="/account/payments" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><PaymentHistoryPage /></ProtectedRoute>} />
+              <Route path="/wishlist" element={<ProtectedRoute allowedRoles={['viewer','super_admin','admin']}><WishlistPage /></ProtectedRoute>} />
 
-              {/* Espace gestion unifié — protégé par module */}
-              <Route path="/manage" element={<ProtectedRoute module="dashboard"><VendorDashboard /></ProtectedRoute>} />
-              <Route path="/manage/sales" element={<ProtectedRoute module="sales"><VendorSalesManager /></ProtectedRoute>} />
-              <Route path="/manage/products" element={<ProtectedRoute module="products"><VendorProductsManager /></ProtectedRoute>} />
-              <Route path="/manage/products/new" element={<ProtectedRoute module="products" action="add"><ProductFormPage mode="create" /></ProtectedRoute>} />
-              <Route path="/manage/products/:id/edit" element={<ProtectedRoute module="products" action="edit"><ProductFormPage mode="edit" /></ProtectedRoute>} />
-              <Route path="/manage/clients" element={<ProtectedRoute module="clients"><VendorClientsPage /></ProtectedRoute>} />
-              <Route path="/manage/stock" element={<ProtectedRoute module="stock"><VendorStockPage /></ProtectedRoute>} />
-              <Route path="/manage/payments" element={<ProtectedRoute module="payments"><VendorFinancesPage /></ProtectedRoute>} />
-              <Route path="/manage/users" element={<ProtectedRoute module="users"><AdminUsersPage /></ProtectedRoute>} />
+              {/* ============================================================
+                  ESPACE GESTION (rétro-compat) — admin + super_admin uniquement
+                  ============================================================ */}
+              <Route path="/manage" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><VendorDashboard /></ProtectedRoute>} />
+              <Route path="/manage/sales" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><VendorSalesManager /></ProtectedRoute>} />
+              <Route path="/manage/products" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><VendorProductsManager /></ProtectedRoute>} />
+              <Route path="/manage/products/new" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><ProductFormPage mode="create" /></ProtectedRoute>} />
+              <Route path="/manage/products/:id/edit" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><ProductFormPage mode="edit" /></ProtectedRoute>} />
+              <Route path="/manage/clients" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><VendorClientsPage /></ProtectedRoute>} />
+              <Route path="/manage/stock" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><VendorStockPage /></ProtectedRoute>} />
+              <Route path="/manage/payments" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><VendorFinancesPage /></ProtectedRoute>} />
+              <Route path="/manage/users" element={<ProtectedRoute allowedRoles={['super_admin','admin']}><AdminUsersPage /></ProtectedRoute>} />
 
-              {/* Vendor — nouvelles pages */}
-              <Route path="/vendor/orders/:id" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><VendorOrderDetailPage /></ProtectedRoute>} />
-              <Route path="/vendor/page-builder" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPageBuilderPage /></ProtectedRoute>} />
-              {/* Vendor legacy routes (rétro-compatibilité) */}
-              <Route path="/vendor/onboarding" element={<VendorOnboardingPage />} />
-              <Route path="/vendor" element={<ProtectedRoute><VendorDashboard /></ProtectedRoute>} />
-              <Route path="/vendor/products" element={<ProtectedRoute><VendorProductsManager /></ProtectedRoute>} />
-              <Route path="/vendor/products/new" element={<ProtectedRoute><VendorAddProductPage /></ProtectedRoute>} />
-              <Route path="/vendor/orders" element={<ProtectedRoute><VendorOrdersPage /></ProtectedRoute>} />
-              <Route path="/vendor/finances" element={<ProtectedRoute><VendorFinancesPage /></ProtectedRoute>} />
-              <Route path="/vendor/clients" element={<ProtectedRoute><VendorClientsPage /></ProtectedRoute>} />
-              <Route path="/vendor/sales" element={<ProtectedRoute><VendorSalesManager /></ProtectedRoute>} />
-              <Route path="/vendor/stock" element={<ProtectedRoute><VendorStockPage /></ProtectedRoute>} />
+              {/* ============================================================
+                  ESPACE VENDEUR — vendeur + admin uniquement
+                  ============================================================ */}
+              <Route path="/vendor/onboarding" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorOnboardingPage /></ProtectedRoute>} />
+              <Route path="/vendor" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorDashboard /></ProtectedRoute>} />
+              <Route path="/vendor/products" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorProductsManager /></ProtectedRoute>} />
+              <Route path="/vendor/products/new" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorAddProductPage /></ProtectedRoute>} />
+              <Route path="/vendor/orders" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorOrdersPage /></ProtectedRoute>} />
+              <Route path="/vendor/orders/:id" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorOrderDetailPage /></ProtectedRoute>} />
+              <Route path="/vendor/finances" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorFinancesPage /></ProtectedRoute>} />
+              <Route path="/vendor/clients" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorClientsPage /></ProtectedRoute>} />
+              <Route path="/vendor/sales" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorSalesManager /></ProtectedRoute>} />
+              <Route path="/vendor/stock" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorStockPage /></ProtectedRoute>} />
               <Route path="/vendor/settings" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorShopSettingsPage /></ProtectedRoute>} />
               <Route path="/vendor/promotions" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPromotionsPage /></ProtectedRoute>} />
               <Route path="/vendor/reviews" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorReviewsPage /></ProtectedRoute>} />
-              <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><VendorAnalyticsPage /></ProtectedRoute>} />
+              <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorAnalyticsPage /></ProtectedRoute>} />
               <Route path="/vendor/subscription" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorSubscriptionPage /></ProtectedRoute>} />
-              <Route path="/vendor/expenses" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','comptable']}><VendorExpensesPage /></ProtectedRoute>} />
-              <Route path="/vendor/suppliers" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','magasinier']}><VendorSuppliersPage /></ProtectedRoute>} />
+              <Route path="/vendor/expenses" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorExpensesPage /></ProtectedRoute>} />
+              <Route path="/vendor/suppliers" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorSuppliersPage /></ProtectedRoute>} />
               <Route path="/vendor/shipping" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorShippingPage /></ProtectedRoute>} />
+              <Route path="/vendor/page-builder" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><VendorPageBuilderPage /></ProtectedRoute>} />
               <Route path="/vendor/ai-shop" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIShopGeneratorPage /></ProtectedRoute>} />
+              <Route path="/vendor/ai-shop-generator" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur']}><AIShopGeneratorPage /></ProtectedRoute>} />
 
               {/* IA */}
               <Route path="/ai/assistant" element={<ProtectedRoute allowedRoles={['super_admin','admin','vendeur','manager']}><AIAssistantPage /></ProtectedRoute>} />
