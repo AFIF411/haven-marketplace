@@ -49,7 +49,8 @@ export default function LoginPage() {
 
   return (
     <MarketplaceLayout>
-      <div className="container py-16 max-w-sm">
+      <div className="container py-12 max-w-3xl grid md:grid-cols-2 gap-8">
+        <div className="max-w-sm w-full mx-auto md:mx-0">
         <h1 className="font-heading text-2xl font-bold text-center">{t("auth.login")}</h1>
         <p className="text-sm text-muted-foreground text-center mt-1">{t("auth.loginSubtitle")}</p>
         {error && (
