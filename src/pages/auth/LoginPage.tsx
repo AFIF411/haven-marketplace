@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth, DEMO_ACCOUNTS } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
 
 export default function LoginPage() {
