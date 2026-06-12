@@ -75,7 +75,33 @@ export default function LoginPage() {
           </Button>
         </form>
         <p className="text-sm text-center mt-4 text-muted-foreground">{t("auth.noAccount")} <Link to="/register" className="text-primary hover:underline font-medium">{t("auth.register")}</Link></p>
+        </div>
+
+        <div className="rounded-lg border bg-card p-5">
+          <h2 className="font-heading font-semibold text-sm">Comptes de démonstration</h2>
+          <p className="text-xs text-muted-foreground mt-1">Cliquez pour vous connecter instantanément avec un rôle.</p>
+          <div className="mt-4 space-y-2 max-h-[420px] overflow-y-auto pr-1">
+            {DEMO_ACCOUNTS.map(acc => (
+              <button
+                key={acc.email}
+                type="button"
+                onClick={() => quickLogin(acc)}
+                disabled={loading}
+                className="w-full text-start p-3 rounded-md border hover:bg-accent transition-colors disabled:opacity-50"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium text-sm">{acc.label}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{acc.roles[0]}</span>
+                </div>
+                <div className="text-xs text-muted-foreground mt-0.5 truncate">{acc.description}</div>
+                <div className="text-[11px] font-mono text-muted-foreground mt-1">{acc.email} · {acc.password}</div>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </MarketplaceLayout>
+  );
+}
   );
 }
