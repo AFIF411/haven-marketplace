@@ -70,7 +70,8 @@ function seedDefaultUsers() {
   const byEmail = new Map(existing.map(u => [u.email.toLowerCase(), u]));
   let changed = false;
   for (const acc of DEMO_ACCOUNTS) {
-    if (!byEmail.has(acc.email.toLowerCase())) {
+    const found = byEmail.get(acc.email.toLowerCase());
+    if (!found) {
       existing.push({
         id: `demo-${acc.roles[0]}`,
         firstName: acc.label, lastName: "Démo",
@@ -78,6 +79,12 @@ function seedDefaultUsers() {
         password: acc.password, status: "active",
         roles: acc.roles,
       });
+      changed = true;
+    } else if (found.password !== acc.password || JSON.stringify(found.roles) !== JSON.stringify(acc.roles)) {
+      // Réaligner le compte démo existant (mot de passe / rôles) si modifié.
+      found.password = acc.password;
+      found.roles = acc.roles;
+      found.status = "active";
       changed = true;
     }
   }
