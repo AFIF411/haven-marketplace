@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings,
   Store, DollarSign, CreditCard, Layout, Tag,
-  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut, FolderTree
+  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut, FolderTree,
+  Sparkles, Truck, Bell, LifeBuoy, MapPin, Heart, Receipt, Wand2,
+  Crown, Wallet, ShieldCheck, Flag, Map, History, Lightbulb
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/contexts/I18nContext";
@@ -13,6 +15,7 @@ import type { Module } from "@/lib/permissions";
 import { ROLE_LABELS } from "@/lib/permissions";
 
 type SidebarItem = { label: string; href: string; icon: ReactNode; module?: Module };
+type SidebarSection = { title?: string; items: SidebarItem[] };
 
 function useRoleBasedMenus() {
   const { t } = useTranslation();
