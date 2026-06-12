@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { ArrowLeft, CheckCircle2, Circle, Package, Truck, Home } from "lucide-react";
 
 const steps = [
@@ -12,8 +12,8 @@ const steps = [
 export default function OrderTrackingPage() {
   const { id } = useParams();
   return (
-    <MarketplaceLayout>
-      <div className="container py-8 max-w-2xl">
+    <DashboardLayout type="client" title="Suivi de livraison">
+      <div className="max-w-2xl">
         <Link to={`/account/orders/${id}`} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4">
           <ArrowLeft className="h-4 w-4 me-1" /> Retour à la commande
         </Link>
@@ -46,6 +46,6 @@ export default function OrderTrackingPage() {
           <div className="text-muted-foreground mt-1">Yalidine Express — +213 770 00 00 00</div>
         </div>
       </div>
-    </MarketplaceLayout>
+    </DashboardLayout>
   );
 }

@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Truck, FileText } from "lucide-react";
@@ -7,8 +7,8 @@ import { ArrowLeft, Truck, FileText } from "lucide-react";
 export default function ClientOrderDetailPage() {
   const { id } = useParams();
   return (
-    <MarketplaceLayout>
-      <div className="container py-8 max-w-4xl">
+    <DashboardLayout type="client" title="Détail de commande">
+      <div className="max-w-4xl">
         <Link to="/account/orders" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4">
           <ArrowLeft className="h-4 w-4 me-1" /> Retour aux commandes
         </Link>
@@ -54,6 +54,6 @@ export default function ClientOrderDetailPage() {
           </div>
         </div>
       </div>
-    </MarketplaceLayout>
+    </DashboardLayout>
   );
 }

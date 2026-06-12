@@ -1,4 +1,4 @@
-import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,8 @@ const history = [
 
 export default function PaymentHistoryPage() {
   return (
-    <MarketplaceLayout>
-      <div className="container py-8 max-w-4xl">
+    <DashboardLayout type="client" title="Historique paiements">
+      <div className="max-w-4xl">
         <h1 className="font-heading text-2xl font-bold">Historique des paiements</h1>
         <p className="text-sm text-muted-foreground mt-1">Tous vos paiements effectués sur Souk DZ.</p>
         <div className="mt-6 rounded-lg border bg-card">
@@ -40,6 +40,6 @@ export default function PaymentHistoryPage() {
           </Table>
         </div>
       </div>
-    </MarketplaceLayout>
+    </DashboardLayout>
   );
 }

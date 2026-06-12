@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,8 +25,8 @@ export default function SupportPage() {
   };
 
   return (
-    <MarketplaceLayout>
-      <div className="container py-8 max-w-3xl">
+    <DashboardLayout type="client" title="Support client">
+      <div className="max-w-3xl">
         <h1 className="font-heading text-2xl font-bold">Support client</h1>
         <p className="text-sm text-muted-foreground mt-1">Envoyez une réclamation ou une demande d'aide.</p>
 
@@ -63,6 +63,6 @@ export default function SupportPage() {
           ))}
         </div>
       </div>
-    </MarketplaceLayout>
+    </DashboardLayout>
   );
 }
