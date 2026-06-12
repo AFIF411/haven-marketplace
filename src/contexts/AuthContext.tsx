@@ -58,28 +58,35 @@ function writeSession(userId: string | null) {
   else localStorage.removeItem(SESSION_KEY);
 }
 
-/** Compte de démo super_admin créé au premier lancement. */
+/** Comptes de démo couvrant tous les rôles, créés au premier lancement. */
+export const DEMO_ACCOUNTS: Array<{ email: string; password: string; roles: AppRole[]; label: string; description: string }> = [
+  { email: "superadmin@souk.dz", password: "demo1234", roles: ["super_admin"], label: "Super Admin", description: "Accès total à toute la plateforme." },
+  { email: "admin@souk.dz",      password: "demo1234", roles: ["admin"],       label: "Administrateur", description: "Gestion plateforme, utilisateurs, boutiques." },
+  { email: "manager@souk.dz",    password: "demo1234", roles: ["manager"],     label: "Manager", description: "Lecture / export des modules de gestion." },
+  { email: "vendeur@souk.dz",    password: "demo1234", roles: ["vendeur"],     label: "Vendeur", description: "Espace boutique, produits, commandes, IA." },
+  { email: "caissier@souk.dz",   password: "demo1234", roles: ["caissier"],    label: "Caissier", description: "Ventes et encaissements." },
+  { email: "magasinier@souk.dz", password: "demo1234", roles: ["magasinier"],  label: "Magasinier", description: "Stock et fournisseurs." },
+  { email: "comptable@souk.dz",  password: "demo1234", roles: ["comptable"],   label: "Comptable", description: "Paiements, factures, dépenses." },
+  { email: "client@souk.dz",     password: "demo1234", roles: ["viewer"],      label: "Client", description: "Achats, suivi commandes, support." },
+];
+
 function seedDefaultUsers() {
-  const users = readUsers();
-  if (users.length > 0) return;
-  const demo: StoredUser[] = [
-    {
-      id: "demo-admin", firstName: "Admin", lastName: "Souk", email: "admin@souk.dz",
-      phone: "+213500000000", password: "admin123", status: "active",
-      roles: ["super_admin"],
-    },
-    {
-      id: "demo-vendeur", firstName: "Karim", lastName: "Vendeur", email: "vendeur@souk.dz",
-      phone: "+213600000000", password: "vendeur123", status: "active",
-      roles: ["vendeur"],
-    },
-    {
-      id: "demo-client", firstName: "Amina", lastName: "Client", email: "client@souk.dz",
-      phone: "+213700000000", password: "client123", status: "active",
-      roles: ["viewer"],
-    },
-  ];
-  writeUsers(demo);
+  const existing = readUsers();
+  const byEmail = new Map(existing.map(u => [u.email.toLowerCase(), u]));
+  let changed = false;
+  for (const acc of DEMO_ACCOUNTS) {
+    if (!byEmail.has(acc.email.toLowerCase())) {
+      existing.push({
+        id: `demo-${acc.roles[0]}`,
+        firstName: acc.label, lastName: "Démo",
+        email: acc.email, phone: "+213500000000",
+        password: acc.password, status: "active",
+        roles: acc.roles,
+      });
+      changed = true;
+    }
+  }
+  if (changed) writeUsers(existing);
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
