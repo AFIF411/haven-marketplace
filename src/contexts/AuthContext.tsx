@@ -60,14 +60,9 @@ function writeSession(userId: string | null) {
 
 /** Comptes de démo couvrant tous les rôles, créés au premier lancement. */
 export const DEMO_ACCOUNTS: Array<{ email: string; password: string; roles: AppRole[]; label: string; description: string }> = [
-  { email: "superadmin@souk.dz", password: "demo1234", roles: ["super_admin"], label: "Super Admin", description: "Accès total à toute la plateforme." },
-  { email: "admin@souk.dz",      password: "demo1234", roles: ["admin"],       label: "Administrateur", description: "Gestion plateforme, utilisateurs, boutiques." },
-  { email: "manager@souk.dz",    password: "demo1234", roles: ["manager"],     label: "Manager", description: "Lecture / export des modules de gestion." },
-  { email: "vendeur@souk.dz",    password: "demo1234", roles: ["vendeur"],     label: "Vendeur", description: "Espace boutique, produits, commandes, IA." },
-  { email: "caissier@souk.dz",   password: "demo1234", roles: ["caissier"],    label: "Caissier", description: "Ventes et encaissements." },
-  { email: "magasinier@souk.dz", password: "demo1234", roles: ["magasinier"],  label: "Magasinier", description: "Stock et fournisseurs." },
-  { email: "comptable@souk.dz",  password: "demo1234", roles: ["comptable"],   label: "Comptable", description: "Paiements, factures, dépenses." },
-  { email: "client@souk.dz",     password: "demo1234", roles: ["viewer"],      label: "Client", description: "Achats, suivi commandes, support." },
+  { email: "admin@souk.dz",   password: "demo1234", roles: ["super_admin"], label: "Admin",   description: "Gestion complète de la plateforme, utilisateurs, boutiques, paiements." },
+  { email: "vendeur@souk.dz", password: "demo1234", roles: ["vendeur"],     label: "Vendeur", description: "Espace boutique : produits, commandes, finances, IA." },
+  { email: "client@souk.dz",  password: "demo1234", roles: ["viewer"],      label: "Client",  description: "Achats, suivi commandes, wishlist, support." },
 ];
 
 function seedDefaultUsers() {
