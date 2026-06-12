@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings,
   Store, DollarSign, CreditCard, Layout, Tag,
-  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut, FolderTree
+  Star, FileText, ChevronLeft, Warehouse, UserCheck, LogOut, FolderTree,
+  Sparkles, Truck, Bell, LifeBuoy, MapPin, Heart, Receipt, Wand2,
+  Crown, Wallet, ShieldCheck, Flag, Map, History, Lightbulb
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/contexts/I18nContext";
@@ -13,6 +15,7 @@ import type { Module } from "@/lib/permissions";
 import { ROLE_LABELS } from "@/lib/permissions";
 
 type SidebarItem = { label: string; href: string; icon: ReactNode; module?: Module };
+type SidebarSection = { title?: string; items: SidebarItem[] };
 
 function useRoleBasedMenus() {
   const { t } = useTranslation();
@@ -31,44 +34,133 @@ function useRoleBasedMenus() {
     { label: "Paramètres", href: "/manage/settings", icon: <Settings className="h-4 w-4" />, module: 'settings' as Module },
   ] as SidebarItem[]).filter(item => !item.module || canAccess(item.module));
 
-  // Legacy vendor menu (pour rétro-compatibilité)
-  const vendorMenu: SidebarItem[] = [
-    { label: t("vendor.dashboard"), href: "/vendor", icon: <LayoutDashboard className="h-4 w-4" /> },
-    { label: "Ventes", href: "/vendor/sales", icon: <FileText className="h-4 w-4" /> },
-    { label: t("vendor.products"), href: "/vendor/products", icon: <Package className="h-4 w-4" /> },
-    { label: "Clients", href: "/vendor/clients", icon: <UserCheck className="h-4 w-4" /> },
-    { label: "Stock", href: "/vendor/stock", icon: <Warehouse className="h-4 w-4" /> },
-    { label: t("vendor.orders"), href: "/vendor/orders", icon: <ShoppingBag className="h-4 w-4" /> },
-    { label: t("vendor.finances"), href: "/vendor/finances", icon: <DollarSign className="h-4 w-4" /> },
-    { label: "Page Builder", href: "/vendor/page-builder", icon: <Layout className="h-4 w-4" /> },
-    { label: "Promotions", href: "/vendor/promotions", icon: <Tag className="h-4 w-4" /> },
-    { label: "Avis", href: "/vendor/reviews", icon: <Star className="h-4 w-4" /> },
-    { label: "Analytics", href: "/vendor/analytics", icon: <BarChart3 className="h-4 w-4" /> },
-    { label: "Paramètres", href: "/vendor/settings", icon: <Settings className="h-4 w-4" /> },
+  // Espace vendeur — organisé en sections
+  const vendorSections: SidebarSection[] = [
+    {
+      items: [
+        { label: t("vendor.dashboard"), href: "/vendor", icon: <LayoutDashboard className="h-4 w-4" /> },
+        { label: "Analytics", href: "/vendor/analytics", icon: <BarChart3 className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Catalogue",
+      items: [
+        { label: t("vendor.products"), href: "/vendor/products", icon: <Package className="h-4 w-4" /> },
+        { label: "Stock", href: "/vendor/stock", icon: <Warehouse className="h-4 w-4" /> },
+        { label: "Fournisseurs", href: "/vendor/suppliers", icon: <Truck className="h-4 w-4" /> },
+        { label: "Promotions", href: "/vendor/promotions", icon: <Tag className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Ventes",
+      items: [
+        { label: t("vendor.orders"), href: "/vendor/orders", icon: <ShoppingBag className="h-4 w-4" /> },
+        { label: "Livraison", href: "/vendor/shipping", icon: <Truck className="h-4 w-4" /> },
+        { label: "Clients", href: "/vendor/clients", icon: <UserCheck className="h-4 w-4" /> },
+        { label: "Avis", href: "/vendor/reviews", icon: <Star className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Finances",
+      items: [
+        { label: t("vendor.finances"), href: "/vendor/finances", icon: <DollarSign className="h-4 w-4" /> },
+        { label: "Dépenses", href: "/vendor/expenses", icon: <Receipt className="h-4 w-4" /> },
+        { label: "Abonnement", href: "/vendor/subscription", icon: <Crown className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Assistant IA",
+      items: [
+        { label: "Assistant", href: "/ai/assistant", icon: <Sparkles className="h-4 w-4" /> },
+        { label: "Suggestions", href: "/ai/suggestions", icon: <Lightbulb className="h-4 w-4" /> },
+        { label: "Description produit", href: "/ai/generate-description", icon: <Wand2 className="h-4 w-4" /> },
+        { label: "Générer page", href: "/ai/generate-page", icon: <Layout className="h-4 w-4" /> },
+        { label: "Historique", href: "/ai/history", icon: <History className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Boutique",
+      items: [
+        { label: "Page Builder", href: "/vendor/page-builder", icon: <Layout className="h-4 w-4" /> },
+        { label: "Générer par IA", href: "/vendor/ai-shop-generator", icon: <Sparkles className="h-4 w-4" /> },
+        { label: "Paramètres", href: "/vendor/settings", icon: <Settings className="h-4 w-4" /> },
+        { label: "Paramètres IA", href: "/ai/settings", icon: <Settings className="h-4 w-4" /> },
+      ],
+    },
   ];
 
-  const adminMenu: SidebarItem[] = [
-    { label: t("vendor.dashboard"), href: "/admin", icon: <LayoutDashboard className="h-4 w-4" /> },
-    { label: t("filter.vendors"), href: "/admin/vendors", icon: <Store className="h-4 w-4" /> },
-    { label: "Boutiques", href: "/admin/shops", icon: <Store className="h-4 w-4" /> },
-    { label: "Catégories", href: "/admin/categories", icon: <FolderTree className="h-4 w-4" /> },
-    { label: t("vendor.products"), href: "/admin/products", icon: <Package className="h-4 w-4" /> },
-    { label: t("vendor.orders"), href: "/admin/orders", icon: <ShoppingBag className="h-4 w-4" /> },
-    { label: "Promotions", href: "/admin/promotions", icon: <Tag className="h-4 w-4" /> },
-    { label: "Avis", href: "/admin/reviews", icon: <Star className="h-4 w-4" /> },
-    { label: "Rapports", href: "/admin/reports", icon: <BarChart3 className="h-4 w-4" /> },
-    { label: t("admin.users"), href: "/admin/users", icon: <Users className="h-4 w-4" /> },
+  // Espace admin — organisé en sections
+  const adminSections: SidebarSection[] = [
+    {
+      items: [
+        { label: t("vendor.dashboard"), href: "/admin", icon: <LayoutDashboard className="h-4 w-4" /> },
+        { label: "Rapports", href: "/admin/reports", icon: <BarChart3 className="h-4 w-4" /> },
+        { label: "Notifications", href: "/admin/notifications", icon: <Bell className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Catalogue",
+      items: [
+        { label: "Boutiques", href: "/admin/shops", icon: <Store className="h-4 w-4" /> },
+        { label: t("filter.vendors"), href: "/admin/vendors", icon: <Store className="h-4 w-4" /> },
+        { label: t("vendor.products"), href: "/admin/products", icon: <Package className="h-4 w-4" /> },
+        { label: "Catégories", href: "/admin/categories", icon: <FolderTree className="h-4 w-4" /> },
+        { label: "Promotions", href: "/admin/promotions", icon: <Tag className="h-4 w-4" /> },
+        { label: "Avis", href: "/admin/reviews", icon: <Star className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Opérations",
+      items: [
+        { label: t("vendor.orders"), href: "/admin/orders", icon: <ShoppingBag className="h-4 w-4" /> },
+        { label: "Paiements", href: "/admin/payments", icon: <CreditCard className="h-4 w-4" /> },
+        { label: "Livraison", href: "/admin/shipping", icon: <Truck className="h-4 w-4" /> },
+        { label: "Wilayas", href: "/admin/wilayas", icon: <Map className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Plateforme",
+      items: [
+        { label: t("admin.users"), href: "/admin/users", icon: <Users className="h-4 w-4" /> },
+        { label: "Rôles & permissions", href: "/admin/roles", icon: <ShieldCheck className="h-4 w-4" /> },
+        { label: "Plans SaaS", href: "/admin/saas-plans", icon: <Crown className="h-4 w-4" /> },
+        { label: "Support", href: "/admin/support", icon: <LifeBuoy className="h-4 w-4" /> },
+        { label: "Signalements", href: "/admin/reports-moderation", icon: <Flag className="h-4 w-4" /> },
+        { label: "Paramètres", href: "/admin/settings", icon: <Settings className="h-4 w-4" /> },
+      ],
+    },
   ];
 
-  const clientMenu: SidebarItem[] = [
-    { label: t("vendor.dashboard"), href: "/account", icon: <LayoutDashboard className="h-4 w-4" /> },
-    { label: t("client.myOrders"), href: "/account/orders", icon: <ShoppingBag className="h-4 w-4" /> },
-    { label: t("client.wishlist"), href: "/wishlist", icon: <Star className="h-4 w-4" /> },
-    { label: t("client.addresses"), href: "/account/addresses", icon: <FileText className="h-4 w-4" /> },
-    { label: t("client.myProfile"), href: "/account/profile", icon: <Users className="h-4 w-4" /> },
+  // Espace client — organisé en sections
+  const clientSections: SidebarSection[] = [
+    {
+      items: [
+        { label: t("vendor.dashboard"), href: "/account", icon: <LayoutDashboard className="h-4 w-4" /> },
+        { label: t("client.myProfile"), href: "/account/profile", icon: <Users className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Mes achats",
+      items: [
+        { label: t("client.myOrders"), href: "/account/orders", icon: <ShoppingBag className="h-4 w-4" /> },
+        { label: "Suivi colis", href: "/account/tracking", icon: <Truck className="h-4 w-4" /> },
+        { label: "Paiements", href: "/account/payments", icon: <Wallet className="h-4 w-4" /> },
+        { label: t("client.wishlist"), href: "/wishlist", icon: <Heart className="h-4 w-4" /> },
+      ],
+    },
+    {
+      title: "Compte",
+      items: [
+        { label: t("client.addresses"), href: "/account/addresses", icon: <MapPin className="h-4 w-4" /> },
+        { label: "Notifications", href: "/account/notifications", icon: <Bell className="h-4 w-4" /> },
+        { label: "Support", href: "/account/support", icon: <LifeBuoy className="h-4 w-4" /> },
+      ],
+    },
   ];
 
-  return { managementMenu, vendorMenu, adminMenu, clientMenu };
+  const managementSections: SidebarSection[] = [{ items: managementMenu }];
+
+  return { managementSections, vendorSections, adminSections, clientSections };
 }
 
 interface DashboardLayoutProps {
@@ -82,12 +174,12 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user, roles, logout } = useAuth();
-  const { managementMenu, vendorMenu, adminMenu, clientMenu } = useRoleBasedMenus();
-  
-  const menu = type === "manage" ? managementMenu 
-    : type === "vendor" ? vendorMenu 
-    : type === "admin" ? adminMenu 
-    : clientMenu;
+  const { managementSections, vendorSections, adminSections, clientSections } = useRoleBasedMenus();
+
+  const sections = type === "manage" ? managementSections
+    : type === "vendor" ? vendorSections
+    : type === "admin" ? adminSections
+    : clientSections;
 
   const handleLogout = async () => {
     await logout();
@@ -96,9 +188,12 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
 
   const primaryRole = roles[0];
   const displayName = user ? `${user.firstName} ${user.lastName}`.trim() || user.email : "";
-  const initials = user 
+  const initials = user
     ? (user.firstName?.[0] || "") + (user.lastName?.[0] || "") || user.email?.[0]?.toUpperCase() || "U"
     : "U";
+
+  const isActive = (href: string) =>
+    location.pathname === href || (href !== "/" && location.pathname.startsWith(href + "/"));
 
   return (
     <div className="min-h-screen bg-background">
@@ -115,13 +210,16 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
           Souk DZ
         </Link>
         <div className="h-5 w-px bg-border" />
-        <span className="font-heading font-semibold text-sm">{title}</span>
+        <span className="font-heading font-semibold text-sm truncate">{title}</span>
         <div className="ms-auto flex items-center gap-3">
           {primaryRole && (
             <Badge variant="outline" className="text-xs hidden sm:inline-flex">
               {ROLE_LABELS[primaryRole] || primaryRole}
             </Badge>
           )}
+          <Link to={type === "admin" ? "/admin/notifications" : "/account/notifications"} className="text-muted-foreground hover:text-foreground transition-colors" title="Notifications">
+            <Bell className="h-4 w-4" />
+          </Link>
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
               <span className="text-primary-foreground text-xs font-medium">{initials}</span>
@@ -134,22 +232,31 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
         </div>
       </header>
       <div className="flex">
-        <aside className="hidden md:flex w-56 flex-col border-e bg-card min-h-[calc(100vh-3.5rem)] sticky top-14">
-          <nav className="flex-1 p-3 space-y-0.5">
-            {menu.map(item => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors",
-                  location.pathname === item.href
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
+        <aside className="hidden md:flex w-60 flex-col border-e bg-card min-h-[calc(100vh-3.5rem)] sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto">
+          <nav className="flex-1 p-3 space-y-4">
+            {sections.map((section, idx) => (
+              <div key={idx} className="space-y-0.5">
+                {section.title && (
+                  <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                    {section.title}
+                  </div>
                 )}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
+                {section.items.map(item => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors",
+                      isActive(item.href)
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    )}
+                  >
+                    {item.icon}
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                ))}
+              </div>
             ))}
           </nav>
         </aside>

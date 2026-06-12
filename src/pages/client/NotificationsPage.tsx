@@ -1,4 +1,4 @@
-import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
+import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Bell, Package, Tag, Truck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -11,8 +11,8 @@ const notifications = [
 
 export default function NotificationsPage() {
   return (
-    <MarketplaceLayout>
-      <div className="container py-8 max-w-2xl">
+    <DashboardLayout type="client" title="Notifications">
+      <div className="max-w-2xl">
         <h1 className="font-heading text-2xl font-bold">Notifications</h1>
         <p className="text-sm text-muted-foreground mt-1">Restez informé de l'évolution de vos commandes et des offres.</p>
 
@@ -34,6 +34,6 @@ export default function NotificationsPage() {
           ))}
         </div>
       </div>
-    </MarketplaceLayout>
+    </DashboardLayout>
   );
 }
