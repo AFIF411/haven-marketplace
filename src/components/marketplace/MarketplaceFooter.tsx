@@ -30,9 +30,10 @@ export function MarketplaceFooter() {
           <div>
             <h4 className="font-heading font-semibold text-sm mb-3">{t("footer.help")}</h4>
             <ul className="space-y-2">
-              {[t("footer.helpCenter"), t("footer.deliveryFooter"), t("footer.returns"), t("footer.faq")].map(l => (
-                <li key={l}><Link to="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{l}</Link></li>
-              ))}
+              <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
+              <li><Link to="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link></li>
+              <li><Link to="/track" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Suivre un colis</Link></li>
+              <li><Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">À propos</Link></li>
             </ul>
           </div>
           <div>

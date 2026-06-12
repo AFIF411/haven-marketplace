@@ -68,6 +68,55 @@ import ProductFormPage from "./pages/vendor/ProductFormPage";
 import VendorOrderDetailPage from "./pages/vendor/VendorOrderDetailPage";
 import VendorPageBuilderPage from "./pages/vendor/VendorPageBuilderPage";
 
+// Pages publiques additionnelles
+import AboutPage from "./pages/public/AboutPage";
+import ContactPage from "./pages/public/ContactPage";
+import FaqPage from "./pages/public/FaqPage";
+import TermsPage from "./pages/public/TermsPage";
+import PrivacyPage from "./pages/public/PrivacyPage";
+import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
+
+// Client additionnel
+import ClientOrderDetailPage from "./pages/client/ClientOrderDetailPage";
+import OrderTrackingPage from "./pages/client/OrderTrackingPage";
+import NotificationsPage from "./pages/client/NotificationsPage";
+import SupportPage from "./pages/client/SupportPage";
+import PaymentHistoryPage from "./pages/client/PaymentHistoryPage";
+
+// Vendor additionnel
+import VendorSubscriptionPage from "./pages/vendor/VendorSubscriptionPage";
+import VendorExpensesPage from "./pages/vendor/VendorExpensesPage";
+import VendorSuppliersPage from "./pages/vendor/VendorSuppliersPage";
+import VendorShippingPage from "./pages/vendor/VendorShippingPage";
+import AIShopGeneratorPage from "./pages/vendor/AIShopGeneratorPage";
+
+// IA
+import AIAssistantPage from "./pages/ai/AIAssistantPage";
+import AIGenerateDescriptionPage from "./pages/ai/AIGenerateDescriptionPage";
+import AIGenerateCategoriesPage from "./pages/ai/AIGenerateCategoriesPage";
+import AIGeneratePagePage from "./pages/ai/AIGeneratePagePage";
+import AISuggestionsPage from "./pages/ai/AISuggestionsPage";
+import AIHistoryPage from "./pages/ai/AIHistoryPage";
+import AISettingsPage from "./pages/ai/AISettingsPage";
+
+// Admin additionnel
+import AdminPaymentsPage from "./pages/admin/AdminPaymentsPage";
+import AdminShippingPage from "./pages/admin/AdminShippingPage";
+import AdminWilayasPage from "./pages/admin/AdminWilayasPage";
+import AdminSaasPlansPage from "./pages/admin/AdminSaasPlansPage";
+import AdminSupportPage from "./pages/admin/AdminSupportPage";
+import AdminReportsModerationPage from "./pages/admin/AdminReportsModerationPage";
+import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
+import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
+import AdminRolesPage from "./pages/admin/AdminRolesPage";
+
+// Paiement & Système
+import InvoicePage from "./pages/payment/InvoicePage";
+import PaymentResultPage from "./pages/payment/PaymentResultPage";
+import MaintenancePage from "./pages/system/MaintenancePage";
+import ServerErrorPage from "./pages/system/ServerErrorPage";
+import TrackPackagePage from "./pages/system/TrackPackagePage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
