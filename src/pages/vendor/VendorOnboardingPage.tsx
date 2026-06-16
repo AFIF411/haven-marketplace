@@ -39,13 +39,13 @@ export default function VendorOnboardingPage() {
           {step === 0 && (
             <>
               <h2 className="font-heading font-semibold">{t("onboarding.shopInfo")}</h2>
-              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.shopName")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" placeholder={t("onboarding.myShop")} /></div>
-              <div><label className="text-sm font-medium mb-1 block">{t("common.description")}</label><textarea className="w-full px-3 py-2 rounded-md border bg-background text-sm min-h-[80px]" placeholder={t("onboarding.describeShop")} /></div>
+              <div><label className="text-sm font-medium mb-1 block">{t("onboarding.shopName")}</label><input className="w-full h-10 px-3 rounded-md border bg-background text-sm" defaultValue="Artisan Cuir Alger" /></div>
+              <div><label className="text-sm font-medium mb-1 block">{t("common.description")}</label><textarea className="w-full px-3 py-2 rounded-md border bg-background text-sm min-h-[80px]" defaultValue="Boutique de maroquinerie artisanale algérienne — sacs, ceintures et accessoires en cuir véritable." /></div>
               <div className="grid grid-cols-2 gap-3">
-                <div><label className="text-sm font-medium mb-1 block">{t("onboarding.mainCategory")}</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm"><option>{t("cat.fashion")}</option><option>{t("cat.home")}</option><option>{t("cat.craft")}</option><option>{t("cat.food")}</option></select></div>
+                <div><label className="text-sm font-medium mb-1 block">{t("onboarding.mainCategory")}</label><select className="w-full h-10 px-3 rounded-md border bg-background text-sm" defaultValue="craft"><option value="fashion">{t("cat.fashion")}</option><option value="home">{t("cat.home")}</option><option value="craft">{t("cat.craft")}</option><option value="food">{t("cat.food")}</option></select></div>
                 <div>
                   <label className="text-sm font-medium mb-1 block">{t("onboarding.wilaya")}</label>
-                  <select className="w-full h-10 px-3 rounded-md border bg-background text-sm">
+                  <select className="w-full h-10 px-3 rounded-md border bg-background text-sm" defaultValue="Alger">
                     <option value="">{t("common.select")}</option>
                     {wilayas.map((w, i) => (
                       <option key={w} value={w}>{String(i + 1).padStart(2, '0')} - {w}</option>
