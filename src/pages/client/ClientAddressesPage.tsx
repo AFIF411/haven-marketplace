@@ -135,7 +135,7 @@ export default function ClientAddressesPage() {
               Définir comme adresse par défaut
             </label>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t("common.cancel")}</Button>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
               <Button type="submit" disabled={saving}>{saving ? "Enregistrement…" : t("common.save")}</Button>
             </DialogFooter>
           </form>
@@ -149,7 +149,7 @@ export default function ClientAddressesPage() {
             <AlertDialogDescription>Cette action est définitive.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete}>Supprimer</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
