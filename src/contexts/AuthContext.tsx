@@ -41,8 +41,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const USERS_KEY = "souk_mock_users";
-const SESSION_KEY = "souk_mock_session";
+const USERS_KEY = "souk_mock_users_v2";
+const SESSION_KEY = "souk_mock_session_v2";
 
 function readUsers(): StoredUser[] {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
@@ -58,37 +58,19 @@ function writeSession(userId: string | null) {
   else localStorage.removeItem(SESSION_KEY);
 }
 
-/** Comptes de démo couvrant tous les rôles, créés au premier lancement. */
-export const DEMO_ACCOUNTS: Array<{ email: string; password: string; roles: AppRole[]; label: string; description: string }> = [
-  { email: "admin@souk.dz",   password: "demo1234", roles: ["super_admin"], label: "Admin",   description: "Gestion complète de la plateforme, utilisateurs, boutiques, paiements." },
-  { email: "vendeur@souk.dz", password: "demo1234", roles: ["vendeur"],     label: "Vendeur", description: "Espace boutique : produits, commandes, finances, IA." },
-  { email: "client@souk.dz",  password: "demo1234", roles: ["viewer"],      label: "Client",  description: "Achats, suivi commandes, wishlist, support." },
-];
+/** Plus aucun compte démo. Les utilisateurs doivent s'inscrire via /register. */
+export const DEMO_ACCOUNTS: Array<{ email: string; password: string; roles: AppRole[]; label: string; description: string }> = [];
+
+/** Purge les anciennes clés localStorage v1 (anciens comptes / panier seedés). */
+function purgeLegacyKeys() {
+  try {
+    ["souk_mock_users", "souk_mock_session", "souk_business_db_v1"].forEach(k => localStorage.removeItem(k));
+  } catch {}
+}
 
 function seedDefaultUsers() {
-  const existing = readUsers();
-  const byEmail = new Map(existing.map(u => [u.email.toLowerCase(), u]));
-  let changed = false;
-  for (const acc of DEMO_ACCOUNTS) {
-    const found = byEmail.get(acc.email.toLowerCase());
-    if (!found) {
-      existing.push({
-        id: `demo-${acc.roles[0]}`,
-        firstName: acc.label, lastName: "Démo",
-        email: acc.email, phone: "+213500000000",
-        password: acc.password, status: "active",
-        roles: acc.roles,
-      });
-      changed = true;
-    } else if (found.password !== acc.password || JSON.stringify(found.roles) !== JSON.stringify(acc.roles)) {
-      // Réaligner le compte démo existant (mot de passe / rôles) si modifié.
-      found.password = acc.password;
-      found.roles = acc.roles;
-      found.status = "active";
-      changed = true;
-    }
-  }
-  if (changed) writeUsers(existing);
+  // Plus de comptes démo : on s'assure juste que les vieilles clés sont nettoyées.
+  purgeLegacyKeys();
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
