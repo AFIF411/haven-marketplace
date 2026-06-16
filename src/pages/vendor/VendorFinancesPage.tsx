@@ -9,7 +9,7 @@ import { useSales, usePayments } from "@/hooks/useSales";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
 import { formatDZD } from "@/data/mockData";
-import { supabase } from "@/integrations/supabase/client";
+import { businessStore } from "@/lib/mocks/businessStore";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -31,21 +31,7 @@ function AddPaymentForm({ sale, onDone }: { sale: any; onDone: () => void }) {
     if (amount <= 0 || amount > remaining) return;
     setLoading(true);
     try {
-      await supabase.from("payments").insert({
-        sale_id: sale.id,
-        user_id: user!.id,
-        amount,
-        payment_mode: mode,
-        notes: notes || null,
-      });
-
-      const newPaid = sale.paid_amount + amount;
-      const newStatus = newPaid >= sale.total ? "paid" : "partial";
-      await supabase.from("sales").update({
-        paid_amount: newPaid,
-        payment_status: newStatus,
-      }).eq("id", sale.id);
-
+      businessStore.addPayment(sale.id, amount, mode, notes);
       qc.invalidateQueries({ queryKey: ["sales"] });
       qc.invalidateQueries({ queryKey: ["payments"] });
       qc.invalidateQueries({ queryKey: ["all_payments"] });
@@ -127,12 +113,8 @@ export default function VendorFinancesPage() {
 
   // Fetch all payments for stats
   const { data: allPayments } = useQuery({
-    queryKey: ["all_payments", user?.id],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("payments").select("*").order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
+    queryKey: ["all_payments"],
+    queryFn: async () => businessStore.listPayments(),
     enabled: !!user,
   });
 

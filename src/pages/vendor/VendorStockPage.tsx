@@ -9,7 +9,7 @@ import { useProducts } from "@/hooks/useProducts";
 import { useStockMovements } from "@/hooks/useSales";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
-import { supabase } from "@/integrations/supabase/client";
+import { businessStore } from "@/lib/mocks/businessStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -25,26 +25,14 @@ function StockMovementForm({ onSave, onCancel }: { onSave: () => void; onCancel:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.product_id || !user) return;
-
     const qty = form.movement_type === "out" ? -Math.abs(form.quantity) : Math.abs(form.quantity);
-
-    // Update stock
-    const { data: prod } = await supabase.from("products").select("stock").eq("id", form.product_id).single();
-    if (prod) {
-      const newStock = Math.max(0, prod.stock + qty);
-      await supabase.from("products").update({ stock: newStock }).eq("id", form.product_id);
-    }
-
-    // Record movement
-    await supabase.from("stock_movements").insert({
-      user_id: user.id,
+    businessStore.addStockMovement({
       product_id: form.product_id,
       movement_type: form.movement_type,
       quantity: qty,
       reference: form.reference || null,
       notes: form.notes || null,
     });
-
     qc.invalidateQueries({ queryKey: ["products"] });
     qc.invalidateQueries({ queryKey: ["stock_movements"] });
     toast.success("Mouvement enregistré");

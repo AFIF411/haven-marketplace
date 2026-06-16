@@ -3,7 +3,7 @@ import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, Plus, Edit, Trash2, Shield, Loader2, UserX, UserCheck } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { businessStore } from "@/lib/mocks/businessStore";
 import { useAuth } from "@/contexts/AuthContext";
 import { ALL_ROLES, ROLE_LABELS, ROLE_COLORS, AppRole } from "@/lib/permissions";
 import {
@@ -41,36 +41,15 @@ export default function AdminUsersPage() {
 
   const fetchUsers = async () => {
     setLoading(true);
-    // Récupérer profils
-    const { data: profiles } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (!profiles) { setLoading(false); return; }
-
-    // Récupérer rôles
-    const { data: rolesData } = await supabase
-      .from('user_roles')
-      .select('*');
-
-    const roleMap = new Map<string, AppRole[]>();
-    rolesData?.forEach((r: any) => {
-      const existing = roleMap.get(r.user_id) || [];
-      existing.push(r.role as AppRole);
-      roleMap.set(r.user_id, existing);
-    });
-
-    const userList: UserProfile[] = profiles.map((p: any) => ({
-      user_id: p.user_id,
-      display_name: p.display_name,
-      phone: p.phone,
-      status: p.status,
-      created_at: p.created_at,
-      roles: roleMap.get(p.user_id) || [],
-    }));
-
-    setUsers(userList);
+    const list = businessStore.listProfilesWithRoles();
+    setUsers(list.map(u => ({
+      user_id: u.user_id,
+      display_name: u.display_name,
+      phone: u.phone,
+      status: u.status,
+      created_at: u.created_at,
+      roles: u.roles,
+    })));
     setLoading(false);
   };
 
@@ -97,35 +76,15 @@ export default function AdminUsersPage() {
   const saveRoles = async () => {
     if (!selectedUser) return;
     setSaving(true);
-
-    // Supprimer les anciens rôles
-    await supabase
-      .from('user_roles')
-      .delete()
-      .eq('user_id', selectedUser.user_id);
-
-    // Ajouter les nouveaux
-    if (selectedRoles.length > 0) {
-      const rows = selectedRoles.map(role => ({
-        user_id: selectedUser.user_id,
-        role,
-      }));
-      await supabase.from('user_roles').insert(rows);
-    }
-
+    businessStore.setUserRoles(selectedUser.user_id, selectedRoles);
     toast({ title: "Rôles mis à jour", description: `Les rôles de ${selectedUser.display_name || 'l\'utilisateur'} ont été modifiés.` });
     setSaving(false);
     setRoleDialogOpen(false);
     fetchUsers();
   };
 
-  // Changer le statut
   const toggleStatus = async (user: UserProfile, newStatus: string) => {
-    await supabase
-      .from('profiles')
-      .update({ status: newStatus })
-      .eq('user_id', user.user_id);
-
+    businessStore.setProfileStatus(user.user_id, newStatus);
     toast({ title: "Statut mis à jour", description: `Utilisateur ${newStatus === 'active' ? 'activé' : newStatus === 'suspended' ? 'suspendu' : 'désactivé'}.` });
     fetchUsers();
   };
