@@ -73,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    seedDefaultUsers();
+    purgeLegacyKeys();
     const sid = readSession();
     if (sid) {
       const u = readUsers().find(x => x.id === sid);
