@@ -1,9 +1,7 @@
 // ============================================================
-// Auth mock localStorage — aucun backend requis.
-// Interface identique à l'ancienne version (Supabase) :
-// le reste de l'app fonctionne sans modification.
-// Pour brancher Spring Boot plus tard, remplacer les fonctions
-// login/register/logout/fetchRoles par des appels fetch().
+// Contexte d'authentification — stockage localStorage.
+// Aucune intégration backend ; remplacer login/register/logout
+// par des appels API quand un serveur sera disponible.
 // ============================================================
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
 import { AppRole, Module, Action, hasPermission as checkPermission, canAccessModule as checkModule } from "@/lib/permissions";
@@ -35,14 +33,14 @@ interface AuthContextType {
   isAdmin: boolean;
   isSuperAdmin: boolean;
   refreshRoles: () => Promise<void>;
-  /** Mock-only : changer les rôles de l'utilisateur courant (utile en démo). */
+  /** Mettre à jour les rôles de l'utilisateur courant. */
   setRoles: (roles: AppRole[]) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const USERS_KEY = "souk_mock_users_v2";
-const SESSION_KEY = "souk_mock_session_v2";
+const USERS_KEY = "souk_users";
+const SESSION_KEY = "souk_session";
 
 function readUsers(): StoredUser[] {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
@@ -58,19 +56,15 @@ function writeSession(userId: string | null) {
   else localStorage.removeItem(SESSION_KEY);
 }
 
-/** Plus aucun compte démo. Les utilisateurs doivent s'inscrire via /register. */
-export const DEMO_ACCOUNTS: Array<{ email: string; password: string; roles: AppRole[]; label: string; description: string }> = [];
-
-/** Purge les anciennes clés localStorage v1 (anciens comptes / panier seedés). */
+/** Purge les anciennes clés de stockage (migrations précédentes). */
 function purgeLegacyKeys() {
   try {
-    ["souk_mock_users", "souk_mock_session", "souk_business_db_v1"].forEach(k => localStorage.removeItem(k));
+    [
+      "souk_mock_users", "souk_mock_session",
+      "souk_mock_users_v2", "souk_mock_session_v2",
+      "souk_business_db_v1",
+    ].forEach(k => localStorage.removeItem(k));
   } catch {}
-}
-
-function seedDefaultUsers() {
-  // Plus de comptes démo : on s'assure juste que les vieilles clés sont nettoyées.
-  purgeLegacyKeys();
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -79,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    seedDefaultUsers();
+    purgeLegacyKeys();
     const sid = readSession();
     if (sid) {
       const u = readUsers().find(x => x.id === sid);
