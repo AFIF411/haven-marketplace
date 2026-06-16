@@ -1,29 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Trash2, Minus, Plus, ArrowRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { formatDZD } from "@/data/mockData";
 import { useTranslation } from "@/contexts/I18nContext";
+import { useCart } from "@/hooks/useMarketplace";
 
 export default function CartPage() {
   const { t } = useTranslation();
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const { cart, updateQty, remove } = useCart();
 
-  const updateQty = (id: string, delta: number) => {
-    setCartItems(prev => prev.map(item =>
-      item.id === id ? { ...item, qty: Math.max(1, item.qty + delta) } : item
-    ));
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
-  const shipping = subtotal > 5000 ? 0 : 400;
-
-  if (cartItems.length === 0) {
+  if (cart.items.length === 0) {
     return (
       <MarketplaceLayout>
         <div className="container py-16 flex flex-col items-center justify-center text-center">
@@ -40,28 +27,31 @@ export default function CartPage() {
     );
   }
 
+  const shipping = cart.shipping;
+  const subtotal = cart.subtotal;
+
   return (
     <MarketplaceLayout>
       <div className="container py-8">
-        <h1 className="font-heading text-2xl font-bold mb-6">{t("cart.title")} ({cartItems.length})</h1>
+        <h1 className="font-heading text-2xl font-bold mb-6">{t("cart.title")} ({cart.items.length})</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-3">
-            {cartItems.map(item => (
-              <div key={item.id} className="flex gap-4 bg-card p-4 rounded-lg border">
-                <img src={item.image} alt={item.name} className="h-24 w-24 rounded-md object-cover bg-secondary" loading="lazy" />
+            {cart.items.map(item => (
+              <div key={item.productId} className="flex gap-4 bg-card p-4 rounded-lg border">
+                <img src={item.imageUrl} alt={item.name} className="h-24 w-24 rounded-md object-cover bg-secondary" loading="lazy" />
                 <div className="flex-1 min-w-0">
-                  <Link to={`/products/${item.id}`} className="font-medium text-sm hover:text-primary line-clamp-1">{item.name}</Link>
-                  <p className="text-xs text-muted-foreground">{item.shop}</p>
+                  <Link to={`/products/${item.productId}`} className="font-medium text-sm hover:text-primary line-clamp-1">{item.name}</Link>
+                  <p className="text-xs text-muted-foreground">{item.shopName}</p>
                   <div className="flex items-center justify-between mt-3">
                     <div className="flex items-center border rounded-md">
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.id, -1)}><Minus className="h-3 w-3" /></Button>
-                      <span className="w-8 text-center text-sm">{item.qty}</span>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.id, 1)}><Plus className="h-3 w-3" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.productId, item.quantity - 1)}><Minus className="h-3 w-3" /></Button>
+                      <span className="w-8 text-center text-sm">{item.quantity}</span>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQty(item.productId, item.quantity + 1)}><Plus className="h-3 w-3" /></Button>
                     </div>
-                    <span className="font-heading font-bold">{formatDZD(item.price * item.qty)}</span>
+                    <span className="font-heading font-bold">{formatDZD(item.unitPrice * item.quantity)}</span>
                   </div>
                 </div>
-                <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-destructive" onClick={() => removeItem(item.id)}>
+                <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-destructive" onClick={() => remove(item.productId)}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
