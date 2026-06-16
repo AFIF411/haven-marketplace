@@ -14,7 +14,7 @@ export default function InvoicePage() {
           </Link>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => window.print()}><Printer className="h-4 w-4 me-2" />Imprimer</Button>
-            <Button><Download className="h-4 w-4 me-2" />Télécharger PDF</Button>
+            <Button onClick={() => window.print()}><Download className="h-4 w-4 me-2" />Télécharger PDF</Button>
           </div>
         </div>
 
