@@ -29,7 +29,20 @@ const db = {
   addresses: clone(seedAddresses),
   shopPages: clone(seedShopPages),
   wishlist: [] as WishlistItem[],
-  cart: { items: [] as CartItem[] },
+  cart: {
+    items: [
+      {
+        productId: "p1", name: "Sac en cuir artisanal tressé",
+        imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600",
+        unitPrice: 8500, quantity: 1, shopId: "s1", shopName: "Artisan Cuir Alger",
+      },
+      {
+        productId: "p3", name: "Bougie parfumée jasmin et ambre",
+        imageUrl: "https://images.unsplash.com/photo-1602607700009-1b3e2f2426c5?w=600",
+        unitPrice: 2200, quantity: 2, shopId: "s3", shopName: "L'Atelier des Sens",
+      },
+    ] as CartItem[],
+  },
 };
 
 // =========================
