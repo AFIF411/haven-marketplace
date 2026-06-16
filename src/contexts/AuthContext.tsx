@@ -1,9 +1,7 @@
 // ============================================================
-// Auth mock localStorage — aucun backend requis.
-// Interface identique à l'ancienne version (Supabase) :
-// le reste de l'app fonctionne sans modification.
-// Pour brancher Spring Boot plus tard, remplacer les fonctions
-// login/register/logout/fetchRoles par des appels fetch().
+// Contexte d'authentification — stockage localStorage.
+// Aucune intégration backend ; remplacer login/register/logout
+// par des appels API quand un serveur sera disponible.
 // ============================================================
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
 import { AppRole, Module, Action, hasPermission as checkPermission, canAccessModule as checkModule } from "@/lib/permissions";
@@ -35,7 +33,7 @@ interface AuthContextType {
   isAdmin: boolean;
   isSuperAdmin: boolean;
   refreshRoles: () => Promise<void>;
-  /** Mock-only : changer les rôles de l'utilisateur courant (utile en démo). */
+  /** Mettre à jour les rôles de l'utilisateur courant. */
   setRoles: (roles: AppRole[]) => void;
 }
 
