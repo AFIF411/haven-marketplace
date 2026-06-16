@@ -32,7 +32,7 @@ export default function LoginPage() {
     setLoading(false);
     if (result.success) {
       // Rediriger selon les rôles fraîchement chargés via le contexte
-      const stored = JSON.parse(localStorage.getItem("souk_mock_users_v2") || "[]");
+      const stored = JSON.parse(localStorage.getItem("souk_users") || "[]");
       const u = stored.find((x: any) => x.email.toLowerCase() === email.toLowerCase());
       navigate(redirectForRoles(u?.roles || []));
     } else {
