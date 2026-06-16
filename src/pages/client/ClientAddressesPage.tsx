@@ -92,7 +92,11 @@ export default function ClientAddressesPage() {
       </div>
 
       {!addresses || addresses.length === 0 ? (
-        <EmptyState title="Aucune adresse" description="Ajoute une adresse de livraison pour gagner du temps au checkout." actionLabel={t("common.add")} onAction={openCreate} />
+        <EmptyState
+          title="Aucune adresse"
+          description="Ajoute une adresse de livraison pour gagner du temps au checkout."
+          action={<Button onClick={openCreate}><Plus className="me-1 h-4 w-4" /> {t("common.add")}</Button>}
+        />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
           {addresses.map(a => (
@@ -124,7 +128,7 @@ export default function ClientAddressesPage() {
             <Input required placeholder="Adresse / rue" value={form.street} onChange={e => setForm({ ...form, street: e.target.value })} />
             <div className="grid grid-cols-2 gap-3">
               <Input required placeholder="Commune" value={form.commune} onChange={e => setForm({ ...form, commune: e.target.value })} />
-              <WilayaSelect value={form.wilaya} onValueChange={(v) => setForm({ ...form, wilaya: v })} />
+              <WilayaSelect value={form.wilaya} onChange={(v) => setForm({ ...form, wilaya: v })} required />
             </div>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={form.isDefault} onChange={e => setForm({ ...form, isDefault: e.target.checked })} />

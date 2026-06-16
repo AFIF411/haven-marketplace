@@ -44,7 +44,15 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = async () => {
     try {
-      await add(String(product.id), qty);
+      await add({
+        productId: String(product.id),
+        name: product.name,
+        imageUrl: product.image,
+        unitPrice: product.price,
+        quantity: qty,
+        shopId: String((product as any).shopId ?? product.shop ?? ""),
+        shopName: String(product.shop ?? ""),
+      } as any);
       toast({ title: "Ajouté au panier", description: `${qty} × ${product.name}` });
     } catch (e) {
       toast({ title: "Erreur", description: (e as Error).message, variant: "destructive" });

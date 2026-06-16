@@ -27,7 +27,7 @@ export default function OrderConfirmationPage() {
         <div className="bg-card rounded-lg border p-6 mt-6 text-start space-y-3">
           <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t("orderConfirm.date")}</span><span>{order ? new Date(order.createdAt).toLocaleDateString('fr-DZ') : new Date().toLocaleDateString('fr-DZ')}</span></div>
           <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t("orderConfirm.total")}</span><span className="font-medium">{order ? formatDZD(order.total) : "—"}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t("orderConfirm.delivery")}</span><span>{order?.deliveryMode === "pickup" ? "Point relais" : t("orderConfirm.standard")}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t("orderConfirm.delivery")}</span><span>{order?.deliveryMode === "relay" ? "Point relais" : order?.deliveryMode === "express" ? "Express" : t("orderConfirm.standard")}</span></div>
           <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t("orderConfirm.wilaya")}</span><span>{order?.shippingAddress?.wilaya ?? "—"}</span></div>
           <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t("orderConfirm.status")}</span><span className="text-success font-medium">{t("orderConfirm.confirmed")}</span></div>
         </div>

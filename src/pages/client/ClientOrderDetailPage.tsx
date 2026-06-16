@@ -50,18 +50,18 @@ export default function ClientOrderDetailPage() {
               <div className="md:col-span-2 space-y-4">
                 <div className="p-4 rounded-lg border bg-card">
                   <h2 className="font-heading font-semibold mb-3">Produits</h2>
-                  {order.items.map((it, i) => (
-                    <div key={i} className="flex items-center gap-3 py-3 border-b last:border-0">
+                  {order.items.map((it) => (
+                    <div key={it.id} className="flex items-center gap-3 py-3 border-b last:border-0">
                       {it.imageUrl ? (
-                        <img src={it.imageUrl} alt={it.name} className="w-16 h-16 rounded object-cover" />
+                        <img src={it.imageUrl} alt={it.productName} className="w-16 h-16 rounded object-cover" />
                       ) : (
                         <div className="w-16 h-16 rounded bg-muted" />
                       )}
                       <div className="flex-1">
-                        <div className="text-sm font-medium">{it.name}</div>
+                        <div className="text-sm font-medium">{it.productName}</div>
                         <div className="text-xs text-muted-foreground">Quantité : {it.quantity}</div>
                       </div>
-                      <div className="text-sm font-semibold">{formatDZD(it.price * it.quantity)}</div>
+                      <div className="text-sm font-semibold">{formatDZD(it.total)}</div>
                     </div>
                   ))}
                 </div>
