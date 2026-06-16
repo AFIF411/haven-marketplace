@@ -68,13 +68,11 @@ async function parseResponse<T>(res: Response): Promise<T> {
   const body = isJson ? await res.json().catch(() => null) : await res.text().catch(() => "");
 
   if (!res.ok) {
-    const message =
-      (isJson && body && typeof body === "object" && "message" in (body as object)
-        ? String((body as { message: unknown }).message)
-        : null) ??
-      (typeof body === "string" && body) ||
-      res.statusText ||
-      `HTTP ${res.status}`;
+    const fromJson = isJson && body && typeof body === "object" && "message" in (body as object)
+      ? String((body as { message: unknown }).message)
+      : null;
+    const fromText = typeof body === "string" && body ? body : null;
+    const message = fromJson ?? fromText ?? res.statusText ?? `HTTP ${res.status}`;
     throw new ApiError(message, res.status, body);
   }
 

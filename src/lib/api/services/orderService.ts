@@ -23,7 +23,7 @@ interface ListFilters {
 export const orderService = {
   list(filters: ListFilters = {}): Promise<Order[]> {
     if (USE_MOCK) return ordersApi.list(filters);
-    return http.get<Order[]>("/orders", { query: filters });
+    return http.get<Order[]>("/orders", { query: filters as Record<string, string | undefined> });
   },
 
   get(id: ID): Promise<Order | null> {
