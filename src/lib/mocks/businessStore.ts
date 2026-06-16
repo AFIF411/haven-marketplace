@@ -6,7 +6,7 @@
 // ============================================================
 import type { AppRole } from "@/lib/permissions";
 
-const K = "souk_business_db_v1";
+const K = "souk_business_db_v2";
 const nowISO = () => new Date().toISOString();
 const uid = (p = "id") => `${p}-${Math.random().toString(36).slice(2, 10)}`;
 
@@ -53,40 +53,15 @@ interface DB {
 }
 
 function seed(): DB {
-  const t = nowISO();
   return {
-    products: [
-      { id: "p1", name: "Sac cuir tressé", code: "AC-001", category: "Maroquinerie", purchase_price: 5000, sale_price: 8500, stock: 12, min_stock: 3, unit: "u", description: null, is_active: true, created_at: t, updated_at: t },
-      { id: "p2", name: "Bougie jasmin", code: "AS-022", category: "Bien-être", purchase_price: 1000, sale_price: 2200, stock: 45, min_stock: 5, unit: "u", description: null, is_active: true, created_at: t, updated_at: t },
-      { id: "p3", name: "Bol céramique", code: "TF-008", category: "Maison", purchase_price: 1500, sale_price: 3000, stock: 2, min_stock: 5, unit: "u", description: null, is_active: true, created_at: t, updated_at: t },
-    ],
-    clients: [
-      { id: "cl1", name: "Mohamed Benali", phone: "0555 12 34 56", email: "m.benali@example.dz", address: "Cité 5 Juillet", wilaya: "Alger", notes: null, created_at: t, updated_at: t },
-      { id: "cl2", name: "Amina Kessous", phone: "0666 78 90 12", email: null, address: null, wilaya: "Oran", notes: null, created_at: t, updated_at: t },
-    ],
-    sales: [
-      { id: "s1", client_id: "cl1", doc_type: "invoice", doc_number: "FAC-00001", sale_date: t.slice(0,10), total: 12900, paid_amount: 12900, status: "completed", payment_status: "paid", payment_mode: "cash", notes: null, created_at: t, updated_at: t, clients: { name: "Mohamed Benali" } },
-      { id: "s2", client_id: "cl2", doc_type: "invoice", doc_number: "FAC-00002", sale_date: t.slice(0,10), total: 6000, paid_amount: 3000, status: "completed", payment_status: "partial", payment_mode: "ccp", notes: null, created_at: t, updated_at: t, clients: { name: "Amina Kessous" } },
-    ],
+    products: [],
+    clients: [],
+    sales: [],
     sale_items: [],
-    payments: [
-      { id: "pm1", sale_id: "s1", amount: 12900, payment_mode: "cash", payment_date: t.slice(0,10), notes: null, created_at: t },
-      { id: "pm2", sale_id: "s2", amount: 3000, payment_mode: "ccp", payment_date: t.slice(0,10), notes: null, created_at: t },
-    ],
-    stock_movements: [
-      { id: "sm1", product_id: "p1", movement_type: "in", quantity: 15, reference: "Achat fournisseur", notes: null, created_at: t, products: { name: "Sac cuir tressé" } },
-      { id: "sm2", product_id: "p1", movement_type: "sale", quantity: -3, reference: "FAC-00001", notes: null, created_at: t, products: { name: "Sac cuir tressé" } },
-    ],
-    profiles: [
-      { user_id: "demo-super_admin", display_name: "Admin Démo", phone: "+213500000000", status: "active", created_at: t },
-      { user_id: "demo-vendeur", display_name: "Vendeur Démo", phone: "+213500000001", status: "active", created_at: t },
-      { user_id: "demo-viewer", display_name: "Client Démo", phone: "+213500000002", status: "active", created_at: t },
-    ],
-    user_roles: [
-      { user_id: "demo-super_admin", role: "super_admin" },
-      { user_id: "demo-vendeur", role: "vendeur" },
-      { user_id: "demo-viewer", role: "viewer" },
-    ],
+    payments: [],
+    stock_movements: [],
+    profiles: [],
+    user_roles: [],
   };
 }
 
