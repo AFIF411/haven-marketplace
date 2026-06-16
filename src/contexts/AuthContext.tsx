@@ -35,6 +35,8 @@ interface AuthContextType {
   refreshRoles: () => Promise<void>;
   /** Mettre à jour les rôles de l'utilisateur courant. */
   setRoles: (roles: AppRole[]) => void;
+  /** Met à jour le profil de l'utilisateur courant (local). */
+  updateProfile: (patch: Partial<Pick<User, "firstName" | "lastName" | "email" | "phone">>) => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -147,6 +149,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (u) setRolesState(u.roles);
   }, [user]);
 
+  const updateProfile = useCallback(async (patch: Partial<Pick<User, "firstName" | "lastName" | "email" | "phone">>) => {
+    if (!user) return { success: false, error: "Non connecté" };
+    const users = readUsers();
+    const u = users.find(x => x.id === user.id);
+    if (!u) return { success: false, error: "Utilisateur introuvable" };
+    if (patch.email && patch.email.toLowerCase() !== u.email.toLowerCase()
+        && users.some(x => x.email.toLowerCase() === patch.email!.toLowerCase())) {
+      return { success: false, error: "Email déjà utilisé" };
+    }
+    Object.assign(u, patch);
+    writeUsers(users);
+    setUser({ id: u.id, firstName: u.firstName, lastName: u.lastName, email: u.email, phone: u.phone, status: u.status });
+    return { success: true };
+  }, [user]);
+
   const isAdmin = roles.includes('admin') || roles.includes('super_admin');
   const isSuperAdmin = roles.includes('super_admin');
 
@@ -155,7 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user, supabaseUser: null, roles, isLoading,
       login, register, logout,
       hasPermission: hasPermissionFn, canAccess,
-      isAdmin, isSuperAdmin, refreshRoles, setRoles,
+      isAdmin, isSuperAdmin, refreshRoles, setRoles, updateProfile,
     }}>
       {children}
     </AuthContext.Provider>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
 import { Truck, CreditCard, MapPin, Check, Plus } from "lucide-react";
@@ -57,9 +57,11 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
 
   // Auto-sélection adresse par défaut
-  if (addresses && addresses.length > 0 && !addressId) {
-    setAddressId(addresses.find(a => a.isDefault)?.id || addresses[0].id);
-  }
+  useEffect(() => {
+    if (addresses && addresses.length > 0 && !addressId) {
+      setAddressId(addresses.find(a => a.isDefault)?.id || addresses[0].id);
+    }
+  }, [addresses, addressId]);
 
   const steps = ["Adresse", "Livraison", "Paiement", "Récapitulatif"];
   const shippingFee = DELIVERY_OPTIONS.find(o => o.id === delivery)?.price || 0;
