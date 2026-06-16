@@ -39,8 +39,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const USERS_KEY = "souk_mock_users_v2";
-const SESSION_KEY = "souk_mock_session_v2";
+const USERS_KEY = "souk_users";
+const SESSION_KEY = "souk_session";
 
 function readUsers(): StoredUser[] {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
@@ -56,19 +56,15 @@ function writeSession(userId: string | null) {
   else localStorage.removeItem(SESSION_KEY);
 }
 
-/** Plus aucun compte démo. Les utilisateurs doivent s'inscrire via /register. */
-export const DEMO_ACCOUNTS: Array<{ email: string; password: string; roles: AppRole[]; label: string; description: string }> = [];
-
-/** Purge les anciennes clés localStorage v1 (anciens comptes / panier seedés). */
+/** Purge les anciennes clés de stockage (migrations précédentes). */
 function purgeLegacyKeys() {
   try {
-    ["souk_mock_users", "souk_mock_session", "souk_business_db_v1"].forEach(k => localStorage.removeItem(k));
+    [
+      "souk_mock_users", "souk_mock_session",
+      "souk_mock_users_v2", "souk_mock_session_v2",
+      "souk_business_db_v1",
+    ].forEach(k => localStorage.removeItem(k));
   } catch {}
-}
-
-function seedDefaultUsers() {
-  // Plus de comptes démo : on s'assure juste que les vieilles clés sont nettoyées.
-  purgeLegacyKeys();
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
