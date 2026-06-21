@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/contexts/I18nContext";
+import brandLogo from "@/assets/logo-oneclick-tijara.png";
 
 export function MarketplaceFooter() {
   const { t } = useTranslation();
@@ -9,11 +10,8 @@ export function MarketplaceFooter() {
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <Link to="/" className="font-heading text-lg font-bold text-primary flex items-center gap-2">
-              <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground text-xs font-bold">S</span>
-              </div>
-              OneClick Tijara
+            <Link to="/" className="flex items-center gap-2" aria-label="OneClick Tijara">
+              <img src={brandLogo} alt="OneClick Tijara" className="h-10 w-auto object-contain" />
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
               {t("footer.description")}
