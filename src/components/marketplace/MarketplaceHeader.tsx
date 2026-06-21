@@ -26,11 +26,8 @@ export function MarketplaceHeader() {
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container flex h-16 items-center gap-4">
-        <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-primary shrink-0">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground text-sm font-bold">S</span>
-          </div>
-          OneClick Tijara
+        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="OneClick Tijara">
+          <img src={brandLogo} alt="OneClick Tijara" className="h-10 w-auto object-contain" />
         </Link>
 
         <div className="hidden md:flex flex-1 max-w-xl mx-4">
