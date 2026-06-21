@@ -13,7 +13,7 @@ export function MarketplaceFooter() {
               <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground text-xs font-bold">S</span>
               </div>
-              Souk DZ
+              OneClick Tijara
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
               {t("footer.description")}
@@ -46,7 +46,7 @@ export function MarketplaceFooter() {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Souk DZ. {t("footer.rights")}
+          © {new Date().getFullYear()} OneClick Tijara. {t("footer.rights")}
         </div>
       </div>
     </footer>

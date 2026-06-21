@@ -16,7 +16,7 @@ export default function FaqPage() {
     <MarketplaceLayout>
       <div className="container py-12 max-w-3xl">
         <h1 className="font-heading text-3xl font-bold">Questions fréquentes</h1>
-        <p className="text-muted-foreground mt-2">Tout ce qu'il faut savoir sur Souk DZ.</p>
+        <p className="text-muted-foreground mt-2">Tout ce qu'il faut savoir sur OneClick Tijara.</p>
         <Accordion type="single" collapsible className="mt-8">
           {faqs.map((f, i) => (
             <AccordionItem key={i} value={`item-${i}`}>

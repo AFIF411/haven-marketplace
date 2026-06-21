@@ -11,9 +11,9 @@ export default function AboutPage() {
   return (
     <MarketplaceLayout>
       <div className="container py-12 max-w-4xl">
-        <h1 className="font-heading text-4xl font-bold">À propos de Souk DZ</h1>
+        <h1 className="font-heading text-4xl font-bold">À propos de OneClick Tijara</h1>
         <p className="text-lg text-muted-foreground mt-4">
-          Souk DZ est la plateforme SaaS e-commerce qui permet à chaque vendeur algérien de créer sa boutique en ligne en quelques minutes, et à chaque client de découvrir le meilleur du commerce local.
+          OneClick Tijara est la plateforme SaaS e-commerce qui permet à chaque vendeur algérien de créer sa boutique en ligne en quelques minutes, et à chaque client de découvrir le meilleur du commerce local.
         </p>
         <div className="grid sm:grid-cols-2 gap-6 mt-10">
           {values.map(v => (

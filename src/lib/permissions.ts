@@ -1,5 +1,5 @@
 // ========================================
-// Système de permissions & rôles — Souk DZ
+// Système de permissions & rôles — OneClick Tijara
 // ========================================
 
 export type AppRole = 'super_admin' | 'admin' | 'manager' | 'vendeur' | 'caissier' | 'magasinier' | 'comptable' | 'viewer';

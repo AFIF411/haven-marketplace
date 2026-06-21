@@ -16,7 +16,7 @@ export default function PaymentHistoryPage() {
     <DashboardLayout type="client" title="Historique paiements">
       <div className="max-w-4xl">
         <h1 className="font-heading text-2xl font-bold">Historique des paiements</h1>
-        <p className="text-sm text-muted-foreground mt-1">Tous vos paiements effectués sur Souk DZ.</p>
+        <p className="text-sm text-muted-foreground mt-1">Tous vos paiements effectués sur OneClick Tijara.</p>
         <div className="mt-6 rounded-lg border bg-card">
           <Table>
             <TableHeader><TableRow>

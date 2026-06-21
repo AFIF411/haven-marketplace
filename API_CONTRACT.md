@@ -1,6 +1,6 @@
-# API Contract — Souk DZ
+# API Contract — OneClick Tijara
 
-Contrat d'API entre le frontend React (Vite + TypeScript) et le backend **Spring Boot** pour la plateforme e-commerce SaaS multi-boutiques **Souk DZ**.
+Contrat d'API entre le frontend React (Vite + TypeScript) et le backend **Spring Boot** pour la plateforme e-commerce SaaS multi-boutiques **OneClick Tijara**.
 
 ---
 

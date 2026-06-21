@@ -29,7 +29,7 @@ export function MarketplaceHeader() {
           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
             <span className="text-primary-foreground text-sm font-bold">S</span>
           </div>
-          Souk DZ
+          OneClick Tijara
         </Link>
 
         <div className="hidden md:flex flex-1 max-w-xl mx-4">

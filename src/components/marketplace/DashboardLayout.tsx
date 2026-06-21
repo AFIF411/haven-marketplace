@@ -207,7 +207,7 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
           <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
             <span className="text-primary-foreground text-[10px] font-bold">S</span>
           </div>
-          Souk DZ
+          OneClick Tijara
         </Link>
         <div className="h-5 w-px bg-border" />
         <span className="font-heading font-semibold text-sm truncate">{title}</span>

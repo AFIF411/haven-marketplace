@@ -1,5 +1,5 @@
 // ============================================================
-// Types métier — Souk DZ Marketplace
+// Types métier — OneClick Tijara Marketplace
 // Source unique de vérité pour le frontend.
 // La BDD Postgres externe peut mapper ces types tels quels.
 // ============================================================
