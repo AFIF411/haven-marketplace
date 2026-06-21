@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import type { Module } from "@/lib/permissions";
 import { ROLE_LABELS } from "@/lib/permissions";
+import brandLogo from "@/assets/logo-oneclick-tijara.png";
 
 type SidebarItem = { label: string; href: string; icon: ReactNode; module?: Module };
 type SidebarSection = { title?: string; items: SidebarItem[] };
