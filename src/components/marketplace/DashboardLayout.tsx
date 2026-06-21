@@ -205,7 +205,7 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
         </Link>
         <div className="h-5 w-px bg-border" />
         <Link to="/" className="flex items-center gap-1.5" aria-label="OneClick Tijara">
-          <img src="/src/assets/logo-oneclick-tijara.png" alt="OneClick Tijara" className="h-8 w-auto object-contain" />
+          <img src={brandLogo} alt="OneClick Tijara" className="h-8 w-auto object-contain" />
         </Link>
         <div className="h-5 w-px bg-border" />
         <span className="font-heading font-semibold text-sm truncate">{title}</span>
