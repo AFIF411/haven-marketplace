@@ -21,7 +21,7 @@ export default function InvoicePage() {
         <div className="bg-card text-card-foreground p-10 rounded-lg border shadow-sm">
           <div className="flex justify-between items-start">
             <div>
-              <div className="font-heading text-2xl font-bold text-primary">Souk DZ</div>
+              <div className="font-heading text-2xl font-bold text-primary">OneClick Tijara</div>
               <div className="text-xs text-muted-foreground mt-1">Marketplace algérienne<br />contact@soukdz.com</div>
             </div>
             <div className="text-end">
@@ -53,7 +53,7 @@ export default function InvoicePage() {
           </div>
 
           <div className="mt-10 pt-6 border-t text-xs text-muted-foreground text-center">
-            Merci de votre confiance — Souk DZ
+            Merci de votre confiance — OneClick Tijara
           </div>
         </div>
       </div>

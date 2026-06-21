@@ -21,7 +21,7 @@ export default function HomePage() {
   return (
     <MarketplaceLayout>
       <section className="relative overflow-hidden">
-        <img src={heroBanner} alt="Souk DZ Marketplace" className="w-full h-[320px] md:h-[420px] object-cover" width={1920} height={800} />
+        <img src={heroBanner} alt="OneClick Tijara Marketplace" className="w-full h-[320px] md:h-[420px] object-cover" width={1920} height={800} />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 to-foreground/20 flex items-center">
           <div className="container">
             <div className="max-w-lg">

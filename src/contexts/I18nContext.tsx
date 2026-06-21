@@ -32,7 +32,7 @@ const translations = {
   "home.trendingProducts": { fr: "Produits tendance", ar: "المنتجات الرائجة" },
   "home.discoverShops": { fr: "Boutiques à découvrir", ar: "متاجر للاكتشاف" },
   "home.cta.title": { fr: "Ouvrez votre boutique gratuitement", ar: "افتحوا متجركم مجاناً" },
-  "home.cta.subtitle": { fr: "Rejoignez des milliers de vendeurs algériens et développez votre activité sur Souk DZ.", ar: "انضموا لآلاف البائعين الجزائريين وطوّروا نشاطكم على سوق DZ." },
+  "home.cta.subtitle": { fr: "Rejoignez des milliers de vendeurs algériens et développez votre activité sur OneClick Tijara.", ar: "انضموا لآلاف البائعين الجزائريين وطوّروا نشاطكم على ون كليك تجارة." },
   "home.cta.button": { fr: "Commencer maintenant", ar: "ابدأ الآن" },
 
   // Common
@@ -134,7 +134,7 @@ const translations = {
 
   // Auth
   "auth.login": { fr: "Connexion", ar: "تسجيل الدخول" },
-  "auth.loginSubtitle": { fr: "Accédez à votre compte Souk DZ", ar: "ادخل إلى حسابك على سوق DZ" },
+  "auth.loginSubtitle": { fr: "Accédez à votre compte OneClick Tijara", ar: "ادخل إلى حسابك على ون كليك تجارة" },
   "auth.email": { fr: "Email", ar: "البريد الإلكتروني" },
   "auth.password": { fr: "Mot de passe", ar: "كلمة المرور" },
   "auth.forgotPassword": { fr: "Mot de passe oublié ?", ar: "نسيت كلمة المرور؟" },
@@ -142,7 +142,7 @@ const translations = {
   "auth.noAccount": { fr: "Pas encore de compte ?", ar: "ليس لديك حساب؟" },
   "auth.register": { fr: "S'inscrire", ar: "إنشاء حساب" },
   "auth.registerTitle": { fr: "Créer un compte", ar: "إنشاء حساب" },
-  "auth.registerSubtitle": { fr: "Rejoignez Souk DZ", ar: "انضم إلى سوق DZ" },
+  "auth.registerSubtitle": { fr: "Rejoignez OneClick Tijara", ar: "انضم إلى ون كليك تجارة" },
   "auth.registerButton": { fr: "Créer mon compte", ar: "إنشاء حسابي" },
   "auth.hasAccount": { fr: "Déjà un compte ?", ar: "لديك حساب بالفعل؟" },
   "auth.loginLink": { fr: "Se connecter", ar: "تسجيل الدخول" },
@@ -283,7 +283,7 @@ const translations = {
 
   // Vendor onboarding
   "onboarding.title": { fr: "Ouvrez votre boutique", ar: "افتح متجرك" },
-  "onboarding.subtitle": { fr: "En quelques minutes, commencez à vendre sur Souk DZ", ar: "في دقائق قليلة، ابدأ البيع على سوق DZ" },
+  "onboarding.subtitle": { fr: "En quelques minutes, commencez à vendre sur OneClick Tijara", ar: "في دقائق قليلة، ابدأ البيع على ون كليك تجارة" },
   "onboarding.shopInfo": { fr: "Informations de la boutique", ar: "معلومات المتجر" },
   "onboarding.shopName": { fr: "Nom de la boutique", ar: "اسم المتجر" },
   "onboarding.mainCategory": { fr: "Catégorie principale", ar: "الفئة الرئيسية" },

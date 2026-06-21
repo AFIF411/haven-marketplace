@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 export default function AdminSettingsPage() {
   return (
     <DashboardLayout type="admin" title="Paramètres plateforme">
-      <PageHeader title="Paramètres généraux" description="Configuration globale de Souk DZ." />
+      <PageHeader title="Paramètres généraux" description="Configuration globale de OneClick Tijara." />
       <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
         <Card>
           <CardHeader><CardTitle>Identité</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <div><Label>Nom de la plateforme</Label><Input defaultValue="Souk DZ" className="mt-1" /></div>
+            <div><Label>Nom de la plateforme</Label><Input defaultValue="OneClick Tijara" className="mt-1" /></div>
             <div><Label>Email contact</Label><Input defaultValue="contact@soukdz.com" className="mt-1" /></div>
             <div><Label>Devise</Label><Input defaultValue="DA (Dinar algérien)" className="mt-1" /></div>
           </CardContent>

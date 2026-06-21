@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import type { Module } from "@/lib/permissions";
 import { ROLE_LABELS } from "@/lib/permissions";
+import brandLogo from "@/assets/logo-oneclick-tijara.png";
 
 type SidebarItem = { label: string; href: string; icon: ReactNode; module?: Module };
 type SidebarSection = { title?: string; items: SidebarItem[] };
@@ -203,11 +204,8 @@ export function DashboardLayout({ children, type, title }: DashboardLayoutProps)
           <span className="hidden sm:inline">{t("sidebar.backToSite")}</span>
         </Link>
         <div className="h-5 w-px bg-border" />
-        <Link to="/" className="font-heading font-bold text-primary text-sm flex items-center gap-1.5">
-          <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground text-[10px] font-bold">S</span>
-          </div>
-          Souk DZ
+        <Link to="/" className="flex items-center gap-1.5" aria-label="OneClick Tijara">
+          <img src={brandLogo} alt="OneClick Tijara" className="h-8 w-auto object-contain" />
         </Link>
         <div className="h-5 w-px bg-border" />
         <span className="font-heading font-semibold text-sm truncate">{title}</span>
