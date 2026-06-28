@@ -22,6 +22,21 @@ export default function ClientDashboard() {
   return (
     <DashboardLayout type="client" title={t("sidebar.myAccount")}>
       <h1 className="font-heading text-xl font-bold mb-6">{t("client.hello")}, {user.firstName} 👋</h1>
+
+      {!roles.includes("vendeur") && (
+        <Link to="/account/become-vendor" className="group block mb-6 p-5 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/5 to-transparent hover:border-primary/60 transition-colors">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+              <Store className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex-1">
+              <p className="font-heading font-semibold">Devenez vendeur sur OneClick Tijara</p>
+              <p className="text-sm text-muted-foreground">Ouvrez votre boutique en ligne en quelques clics.</p>
+            </div>
+            <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+      )}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: t("client.orders"), value: "12", icon: ShoppingBag },
