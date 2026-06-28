@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
@@ -7,21 +7,28 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
 import { supabase } from "@/integrations/supabase/client";
 
+const redirectForRoles = (userRoles: string[]) => {
+  if (userRoles.includes("super_admin") || userRoles.includes("admin")) return "/admin";
+  if (userRoles.includes("vendeur")) return "/vendor";
+  return "/account";
+};
+
 export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, user, roles } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const redirectForRoles = (userRoles: string[]) => {
-    if (userRoles.includes("super_admin") || userRoles.includes("admin")) return "/admin";
-    if (userRoles.includes("vendeur")) return "/vendor";
-    return "/account";
-  };
+  // Auto-redirect if already authenticated
+  useEffect(() => {
+    if (user && roles.length > 0) {
+      navigate(redirectForRoles(roles), { replace: true });
+    }
+  }, [user, roles, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +41,7 @@ export default function LoginPage() {
       setError(result.error || "Erreur");
       return;
     }
+    // Fetch roles immediately to avoid waiting for context state propagation
     const { data: sessionData } = await supabase.auth.getSession();
     const uid = sessionData.session?.user.id;
     let userRoles: string[] = [];
@@ -42,7 +50,7 @@ export default function LoginPage() {
       userRoles = (data || []).map((r: { role: string }) => r.role);
     }
     setLoading(false);
-    navigate(redirectForRoles(userRoles));
+    navigate(redirectForRoles(userRoles), { replace: true });
   };
 
   return (
