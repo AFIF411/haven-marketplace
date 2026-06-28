@@ -48,8 +48,8 @@ export default function BecomeVendorPage() {
       return;
     }
     await refreshRoles();
-    toast({ title: "Boutique créée !", description: "Bienvenue dans l'espace vendeur." });
-    navigate("/vendor", { replace: true });
+    toast({ title: "Demande envoyée !", description: "Votre boutique est en attente de validation." });
+    navigate("/account/vendor-status", { replace: true });
   };
 
   return (
