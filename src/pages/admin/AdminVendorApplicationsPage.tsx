@@ -123,7 +123,7 @@ export default function AdminVendorApplicationsPage() {
       <PageHeader
         title="Demandes vendeurs"
         description="Approuver ou rejeter les demandes d'ouverture de boutique"
-        action={
+        actions={
           <Button variant="outline" size="sm" onClick={load}>
             <RefreshCcw className="h-4 w-4 me-2" /> Actualiser
           </Button>
