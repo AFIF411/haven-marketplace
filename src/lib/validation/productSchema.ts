@@ -12,7 +12,7 @@ export const productPublishSchema = z.object({
     .min(20, "Décrivez le produit (au moins 20 caractères) pour rassurer les clients")
     .max(5000, "Description trop longue (max 5000 caractères)"),
   price: z
-    .number({ invalid_type_error: "Prix invalide" })
+    .number()
     .positive("Le prix doit être supérieur à 0")
     .max(10_000_000, "Prix irréaliste"),
   original_price: z
@@ -21,7 +21,7 @@ export const productPublishSchema = z.object({
     .max(10_000_000)
     .optional(),
   stock: z
-    .number({ invalid_type_error: "Stock invalide" })
+    .number()
     .int("Le stock doit être un nombre entier")
     .nonnegative("Le stock ne peut pas être négatif"),
   sku: z
