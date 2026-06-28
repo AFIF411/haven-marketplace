@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Loader2, Save, Upload, X, Trash2, Eye } from "lucide-react";
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
+import { ArrowLeft, Loader2, Save, Upload, X, Trash2, Eye, AlertCircle, CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
 import { useTranslation } from "@/contexts/I18nContext";
 import { useVendorShop } from "@/hooks/useVendorShop";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { validateProductForPublish, type ValidationReport } from "@/lib/validation/productSchema";
 
 type Status = "active" | "draft" | "archived" | "out_of_stock";
 
