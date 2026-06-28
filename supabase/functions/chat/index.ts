@@ -1,4 +1,4 @@
-import { convertToModelMessages, streamText, type UIMessage } from "npm:ai";
+import { convertToModelMessages, streamText, tool, stepCountIs, type UIMessage } from "npm:ai";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { z } from "npm:zod";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
 
   const { messages }: { messages: UIMessage[] } = parsed.data;
 
-  // Get or create the single conversation for this user
+  // One conversation per user
   let conversationId: string;
   const { data: existingConv } = await supabase
     .from("conversations")
@@ -86,9 +86,12 @@ Deno.serve(async (req) => {
     conversationId = newConv.id;
   }
 
-  // Persist the latest user message if not already stored
-  const lastUserMessage = messages.filter((m) => m.role === "user").pop();
+  // Persist last user message
+  const lastUserMessage = messages.filter((m: any) => m.role === "user").pop() as any;
   if (lastUserMessage) {
+    const userText = typeof lastUserMessage.content === "string"
+      ? lastUserMessage.content
+      : (lastUserMessage.parts ?? []).map((p: any) => p.type === "text" ? p.text : "").join("");
     const { data: latestStored } = await supabase
       .from("chat_messages")
       .select("content")
@@ -97,15 +100,17 @@ Deno.serve(async (req) => {
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (latestStored?.content !== lastUserMessage.content) {
+    if (latestStored?.content !== userText && userText) {
       await supabase.from("chat_messages").insert({
         conversation_id: conversationId,
         role: "user",
-        content: lastUserMessage.content,
+        content: userText,
         parts: lastUserMessage.parts ?? [],
       });
     }
   }
+
+  const tavilyKey = Deno.env.get("TAVILY_API_KEY");
 
   const gateway = createLovableAiGatewayProvider(key);
   const model = gateway("google/gemini-3-flash-preview");
@@ -113,12 +118,53 @@ Deno.serve(async (req) => {
   const result = streamText({
     model,
     system:
-      "Tu es LIA, l'assistant IA de OneClick Tijara, une marketplace algérienne. Tu aides les vendeurs à créer des descriptions produit, optimiser leurs boutiques, générer des idées de promotions et répondre à leurs questions sur la plateforme. Réponds en français ou en arabe selon la langue de l'utilisateur. Sois concis, pratique, structuré et encourageant. Quand tu proposes des idées, donne des exemples concrets adaptés au marché algérien.",
+      "Tu es LIA, l'assistant IA de OneClick Tijara, une marketplace algérienne. Tu aides les vendeurs à créer des descriptions produit, optimiser leurs boutiques, générer des idées de promotions et répondre à leurs questions sur la plateforme. Réponds en français ou en arabe selon la langue de l'utilisateur. Sois concis, pratique, structuré et encourageant. Utilise l'outil web_search pour obtenir des informations à jour (tendances, prix marché, concurrents, événements) quand c'est pertinent. Adapte tes exemples au marché algérien (DZD, wilayas, goûts locaux).",
     messages: await convertToModelMessages(messages),
+    stopWhen: stepCountIs(50),
+    tools: tavilyKey ? {
+      web_search: tool({
+        description: "Recherche web en temps réel via Tavily. Utilise pour les tendances marché, prix concurrents, événements, actualités e-commerce, ou toute information récente.",
+        inputSchema: z.object({
+          query: z.string().describe("Requête de recherche concise et précise"),
+          max_results: z.number().int().min(1).max(8).default(5),
+        }),
+        execute: async ({ query, max_results }) => {
+          const res = await fetch("https://api.tavily.com/search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              api_key: tavilyKey,
+              query,
+              max_results,
+              search_depth: "basic",
+              include_answer: true,
+            }),
+          });
+          if (!res.ok) {
+            return { error: `Tavily ${res.status}` };
+          }
+          const data = await res.json();
+          return {
+            answer: data.answer,
+            results: (data.results ?? []).map((r: any) => ({
+              title: r.title,
+              url: r.url,
+              content: r.content,
+            })),
+          };
+        },
+      }),
+    } : undefined,
     async onFinish({ response }) {
       const assistantText = response.messages
-        .filter((m) => m.role === "assistant")
-        .map((m) => (typeof m.content === "string" ? m.content : ""))
+        .filter((m: any) => m.role === "assistant")
+        .map((m: any) => {
+          if (typeof m.content === "string") return m.content;
+          if (Array.isArray(m.content)) {
+            return m.content.map((c: any) => c.type === "text" ? c.text : "").join("");
+          }
+          return "";
+        })
         .join("\n");
       if (assistantText) {
         await supabase.from("chat_messages").insert({
