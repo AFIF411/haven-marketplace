@@ -1,4 +1,4 @@
-import { generateText, generateImage, Output } from "npm:ai";
+import { generateText, Output } from "npm:ai";
 import { z } from "npm:zod";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createLovableAiGatewayProvider } from "../_shared/ai-gateway.ts";
