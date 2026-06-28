@@ -205,7 +205,7 @@ export const shopsApi = {
     if (patch.nif !== undefined) payload.nif = patch.nif;
     if (patch.status !== undefined) payload.status = patch.status;
     if (patch.verified !== undefined) payload.verified = patch.verified;
-    const { data, error } = await supabase.from("shops").update(payload).eq("id", id).select("*").single();
+    const { data, error } = await supabase.from("shops").update(payload as never).eq("id", id).select("*").single();
     if (error) throw error;
     return mapShop(data as DbShop);
   },
@@ -236,7 +236,7 @@ export const categoriesApi = {
     if (patch.slug !== undefined) payload.slug = patch.slug;
     if (patch.icon !== undefined) payload.icon = patch.icon;
     if (patch.imageUrl !== undefined) payload.image_url = patch.imageUrl;
-    const { data, error } = await supabase.from("categories").update(payload).eq("id", id).select("*").single();
+    const { data, error } = await supabase.from("categories").update(payload as never).eq("id", id).select("*").single();
     if (error) throw error;
     return mapCategory(data as DbCategory);
   },
@@ -305,7 +305,7 @@ export const productsApi = {
     if (patch.attributes !== undefined) payload.attributes = patch.attributes;
     if (patch.badge !== undefined) payload.badge = patch.badge;
     if (patch.status !== undefined) payload.status = patch.status;
-    const { data, error } = await supabase.from("products").update(payload).eq("id", id).select("*, shops(name)").single();
+    const { data, error } = await supabase.from("products").update(payload as never).eq("id", id).select("*, shops(name)").single();
     if (error) throw error;
     return mapProduct(data as DbProduct);
   },
@@ -362,14 +362,14 @@ export const ordersApi = {
     if (filters.status) q = q.eq("status", filters.status);
     const { data, error } = await q;
     if (error) throw error;
-    let rows = (data as DbOrder[]).map(mapOrder);
+    let rows = (data as unknown as DbOrder[]).map(mapOrder);
     if (filters.shopId) rows = rows.filter(o => o.items.some(i => i.shopId === filters.shopId));
     return rows;
   },
   async get(id: ID): Promise<Order | null> {
     const { data, error } = await supabase.from("orders").select("*, order_items(*)").eq("id", id).maybeSingle();
     if (error) throw error;
-    return data ? mapOrder(data as DbOrder) : null;
+    return data ? mapOrder(data as unknown as DbOrder) : null;
   },
   async create(input: CreateOrderInput): Promise<Order> {
     const { data: session } = await supabase.auth.getUser();
@@ -409,7 +409,7 @@ export const ordersApi = {
   async updateStatus(id: ID, status: OrderStatus, _note?: string): Promise<Order> {
     const { data, error } = await supabase.from("orders").update({ status }).eq("id", id).select("*, order_items(*)").single();
     if (error) throw error;
-    return mapOrder(data as DbOrder);
+    return mapOrder(data as unknown as DbOrder);
   },
 };
 
@@ -485,7 +485,7 @@ export const addressesApi = {
       const { data: session } = await supabase.auth.getUser();
       if (session.user?.id) await supabase.from("addresses").update({ is_default: false }).eq("user_id", session.user.id);
     }
-    const { data, error } = await supabase.from("addresses").update(payload).eq("id", id).select("*").single();
+    const { data, error } = await supabase.from("addresses").update(payload as never).eq("id", id).select("*").single();
     if (error) throw error;
     return mapAddress(data as DbAddress);
   },
