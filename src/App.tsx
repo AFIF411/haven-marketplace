@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { VendorGate } from "@/components/VendorGate";
 import NotFound from "./pages/NotFound";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import { RoleSwitcher } from "@/components/common/RoleSwitcher";
@@ -199,35 +200,36 @@ const App = () => (
                   ESPACE VENDEUR — vendeur + admin uniquement
                   ============================================================ */}
               <Route path="/vendor/onboarding" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorOnboardingPage /></ProtectedRoute>} />
-              <Route path="/vendor" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorDashboard /></ProtectedRoute>} />
-              <Route path="/vendor/products" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorProductsManager /></ProtectedRoute>} />
-              <Route path="/vendor/products/new" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorAddProductPage /></ProtectedRoute>} />
-              <Route path="/vendor/orders" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorOrdersPage /></ProtectedRoute>} />
-              <Route path="/vendor/orders/:id" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorOrderDetailPage /></ProtectedRoute>} />
-              <Route path="/vendor/finances" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorFinancesPage /></ProtectedRoute>} />
-              <Route path="/vendor/clients" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorClientsPage /></ProtectedRoute>} />
-              <Route path="/vendor/sales" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorSalesManager /></ProtectedRoute>} />
-              <Route path="/vendor/stock" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorStockPage /></ProtectedRoute>} />
-              <Route path="/vendor/settings" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorShopSettingsPage /></ProtectedRoute>} />
-              <Route path="/vendor/promotions" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorPromotionsPage /></ProtectedRoute>} />
-              <Route path="/vendor/reviews" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorReviewsPage /></ProtectedRoute>} />
-              <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorAnalyticsPage /></ProtectedRoute>} />
-              <Route path="/vendor/subscription" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorSubscriptionPage /></ProtectedRoute>} />
-              <Route path="/vendor/expenses" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorExpensesPage /></ProtectedRoute>} />
-              <Route path="/vendor/suppliers" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorSuppliersPage /></ProtectedRoute>} />
-              <Route path="/vendor/shipping" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorShippingPage /></ProtectedRoute>} />
-              <Route path="/vendor/page-builder" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorPageBuilderPage /></ProtectedRoute>} />
-              <Route path="/vendor/ai-shop" element={<ProtectedRoute allowedRoles={['vendeur']}><AIShopGeneratorPage /></ProtectedRoute>} />
-              <Route path="/vendor/ai-shop-generator" element={<ProtectedRoute allowedRoles={['vendeur']}><AIShopGeneratorPage /></ProtectedRoute>} />
+              <Route path="/vendor" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorDashboard /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/products" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorProductsManager /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/products/new" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorAddProductPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/orders" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorOrdersPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/orders/:id" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorOrderDetailPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/finances" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorFinancesPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/clients" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorClientsPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/sales" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorSalesManager /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/stock" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorStockPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/settings" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorShopSettingsPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/promotions" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorPromotionsPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/reviews" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorReviewsPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/analytics" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorAnalyticsPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/subscription" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorSubscriptionPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/expenses" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorExpensesPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/suppliers" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorSuppliersPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/shipping" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorShippingPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/page-builder" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorPageBuilderPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/ai-shop" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIShopGeneratorPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/ai-shop-generator" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIShopGeneratorPage /></VendorGate></ProtectedRoute>} />
 
               {/* IA */}
-              <Route path="/ai/assistant" element={<ProtectedRoute allowedRoles={['vendeur']}><AIAssistantPage /></ProtectedRoute>} />
-              <Route path="/ai/generate-description" element={<ProtectedRoute allowedRoles={['vendeur']}><AIGenerateDescriptionPage /></ProtectedRoute>} />
-              <Route path="/ai/generate-categories" element={<ProtectedRoute allowedRoles={['vendeur']}><AIGenerateCategoriesPage /></ProtectedRoute>} />
-              <Route path="/ai/generate-page" element={<ProtectedRoute allowedRoles={['vendeur']}><AIGeneratePagePage /></ProtectedRoute>} />
-              <Route path="/ai/suggestions" element={<ProtectedRoute allowedRoles={['vendeur']}><AISuggestionsPage /></ProtectedRoute>} />
-              <Route path="/ai/history" element={<ProtectedRoute allowedRoles={['vendeur']}><AIHistoryPage /></ProtectedRoute>} />
-              <Route path="/ai/settings" element={<ProtectedRoute allowedRoles={['vendeur']}><AISettingsPage /></ProtectedRoute>} />
+              <Route path="/ai/assistant" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIAssistantPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/ai/generate-description" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIGenerateDescriptionPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/ai/generate-categories" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIGenerateCategoriesPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/ai/generate-page" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIGeneratePagePage /></VendorGate></ProtectedRoute>} />
+              <Route path="/ai/suggestions" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AISuggestionsPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/ai/history" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AIHistoryPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/ai/settings" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><AISettingsPage /></VendorGate></ProtectedRoute>} />
+
 
               {/* Admin legacy */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminDashboard /></ProtectedRoute>} />
