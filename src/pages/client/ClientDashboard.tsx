@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
 
 export default function ClientDashboard() {
-  const { user } = useAuth();
+  const { user, roles } = useAuth();
   const { t } = useTranslation();
 
   if (!user) return <Navigate to="/login" replace />;
