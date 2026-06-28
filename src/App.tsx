@@ -111,6 +111,7 @@ import AdminReportsModerationPage from "./pages/admin/AdminReportsModerationPage
 import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
 import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import AdminRolesPage from "./pages/admin/AdminRolesPage";
+import AdminVendorApplicationsPage from "./pages/admin/AdminVendorApplicationsPage";
 
 // Paiement & Système
 import InvoicePage from "./pages/payment/InvoicePage";
