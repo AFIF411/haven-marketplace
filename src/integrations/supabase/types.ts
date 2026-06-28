@@ -468,6 +468,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      become_vendeur: {
+        Args: {
+          _category: string
+          _description: string
+          _name: string
+          _phone: string
+          _wilaya: string
+        }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
