@@ -52,22 +52,24 @@ export default function AdminVendorApplicationsPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from("shops")
-      .select("id,name,slug,description,category,wilaya,phone,email,status,admin_note,created_at,owner_id, owner:profiles!shops_owner_id_fkey(first_name,last_name,email)")
+      .select("id,name,slug,description,category,wilaya,phone,email,status,admin_note,created_at,owner_id")
       .order("created_at", { ascending: false });
     if (error) {
-      // fallback without join if FK alias not resolved
-      const fallback = await supabase
-        .from("shops")
-        .select("id,name,slug,description,category,wilaya,phone,email,status,admin_note,created_at,owner_id")
-        .order("created_at", { ascending: false });
-      if (fallback.error) {
-        toast.error("Erreur de chargement");
-      } else {
-        setShops(fallback.data as ShopRow[]);
-      }
-    } else {
-      setShops(data as unknown as ShopRow[]);
+      toast.error("Erreur de chargement");
+      setLoading(false);
+      return;
     }
+    const rows = (data || []) as ShopRow[];
+    const ownerIds = Array.from(new Set(rows.map(r => r.owner_id)));
+    if (ownerIds.length) {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, first_name, last_name, email")
+        .in("id", ownerIds);
+      const byId = new Map((profiles || []).map(p => [p.id, p]));
+      rows.forEach(r => { r.owner = (byId.get(r.owner_id) as ShopRow["owner"]) || null; });
+    }
+    setShops(rows);
     setLoading(false);
   };
 
