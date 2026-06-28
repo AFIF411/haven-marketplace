@@ -259,7 +259,6 @@ const App = () => (
 
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <RoleSwitcher />
           </AuthProvider>
         </I18nProvider>
       </BrowserRouter>
