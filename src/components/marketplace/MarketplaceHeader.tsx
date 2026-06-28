@@ -71,9 +71,14 @@ export function MarketplaceHeader() {
           <Button variant="ghost" size="icon" asChild>
             <Link to="/wishlist"><Heart className="h-5 w-5" /></Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link to="/cart">
+          <Button variant="ghost" size="icon" asChild className="relative">
+            <Link to="/cart" aria-label={`Panier (${cartCount})`}>
               <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -end-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </Link>
           </Button>
 
