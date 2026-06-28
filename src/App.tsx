@@ -9,7 +9,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { VendorGate } from "@/components/VendorGate";
 import NotFound from "./pages/NotFound";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
-import { RoleSwitcher } from "@/components/common/RoleSwitcher";
+
 
 // Marketplace pages
 import HomePage from "./pages/HomePage";
@@ -259,7 +259,6 @@ const App = () => (
 
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <RoleSwitcher />
           </AuthProvider>
         </I18nProvider>
       </BrowserRouter>
