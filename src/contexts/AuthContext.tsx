@@ -119,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const setRoles = useCallback(async (newRoles: AppRole[]) => {
     if (!supabaseUser) return;
     await supabase.from("user_roles").delete().eq("user_id", supabaseUser.id);
-    const validRoles = newRoles.filter(r => r === "admin" || r === "vendeur" || r === "client") as ("admin"|"vendeur"|"client")[];
+    const validRoles = (newRoles as string[]).filter(r => r === "admin" || r === "vendeur" || r === "client") as ("admin"|"vendeur"|"client")[];
     if (validRoles.length > 0) {
       await supabase.from("user_roles").insert(validRoles.map(r => ({ user_id: supabaseUser.id, role: r })));
     }
