@@ -43,6 +43,8 @@ export default function VendorEditProductPage() {
     stock: 0, sku: "", images: [] as string[], status: "active" as Status,
   });
   const [imgUrl, setImgUrl] = useState("");
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [report, setReport] = useState<ValidationReport | null>(null);
 
   useEffect(() => {
     if (!id) return;
