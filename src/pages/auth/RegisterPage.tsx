@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
-import { Loader2 } from "lucide-react";
+import { Loader2, Store, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
 
