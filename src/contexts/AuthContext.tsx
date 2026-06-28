@@ -1,9 +1,11 @@
 // ============================================================
-// Contexte d'authentification — stockage localStorage.
-// Aucune intégration backend ; remplacer login/register/logout
-// par des appels API quand un serveur sera disponible.
+// Contexte d'authentification — branché sur Lovable Cloud.
+// Conserve l'interface utilisée partout dans l'app
+// (login/register/logout/roles/hasPermission/updateProfile).
 // ============================================================
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
+import type { User as SupaUser } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 import { AppRole, Module, Action, hasPermission as checkPermission, canAccessModule as checkModule } from "@/lib/permissions";
 
 interface User {
@@ -15,161 +17,138 @@ interface User {
   status: string;
 }
 
-interface StoredUser extends User {
-  password: string;
-  roles: AppRole[];
-}
-
 interface AuthContextType {
   user: User | null;
-  supabaseUser: null;
+  supabaseUser: SupaUser | null;
   roles: AppRole[];
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
+  logout: () => Promise<void>;
   hasPermission: (module: Module, action: Action) => boolean;
   canAccess: (module: Module) => boolean;
   isAdmin: boolean;
   isSuperAdmin: boolean;
   refreshRoles: () => Promise<void>;
-  /** Mettre à jour les rôles de l'utilisateur courant. */
-  setRoles: (roles: AppRole[]) => void;
-  /** Met à jour le profil de l'utilisateur courant (local). */
+  setRoles: (roles: AppRole[]) => Promise<void>;
   updateProfile: (patch: Partial<Pick<User, "firstName" | "lastName" | "email" | "phone">>) => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const USERS_KEY = "souk_users";
-const SESSION_KEY = "souk_session";
+async function loadProfile(supaUser: SupaUser): Promise<{ user: User; roles: AppRole[] }> {
+  const { data: profile } = await supabase
+    .from("profiles").select("*").eq("id", supaUser.id).maybeSingle();
+  const { data: roleRows } = await supabase
+    .from("user_roles").select("role").eq("user_id", supaUser.id);
 
-function readUsers(): StoredUser[] {
-  try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
-}
-function writeUsers(users: StoredUser[]) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-function readSession(): string | null {
-  return localStorage.getItem(SESSION_KEY);
-}
-function writeSession(userId: string | null) {
-  if (userId) localStorage.setItem(SESSION_KEY, userId);
-  else localStorage.removeItem(SESSION_KEY);
-}
-
-/** Purge les anciennes clés de stockage (migrations précédentes). */
-function purgeLegacyKeys() {
-  try {
-    [
-      "souk_mock_users", "souk_mock_session",
-      "souk_mock_users_v2", "souk_mock_session_v2",
-      "souk_business_db_v1",
-    ].forEach(k => localStorage.removeItem(k));
-  } catch {}
+  const roles = (roleRows ?? []).map(r => r.role as AppRole);
+  const user: User = {
+    id: supaUser.id,
+    firstName: profile?.first_name ?? "",
+    lastName: profile?.last_name ?? "",
+    email: profile?.email ?? supaUser.email ?? "",
+    phone: profile?.phone ?? "",
+    status: "active",
+  };
+  return { user, roles };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [supabaseUser, setSupabaseUser] = useState<SupaUser | null>(null);
   const [roles, setRolesState] = useState<AppRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    purgeLegacyKeys();
-    const sid = readSession();
-    if (sid) {
-      const u = readUsers().find(x => x.id === sid);
+    // Listener d'abord, puis chargement initial
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      const u = session?.user ?? null;
+      setSupabaseUser(u);
       if (u) {
-        const { password: _pw, roles: r, ...rest } = u;
-        setUser(rest);
-        setRolesState(r);
+        // Déférer pour ne pas bloquer le callback
+        setTimeout(() => {
+          loadProfile(u).then(({ user, roles }) => { setUser(user); setRolesState(roles); });
+        }, 0);
+      } else {
+        setUser(null); setRolesState([]);
       }
-    }
-    setIsLoading(false);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const u = session?.user ?? null;
+      setSupabaseUser(u);
+      if (u) loadProfile(u).then(({ user, roles }) => { setUser(user); setRolesState(roles); }).finally(() => setIsLoading(false));
+      else setIsLoading(false);
+    });
+
+    return () => { sub.subscription.unsubscribe(); };
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const users = readUsers();
-    const u = users.find(x => x.email.toLowerCase() === email.toLowerCase());
-    if (!u) return { success: false, error: "Compte introuvable" };
-    if (u.password !== password) return { success: false, error: "Mot de passe incorrect" };
-    const { password: _pw, roles: r, ...rest } = u;
-    writeSession(u.id);
-    setUser(rest);
-    setRolesState(r);
+  const login = useCallback(async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { success: false, error: error.message };
     return { success: true };
-  };
+  }, []);
 
-  const register = async (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => {
-    const users = readUsers();
-    if (users.some(x => x.email.toLowerCase() === data.email.toLowerCase())) {
-      return { success: false, error: "Email déjà utilisé" };
-    }
-    const newUser: StoredUser = {
-      id: `u-${Date.now()}`,
-      firstName: data.firstName, lastName: data.lastName,
-      email: data.email, phone: data.phone, password: data.password,
-      status: "active",
-      roles: ["viewer"],
-    };
-    users.push(newUser);
-    writeUsers(users);
-    writeSession(newUser.id);
-    const { password: _pw, roles: r, ...rest } = newUser;
-    setUser(rest);
-    setRolesState(r);
+  const register = useCallback(async (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => {
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+        data: { first_name: data.firstName, last_name: data.lastName, phone: data.phone },
+      },
+    });
+    if (error) return { success: false, error: error.message };
+    // Met à jour téléphone dans le profil (trigger n'inclut pas le phone)
     return { success: true };
-  };
+  }, []);
 
-  const logout = async () => {
-    writeSession(null);
-    setUser(null);
-    setRolesState([]);
-  };
-
-  const setRoles = useCallback((newRoles: AppRole[]) => {
-    if (!user) return;
-    const users = readUsers();
-    const u = users.find(x => x.id === user.id);
-    if (u) { u.roles = newRoles; writeUsers(users); }
-    setRolesState(newRoles);
-  }, [user]);
-
-  const hasPermissionFn = useCallback((module: Module, action: Action) => {
-    return checkPermission(roles, module, action);
-  }, [roles]);
-
-  const canAccess = useCallback((module: Module) => {
-    return checkModule(roles, module);
-  }, [roles]);
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+    setUser(null); setRolesState([]); setSupabaseUser(null);
+  }, []);
 
   const refreshRoles = useCallback(async () => {
-    if (!user) return;
-    const u = readUsers().find(x => x.id === user.id);
-    if (u) setRolesState(u.roles);
-  }, [user]);
+    if (!supabaseUser) return;
+    const { user, roles } = await loadProfile(supabaseUser);
+    setUser(user); setRolesState(roles);
+  }, [supabaseUser]);
+
+  const setRoles = useCallback(async (newRoles: AppRole[]) => {
+    if (!supabaseUser) return;
+    await supabase.from("user_roles").delete().eq("user_id", supabaseUser.id);
+    if (newRoles.length > 0) {
+      await supabase.from("user_roles").insert(newRoles.map(r => ({ user_id: supabaseUser.id, role: r })));
+    }
+    setRolesState(newRoles);
+  }, [supabaseUser]);
 
   const updateProfile = useCallback(async (patch: Partial<Pick<User, "firstName" | "lastName" | "email" | "phone">>) => {
-    if (!user) return { success: false, error: "Non connecté" };
-    const users = readUsers();
-    const u = users.find(x => x.id === user.id);
-    if (!u) return { success: false, error: "Utilisateur introuvable" };
-    if (patch.email && patch.email.toLowerCase() !== u.email.toLowerCase()
-        && users.some(x => x.email.toLowerCase() === patch.email!.toLowerCase())) {
-      return { success: false, error: "Email déjà utilisé" };
-    }
-    Object.assign(u, patch);
-    writeUsers(users);
-    setUser({ id: u.id, firstName: u.firstName, lastName: u.lastName, email: u.email, phone: u.phone, status: u.status });
+    if (!supabaseUser || !user) return { success: false, error: "Non connecté" };
+    const dbPatch: Record<string, unknown> = {};
+    if (patch.firstName !== undefined) dbPatch.first_name = patch.firstName;
+    if (patch.lastName !== undefined) dbPatch.last_name = patch.lastName;
+    if (patch.email !== undefined) dbPatch.email = patch.email;
+    if (patch.phone !== undefined) dbPatch.phone = patch.phone;
+    const { error } = await supabase.from("profiles").update(dbPatch).eq("id", supabaseUser.id);
+    if (error) return { success: false, error: error.message };
+    setUser({ ...user, ...patch });
     return { success: true };
-  }, [user]);
+  }, [supabaseUser, user]);
 
-  const isAdmin = roles.includes('admin') || roles.includes('super_admin');
-  const isSuperAdmin = roles.includes('super_admin');
+  const hasPermissionFn = useCallback((module: Module, action: Action) =>
+    checkPermission(roles, module, action), [roles]);
+  const canAccess = useCallback((module: Module) =>
+    checkModule(roles, module), [roles]);
+
+  const isAdmin = roles.includes("admin") || roles.includes("super_admin");
+  const isSuperAdmin = roles.includes("super_admin");
 
   return (
     <AuthContext.Provider value={{
-      user, supabaseUser: null, roles, isLoading,
+      user, supabaseUser, roles, isLoading,
       login, register, logout,
       hasPermission: hasPermissionFn, canAccess,
       isAdmin, isSuperAdmin, refreshRoles, setRoles, updateProfile,
