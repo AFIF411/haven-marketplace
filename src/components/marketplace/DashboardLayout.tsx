@@ -102,6 +102,7 @@ function useRoleBasedMenus() {
     {
       title: "Catalogue",
       items: [
+        { label: "Demandes vendeurs", href: "/admin/vendor-applications", icon: <Store className="h-4 w-4" /> },
         { label: "Boutiques", href: "/admin/shops", icon: <Store className="h-4 w-4" /> },
         { label: t("filter.vendors"), href: "/admin/vendors", icon: <Store className="h-4 w-4" /> },
         { label: t("vendor.products"), href: "/admin/products", icon: <Package className="h-4 w-4" /> },
