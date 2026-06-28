@@ -119,8 +119,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const setRoles = useCallback(async (newRoles: AppRole[]) => {
     if (!supabaseUser) return;
     await supabase.from("user_roles").delete().eq("user_id", supabaseUser.id);
-    if (newRoles.length > 0) {
-      await supabase.from("user_roles").insert(newRoles.map(r => ({ user_id: supabaseUser.id, role: r })));
+    const validRoles = newRoles.filter(r => r === "admin" || r === "vendeur" || r === "client") as ("admin"|"vendeur"|"client")[];
+    if (validRoles.length > 0) {
+      await supabase.from("user_roles").insert(validRoles.map(r => ({ user_id: supabaseUser.id, role: r })));
     }
     setRolesState(newRoles);
   }, [supabaseUser]);
@@ -132,11 +133,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (patch.lastName !== undefined) dbPatch.last_name = patch.lastName;
     if (patch.email !== undefined) dbPatch.email = patch.email;
     if (patch.phone !== undefined) dbPatch.phone = patch.phone;
-    const { error } = await supabase.from("profiles").update(dbPatch).eq("id", supabaseUser.id);
+    const { error } = await supabase.from("profiles").update(dbPatch as never).eq("id", supabaseUser.id);
     if (error) return { success: false, error: error.message };
     setUser({ ...user, ...patch });
     return { success: true };
   }, [supabaseUser, user]);
+
 
   const hasPermissionFn = useCallback((module: Module, action: Action) =>
     checkPermission(roles, module, action), [roles]);
