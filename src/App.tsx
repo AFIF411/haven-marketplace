@@ -160,6 +160,7 @@ const App = () => (
               {/* Auth */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/register/vendor" element={<VendorRegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/verify-email" element={<VerifyEmailPage />} />
