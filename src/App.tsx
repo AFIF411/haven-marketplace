@@ -111,6 +111,7 @@ import AdminReportsModerationPage from "./pages/admin/AdminReportsModerationPage
 import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
 import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import AdminRolesPage from "./pages/admin/AdminRolesPage";
+import AdminVendorApplicationsPage from "./pages/admin/AdminVendorApplicationsPage";
 
 // Paiement & Système
 import InvoicePage from "./pages/payment/InvoicePage";
@@ -228,6 +229,7 @@ const App = () => (
 
               {/* Admin legacy */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/vendor-applications" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminVendorApplicationsPage /></ProtectedRoute>} />
               <Route path="/admin/vendors" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminVendorsPage /></ProtectedRoute>} />
               <Route path="/admin/products" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminProductsPage /></ProtectedRoute>} />
               <Route path="/admin/orders" element={<ProtectedRoute allowedRoles={['super_admin', 'admin']}><AdminOrdersPage /></ProtectedRoute>} />
