@@ -45,14 +45,15 @@ export const PROTECTED_ROUTES: RouteGuard[] = [
   { path: "/admin/settings", roles: ["super_admin"] },
 
   // Client
-  { path: "/account", roles: [] }, // tout authentifié
-  { path: "/wishlist", roles: [] },
+  { path: "/account", roles: ["client", "viewer"] },
+  { path: "/wishlist", roles: ["client", "viewer"] },
 ];
 
 /** Détermine la route d'accueil par défaut selon le premier rôle de l'utilisateur. */
 export function defaultHomeForRole(roles: AppRole[]): string {
   if (roles.includes("super_admin") || roles.includes("admin")) return "/admin";
   if (roles.includes("vendeur") || roles.includes("manager")) return "/vendor";
+  if (roles.includes("client")) return "/account";
   if (roles.includes("caissier") || roles.includes("magasinier") || roles.includes("comptable") || roles.includes("viewer")) return "/manage";
   return "/account";
 }
