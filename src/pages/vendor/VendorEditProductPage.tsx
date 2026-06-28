@@ -84,10 +84,36 @@ export default function VendorEditProductPage() {
   const removeImage = (i: number) =>
     setForm(f => ({ ...f, images: f.images.filter((_, idx) => idx !== i) }));
 
+  const liveReport = useMemo<ValidationReport>(() => validateProductForPublish({
+    name: form.name,
+    description: form.description,
+    price: Number(form.price),
+    original_price: form.original_price ? Number(form.original_price) : undefined,
+    stock: Number(form.stock),
+    sku: form.sku || undefined,
+    images: form.images,
+  }), [form]);
+
+  const requestPublish = () => {
+    setReport(liveReport);
+    setReviewOpen(true);
+  };
+
   const save = async (republish: boolean) => {
     if (!product) return;
-    if (!form.name.trim() || form.price <= 0) {
-      toast({ title: "Champs requis", description: "Nom et prix obligatoires.", variant: "destructive" }); return;
+    // Draft save: only require a name + non-negative price
+    if (!republish) {
+      if (!form.name.trim()) {
+        toast({ title: "Nom requis", description: "Donnez un nom au brouillon.", variant: "destructive" });
+        return;
+      }
+    } else {
+      // Publishing: enforce full validation
+      if (!liveReport.valid) {
+        setReport(liveReport);
+        setReviewOpen(true);
+        return;
+      }
     }
     setSaving(true);
     const nextStatus: Status = republish
@@ -108,13 +134,12 @@ export default function VendorEditProductPage() {
     toast({
       title: republish
         ? (nextStatus === "active" ? "Produit republié ✓" : "Produit mis à jour (rupture de stock)")
-        : "Modifications enregistrées",
+        : "Brouillon enregistré",
       description: form.name,
     });
     setForm(f => ({ ...f, status: nextStatus }));
+    setReviewOpen(false);
   };
-
-  const quickStock = async (delta: number) => {
     if (!product) return;
     const next = Math.max(0, form.stock + delta);
     setForm(f => ({ ...f, stock: next }));
