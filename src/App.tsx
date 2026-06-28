@@ -25,6 +25,7 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 // Auth
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import VendorRegisterPage from "./pages/auth/VendorRegisterPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 
 // Client
