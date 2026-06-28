@@ -12,7 +12,7 @@ import { wilayas } from "@/data/mockData";
 import { toast } from "@/hooks/use-toast";
 
 export default function BecomeVendorPage() {
-  const { user, roles, refreshRoles } = useAuth();
+  const { user, refreshRoles } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
