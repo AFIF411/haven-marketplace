@@ -140,10 +140,16 @@ export default function VendorEditProductPage() {
     setForm(f => ({ ...f, status: nextStatus }));
     setReviewOpen(false);
   };
+
+  const quickStock = async (delta: number) => {
     if (!product) return;
     const next = Math.max(0, form.stock + delta);
     setForm(f => ({ ...f, stock: next }));
-    const nextStatus: Status = next > 0 ? "active" : "out_of_stock";
+    // Do not auto-publish drafts/archived from a stock change
+    const canAutoActivate = form.status === "active" || form.status === "out_of_stock";
+    const nextStatus: Status = canAutoActivate
+      ? (next > 0 ? "active" : "out_of_stock")
+      : form.status;
     const { error } = await supabase.from("products")
       .update({ stock: next, status: nextStatus }).eq("id", product.id);
     if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
