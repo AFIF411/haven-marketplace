@@ -1,14 +1,35 @@
-import { Star, ExternalLink } from "lucide-react";
+import { useParams, Link } from "react-router-dom";
+import { Star, ExternalLink, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { mockProducts, mockShops } from "@/data/mockData";
 import { useTranslation } from "@/contexts/I18nContext";
+import { usePublicShop, usePublicProducts } from "@/hooks/usePublicCatalog";
 
 export default function ShopDetailPage() {
-  const shop = mockShops[0];
+  const { id } = useParams();
   const { t } = useTranslation();
+  const { shop: dbShop, loading } = usePublicShop(id);
+  const { data: dbProducts } = usePublicProducts({ shopId: dbShop?.id });
+
+  // Fallback démo si l'id n'est pas un UUID en base
+  const fallback = mockShops.find(s => String(s.id) === String(id)) ?? mockShops[0];
+  const shop = dbShop ?? {
+    id: String(fallback.id), name: fallback.name, slug: "",
+    logo: fallback.logo, cover: fallback.cover, category: fallback.category,
+    rating: fallback.rating, reviews: fallback.reviews, products: fallback.products,
+    verified: !!fallback.verified, description: undefined, wilaya: undefined,
+  };
+
+  const productsToShow = dbProducts.length > 0
+    ? dbProducts
+    : (!dbShop ? mockProducts.map(p => ({ ...p, shop: shop.name })) : []);
+
+  if (loading) {
+    return <MarketplaceLayout><div className="container py-16 text-center"><Loader2 className="h-5 w-5 animate-spin inline" /></div></MarketplaceLayout>;
+  }
 
   return (
     <MarketplaceLayout>
@@ -25,7 +46,11 @@ export default function ShopDetailPage() {
               <h1 className="font-heading text-xl font-bold">{shop.name}</h1>
               {shop.verified && <Badge variant="success">{t("common.verified")}</Badge>}
             </div>
-            <p className="text-sm text-muted-foreground mt-0.5">{shop.category} · {shop.products} {t("common.products")}</p>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {shop.category} · {productsToShow.length} {t("common.products")}
+              {shop.wilaya ? ` · ${shop.wilaya}` : ""}
+            </p>
+            {shop.description && <p className="text-sm text-muted-foreground mt-1 max-w-2xl">{shop.description}</p>}
             <div className="flex items-center gap-1 mt-1">
               <Star className="h-4 w-4 fill-warning text-warning" />
               <span className="text-sm font-medium">{shop.rating}</span>
@@ -39,9 +64,15 @@ export default function ShopDetailPage() {
 
         <div className="py-6">
           <h2 className="font-heading text-lg font-bold mb-4">{t("shops.productsOf")} {shop.name}</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {mockProducts.map(p => <ProductCard key={p.id} {...p} shop={shop.name} />)}
-          </div>
+          {productsToShow.length === 0 ? (
+            <div className="text-center py-12 text-sm text-muted-foreground border rounded-lg">
+              Cette boutique n'a pas encore publié de produit.
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {productsToShow.map(p => <ProductCard key={p.id} {...p as any} />)}
+            </div>
+          )}
         </div>
       </div>
     </MarketplaceLayout>
