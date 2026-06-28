@@ -164,16 +164,16 @@ const App = () => (
               {/* ============================================================
                   ESPACE CLIENT — réservé aux clients (et admin pour preview)
                   ============================================================ */}
-              <Route path="/account" element={<ProtectedRoute allowedRoles={['viewer']}><ClientDashboard /></ProtectedRoute>} />
-              <Route path="/account/orders" element={<ProtectedRoute allowedRoles={['viewer']}><ClientOrdersPage /></ProtectedRoute>} />
-              <Route path="/account/orders/:id" element={<ProtectedRoute allowedRoles={['viewer']}><ClientOrderDetailPage /></ProtectedRoute>} />
-              <Route path="/account/orders/:id/tracking" element={<ProtectedRoute allowedRoles={['viewer']}><OrderTrackingPage /></ProtectedRoute>} />
-              <Route path="/account/profile" element={<ProtectedRoute allowedRoles={['viewer']}><ClientProfilePage /></ProtectedRoute>} />
-              <Route path="/account/addresses" element={<ProtectedRoute allowedRoles={['viewer']}><ClientAddressesPage /></ProtectedRoute>} />
-              <Route path="/account/notifications" element={<ProtectedRoute allowedRoles={['viewer']}><NotificationsPage /></ProtectedRoute>} />
-              <Route path="/account/support" element={<ProtectedRoute allowedRoles={['viewer']}><SupportPage /></ProtectedRoute>} />
-              <Route path="/account/payments" element={<ProtectedRoute allowedRoles={['viewer']}><PaymentHistoryPage /></ProtectedRoute>} />
-              <Route path="/wishlist" element={<ProtectedRoute allowedRoles={['viewer']}><WishlistPage /></ProtectedRoute>} />
+              <Route path="/account" element={<ProtectedRoute allowedRoles={['client','viewer']}><ClientDashboard /></ProtectedRoute>} />
+              <Route path="/account/orders" element={<ProtectedRoute allowedRoles={['client','viewer']}><ClientOrdersPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id" element={<ProtectedRoute allowedRoles={['client','viewer']}><ClientOrderDetailPage /></ProtectedRoute>} />
+              <Route path="/account/orders/:id/tracking" element={<ProtectedRoute allowedRoles={['client','viewer']}><OrderTrackingPage /></ProtectedRoute>} />
+              <Route path="/account/profile" element={<ProtectedRoute allowedRoles={['client','viewer']}><ClientProfilePage /></ProtectedRoute>} />
+              <Route path="/account/addresses" element={<ProtectedRoute allowedRoles={['client','viewer']}><ClientAddressesPage /></ProtectedRoute>} />
+              <Route path="/account/notifications" element={<ProtectedRoute allowedRoles={['client','viewer']}><NotificationsPage /></ProtectedRoute>} />
+              <Route path="/account/support" element={<ProtectedRoute allowedRoles={['client','viewer']}><SupportPage /></ProtectedRoute>} />
+              <Route path="/account/payments" element={<ProtectedRoute allowedRoles={['client','viewer']}><PaymentHistoryPage /></ProtectedRoute>} />
+              <Route path="/wishlist" element={<ProtectedRoute allowedRoles={['client','viewer']}><WishlistPage /></ProtectedRoute>} />
 
               {/* ============================================================
                   ESPACE GESTION (rétro-compat) — admin + super_admin uniquement

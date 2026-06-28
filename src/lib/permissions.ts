@@ -2,7 +2,7 @@
 // Système de permissions & rôles — OneClick Tijara
 // ========================================
 
-export type AppRole = 'super_admin' | 'admin' | 'manager' | 'vendeur' | 'caissier' | 'magasinier' | 'comptable' | 'viewer';
+export type AppRole = 'super_admin' | 'admin' | 'manager' | 'vendeur' | 'client' | 'caissier' | 'magasinier' | 'comptable' | 'viewer';
 
 export type Module = 
   | 'dashboard' | 'clients' | 'products' | 'stock' 
@@ -51,6 +51,17 @@ const PERMISSIONS: Record<AppRole, Record<Module, Action[]>> = {
     products: ['view', 'add', 'edit'],
     stock: ['view'],
     sales: ['view', 'add', 'edit', 'print'],
+    payments: ['view'],
+    reports: [],
+    settings: [],
+    users: [],
+  },
+  client: {
+    dashboard: ['view'],
+    clients: [],
+    products: ['view'],
+    stock: [],
+    sales: ['view'],
     payments: ['view'],
     reports: [],
     settings: [],
@@ -139,6 +150,7 @@ export const ROLE_LABELS: Record<AppRole, string> = {
   admin: 'Administrateur',
   manager: 'Manager',
   vendeur: 'Vendeur',
+  client: 'Client',
   caissier: 'Caissier',
   magasinier: 'Magasinier',
   comptable: 'Comptable',
@@ -168,7 +180,7 @@ export const ACTION_LABELS: Record<Action, string> = {
   export: 'Exporter',
 };
 
-export const ALL_ROLES: AppRole[] = ['super_admin', 'admin', 'manager', 'vendeur', 'caissier', 'magasinier', 'comptable', 'viewer'];
+export const ALL_ROLES: AppRole[] = ['super_admin', 'admin', 'manager', 'vendeur', 'client', 'caissier', 'magasinier', 'comptable', 'viewer'];
 
 /** Couleur de badge par rôle */
 export const ROLE_COLORS: Record<AppRole, string> = {
@@ -176,6 +188,7 @@ export const ROLE_COLORS: Record<AppRole, string> = {
   admin: 'bg-orange-100 text-orange-800 border-orange-200',
   manager: 'bg-blue-100 text-blue-800 border-blue-200',
   vendeur: 'bg-green-100 text-green-800 border-green-200',
+  client: 'bg-emerald-100 text-emerald-800 border-emerald-200',
   caissier: 'bg-purple-100 text-purple-800 border-purple-200',
   magasinier: 'bg-yellow-100 text-yellow-800 border-yellow-200',
   comptable: 'bg-cyan-100 text-cyan-800 border-cyan-200',
