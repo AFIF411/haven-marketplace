@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
+import { useCart } from "@/hooks/useMarketplace";
 import brandLogo from "@/assets/logo-oneclick-tijara.png";
 
 const categories = [
