@@ -4,17 +4,38 @@ import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { ShopCard } from "@/components/marketplace/ShopCard";
-import { mockProducts, mockShops, mockCategories } from "@/data/mockData";
+import { mockProducts, mockShops } from "@/data/mockData";
 import { useTranslation } from "@/contexts/I18nContext";
+import { useCategories } from "@/hooks/useMarketplace";
 import { usePublicShops, usePublicProducts } from "@/hooks/usePublicCatalog";
 import heroBanner from "@/assets/hero-banner.jpg";
+
+const fallbackPopularCategories = [
+  { id: "fallback-mode", name: "Mode", slug: "mode", icon: "👗" },
+  { id: "fallback-electronique", name: "Électronique", slug: "electronique", icon: "📱" },
+  { id: "fallback-maison", name: "Maison", slug: "maison", icon: "🏠" },
+  { id: "fallback-artisanat", name: "Artisanat", slug: "artisanat", icon: "🏺" },
+  { id: "fallback-beaute", name: "Beauté", slug: "beaute", icon: "✨" },
+  { id: "fallback-alimentation", name: "Alimentation", slug: "alimentation", icon: "🥘" },
+  { id: "fallback-sport", name: "Sport", slug: "sport", icon: "⚽" },
+  { id: "fallback-bebe", name: "Bébé", slug: "bebe", icon: "🧸" },
+];
 
 export default function HomePage() {
   const { t } = useTranslation();
   const { data: dbShops } = usePublicShops();
   const { data: dbProducts } = usePublicProducts();
+  const { data: dbCategories } = useCategories();
   const shopsToShow = [...dbShops, ...mockShops].slice(0, 6);
   const productsToShow = [...dbProducts, ...mockProducts].slice(0, 8);
+  const categoriesToShow = (dbCategories?.length ? dbCategories : fallbackPopularCategories).slice(0, 8);
+
+  const getCategoryCount = (cat: { id: string; slug: string; productsCount?: number }) => {
+    const realCount = dbProducts.filter((product) =>
+      product.category_id === cat.id || product.category_slug === cat.slug
+    ).length;
+    return realCount || cat.productsCount || 0;
+  };
 
   const features = [
     { icon: Truck, title: t("home.features.delivery"), desc: t("home.features.deliveryDesc") },
@@ -75,13 +96,19 @@ export default function HomePage() {
           </Button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-          {mockCategories.map(cat => (
-            <Link key={cat.name} to={`/categories/${cat.name.toLowerCase()}`} className="group text-center">
-              <div className="aspect-square rounded-lg overflow-hidden mb-2 bg-secondary">
-                <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          {categoriesToShow.map(cat => (
+            <Link key={cat.id} to={`/products?category=${encodeURIComponent(cat.slug)}`} className="group text-center">
+              <div className="aspect-square rounded-lg overflow-hidden mb-2 bg-secondary flex items-center justify-center">
+                {cat.imageUrl ? (
+                  <img src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                ) : (
+                  <span className="text-3xl md:text-4xl transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+                    {cat.icon || "🛍️"}
+                  </span>
+                )}
               </div>
               <p className="text-sm font-medium">{cat.name}</p>
-              <p className="text-xs text-muted-foreground">{cat.count.toLocaleString()} {t("common.articles")}</p>
+              <p className="text-xs text-muted-foreground">{getCategoryCount(cat).toLocaleString()} {t("common.articles")}</p>
             </Link>
           ))}
         </div>
