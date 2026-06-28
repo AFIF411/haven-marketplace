@@ -6,6 +6,7 @@
 // ============================================================
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { pickShopCover, pickShopLogo } from "@/lib/shopImages";
 
 export interface PublicShop {
   id: string;
