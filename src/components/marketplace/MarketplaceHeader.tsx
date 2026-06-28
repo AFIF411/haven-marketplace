@@ -15,6 +15,8 @@ export function MarketplaceHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
+  const { cart } = useCart();
+  const cartCount = cart.items.reduce((sum, it) => sum + (it.quantity || 0), 0);
   const { t, lang, setLang } = useTranslation();
   const navigate = useNavigate();
 
