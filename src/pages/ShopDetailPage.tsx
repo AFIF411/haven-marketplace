@@ -14,18 +14,14 @@ export default function ShopDetailPage() {
   const { shop: dbShop, loading } = usePublicShop(id);
   const { data: dbProducts } = usePublicProducts({ shopId: dbShop?.id });
 
-  // Fallback démo si l'id n'est pas un UUID en base
-  const fallback = mockShops.find(s => String(s.id) === String(id)) ?? mockShops[0];
-  const shop = dbShop ?? {
-    id: String(fallback.id), name: fallback.name, slug: "",
-    logo: fallback.logo, cover: fallback.cover, category: fallback.category,
-    rating: fallback.rating, reviews: fallback.reviews, products: fallback.products,
-    verified: !!fallback.verified, description: undefined, wilaya: undefined,
-  };
-
-  const productsToShow = dbProducts.length > 0
-    ? dbProducts
-    : (!dbShop ? mockProducts.map(p => ({ ...p, shop: shop.name })) : []);
+  if (loading) {
+    return <MarketplaceLayout><div className="container py-16 text-center"><Loader2 className="h-5 w-5 animate-spin inline" /></div></MarketplaceLayout>;
+  }
+  if (!dbShop) {
+    return <MarketplaceLayout><div className="container py-16 text-center text-sm text-muted-foreground">Boutique introuvable ou non publiée.</div></MarketplaceLayout>;
+  }
+  const shop = dbShop;
+  const productsToShow = dbProducts;
 
   if (loading) {
     return <MarketplaceLayout><div className="container py-16 text-center"><Loader2 className="h-5 w-5 animate-spin inline" /></div></MarketplaceLayout>;
