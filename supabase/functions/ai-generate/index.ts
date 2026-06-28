@@ -70,12 +70,23 @@ Deno.serve(async (req) => {
   let imageUrl: string | null = null;
   if (shouldGenerateImage) {
     try {
-      const { image } = await generateImage({
-        model: gateway.imageModel("google/gemini-3.1-flash-image"),
-        prompt: `Bannière élégante et minimaliste pour une boutique e-commerce algérienne nommée "${shop.name}". ${shop.tagline}. Style premium, fond clair, couleurs ${shop.colorPalette.primary}, ${shop.colorPalette.secondary}, ${shop.colorPalette.accent}. Sans texte.`,
-        size: "1024x1024",
+      const imgRes = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Lovable-API-Key": key,
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image-preview",
+          prompt: `Bannière élégante et minimaliste pour une boutique e-commerce algérienne nommée "${shop.name}". ${shop.tagline}. Style premium, fond clair, palette ${shop.colorPalette.primary}, ${shop.colorPalette.secondary}, ${shop.colorPalette.accent}. Sans texte.`,
+        }),
       });
-      imageUrl = image.base64;
+      if (imgRes.ok) {
+        const imgData = await imgRes.json();
+        imageUrl = imgData?.data?.[0]?.b64_json ?? null;
+      } else {
+        console.error("Image gen HTTP", imgRes.status, await imgRes.text());
+      }
     } catch (imgError) {
       console.error("Image generation failed:", imgError);
     }
