@@ -25,6 +25,7 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 // Auth
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import VendorRegisterPage from "./pages/auth/VendorRegisterPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 
 // Client
@@ -159,6 +160,7 @@ const App = () => (
               {/* Auth */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/register/vendor" element={<VendorRegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/verify-email" element={<VerifyEmailPage />} />

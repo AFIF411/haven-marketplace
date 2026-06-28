@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
-import { Loader2 } from "lucide-react";
+import { Loader2, Store, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
 
@@ -38,6 +38,14 @@ export default function RegisterPage() {
   return (
     <MarketplaceLayout>
       <div className="container py-16 max-w-sm">
+        <div className="grid grid-cols-2 gap-2 p-1 rounded-lg bg-secondary mb-6">
+          <button type="button" className="flex items-center justify-center gap-2 h-10 rounded-md text-sm font-medium bg-background shadow-sm">
+            <UserIcon className="h-4 w-4 text-primary" /> Client
+          </button>
+          <Link to="/register/vendor" className="flex items-center justify-center gap-2 h-10 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground">
+            <Store className="h-4 w-4" /> Vendeur
+          </Link>
+        </div>
         <h1 className="font-heading text-2xl font-bold text-center">{t("auth.registerTitle")}</h1>
         <p className="text-sm text-muted-foreground text-center mt-1">{t("auth.registerSubtitle")}</p>
         {error && (
