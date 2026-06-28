@@ -41,6 +41,7 @@ import VendorOnboardingPage from "./pages/vendor/VendorOnboardingPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
 import VendorProductsManager from "./pages/vendor/VendorProductsManager";
 import VendorAddProductPage from "./pages/vendor/VendorAddProductPage";
+import VendorEditProductPage from "./pages/vendor/VendorEditProductPage";
 import VendorOrdersPage from "./pages/vendor/VendorOrdersPage";
 import VendorFinancesPage from "./pages/vendor/VendorFinancesPage";
 import VendorClientsPage from "./pages/vendor/VendorClientsPage";
@@ -203,6 +204,7 @@ const App = () => (
               <Route path="/vendor" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorDashboard /></VendorGate></ProtectedRoute>} />
               <Route path="/vendor/products" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorProductsManager /></VendorGate></ProtectedRoute>} />
               <Route path="/vendor/products/new" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorAddProductPage /></VendorGate></ProtectedRoute>} />
+              <Route path="/vendor/products/:id/edit" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorEditProductPage /></VendorGate></ProtectedRoute>} />
               <Route path="/vendor/orders" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorOrdersPage /></VendorGate></ProtectedRoute>} />
               <Route path="/vendor/orders/:id" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorOrderDetailPage /></VendorGate></ProtectedRoute>} />
               <Route path="/vendor/finances" element={<ProtectedRoute allowedRoles={['vendeur']}><VendorGate><VendorFinancesPage /></VendorGate></ProtectedRoute>} />
