@@ -36,6 +36,9 @@ export interface PublicProduct {
   badge?: string;
   description?: string;
   stock?: number;
+  category_id?: string | null;
+  category?: string | null;
+  category_slug?: string | null;
 }
 
 const FALLBACK_IMG = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600";
@@ -76,7 +79,7 @@ export function usePublicProducts(opts?: { shopId?: string }) {
     (async () => {
       let q = supabase
         .from("products")
-        .select("id,shop_id,name,price,original_price,images,rating,reviews_count,badge,description,stock,shops!inner(name,status)")
+        .select("id,shop_id,name,price,original_price,images,rating,reviews_count,badge,description,stock,category_id,shops!inner(name,status),categories(name,slug)")
         .eq("status", "active")
         .eq("shops.status", "active")
         .order("created_at", { ascending: false });
@@ -96,6 +99,9 @@ export function usePublicProducts(opts?: { shopId?: string }) {
           badge: r.badge ?? undefined,
           description: r.description ?? undefined,
           stock: r.stock ?? 0,
+          category_id: r.category_id ?? null,
+          category: r.categories?.name ?? null,
+          category_slug: r.categories?.slug ?? null,
         };
       }));
       setLoading(false);
