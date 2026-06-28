@@ -3,14 +3,16 @@ import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { mockProducts, mockCategories } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
-import { Grid3X3, LayoutList } from "lucide-react";
+import { Grid3X3, LayoutList, Loader2 } from "lucide-react";
 import { useTranslation } from "@/contexts/I18nContext";
+import { usePublicProducts } from "@/hooks/usePublicCatalog";
 
 const PAGE_SIZE = 12;
-
 type Sort = "relevance" | "price-asc" | "price-desc" | "rating" | "newest";
 
 export default function ProductsPage() {
+  const { t } = useTranslation();
+  const { data: dbProducts, loading } = usePublicProducts();
   const [view, setView] = useState<"grid" | "list">("grid");
   const [category, setCategory] = useState<string | null>(null);
   const [minPriceInput, setMinPriceInput] = useState("");
@@ -19,10 +21,11 @@ export default function ProductsPage() {
   const [minRating, setMinRating] = useState<number | null>(null);
   const [sort, setSort] = useState<Sort>("relevance");
   const [page, setPage] = useState(1);
-  const { t } = useTranslation();
+
+  const allProducts = useMemo(() => [...dbProducts, ...mockProducts], [dbProducts]);
 
   const filtered = useMemo(() => {
-    let list = [...mockProducts];
+    let list = [...allProducts];
     if (category) list = list.filter(p => (p as any).category === category);
     if (priceRange.min != null) list = list.filter(p => p.price >= priceRange.min!);
     if (priceRange.max != null) list = list.filter(p => p.price <= priceRange.max!);
@@ -34,7 +37,7 @@ export default function ProductsPage() {
       case "newest": list.reverse(); break;
     }
     return list;
-  }, [category, priceRange, minRating, sort]);
+  }, [allProducts, category, priceRange, minRating, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -56,18 +59,13 @@ export default function ProductsPage() {
             <div>
               <h3 className="font-heading font-semibold text-sm mb-3">{t("nav.categories")}</h3>
               <div className="space-y-1">
-                <button
-                  onClick={() => { setCategory(null); setPage(1); }}
-                  className={`w-full text-start text-sm py-1.5 px-2 rounded-md hover:bg-accent transition-colors ${category === null ? 'bg-accent text-foreground font-medium' : 'text-muted-foreground'}`}
-                >
+                <button onClick={() => { setCategory(null); setPage(1); }}
+                  className={`w-full text-start text-sm py-1.5 px-2 rounded-md hover:bg-accent transition-colors ${category === null ? 'bg-accent text-foreground font-medium' : 'text-muted-foreground'}`}>
                   {t("filter.all")}
                 </button>
                 {mockCategories.map(c => (
-                  <button
-                    key={c.name}
-                    onClick={() => { setCategory(c.name); setPage(1); }}
-                    className={`w-full text-start text-sm py-1.5 px-2 rounded-md hover:bg-accent transition-colors ${category === c.name ? 'bg-accent text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
-                  >
+                  <button key={c.name} onClick={() => { setCategory(c.name); setPage(1); }}
+                    className={`w-full text-start text-sm py-1.5 px-2 rounded-md hover:bg-accent transition-colors ${category === c.name ? 'bg-accent text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}>
                     {c.name} <span className="text-xs">({c.count})</span>
                   </button>
                 ))}
@@ -81,61 +79,42 @@ export default function ProductsPage() {
               </div>
               <Button onClick={applyPrice} size="sm" variant="secondary" className="w-full mt-2">{t("common.apply")}</Button>
             </div>
-            <div>
-              <h3 className="font-heading font-semibold text-sm mb-3">{t("products.minRating")}</h3>
-              <div className="space-y-1">
-                <button
-                  onClick={() => { setMinRating(null); setPage(1); }}
-                  className={`w-full text-start text-sm py-1.5 px-2 rounded-md hover:bg-accent transition-colors ${minRating === null ? 'bg-accent text-foreground font-medium' : 'text-muted-foreground'}`}
-                >
-                  {t("filter.all")}
-                </button>
-                {[4, 3, 2].map(r => (
-                  <button
-                    key={r}
-                    onClick={() => { setMinRating(r); setPage(1); }}
-                    className={`w-full text-start text-sm py-1.5 px-2 rounded-md hover:bg-accent transition-colors ${minRating === r ? 'bg-accent text-foreground font-medium' : 'text-muted-foreground'}`}
-                  >
-                    {"★".repeat(r)}{"☆".repeat(5 - r)} {t("common.andMore")}
-                  </button>
-                ))}
-              </div>
-            </div>
           </aside>
 
           <div className="flex-1">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-sm text-muted-foreground">{filtered.length} {t("products.found")}</p>
+              <div>
+                <h1 className="font-heading text-xl font-bold">{t("nav.products")}</h1>
+                <p className="text-xs text-muted-foreground">{filtered.length} produit(s) — {dbProducts.length} publiés par les vendeurs</p>
+              </div>
               <div className="flex items-center gap-2">
-                <select value={sort} onChange={e => { setSort(e.target.value as Sort); setPage(1); }} className="h-9 px-3 rounded-md border text-sm bg-background">
-                  <option value="relevance">{t("products.relevance")}</option>
-                  <option value="price-asc">{t("products.priceAsc")}</option>
-                  <option value="price-desc">{t("products.priceDesc")}</option>
-                  <option value="rating">{t("products.bestRated")}</option>
-                  <option value="newest">{t("products.newest")}</option>
+                <select value={sort} onChange={e => setSort(e.target.value as Sort)} className="h-9 px-2 rounded-md border bg-background text-sm">
+                  <option value="relevance">Pertinence</option>
+                  <option value="price-asc">Prix croissant</option>
+                  <option value="price-desc">Prix décroissant</option>
+                  <option value="rating">Mieux notés</option>
+                  <option value="newest">Plus récents</option>
                 </select>
-                <Button size="icon" variant={view === "grid" ? "secondary" : "ghost"} className="h-9 w-9" onClick={() => setView("grid")}>
-                  <Grid3X3 className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant={view === "list" ? "secondary" : "ghost"} className="h-9 w-9" onClick={() => setView("list")}>
-                  <LayoutList className="h-4 w-4" />
-                </Button>
+                <Button size="icon" variant={view === "grid" ? "default" : "outline"} className="h-9 w-9" onClick={() => setView("grid")}><Grid3X3 className="h-4 w-4" /></Button>
+                <Button size="icon" variant={view === "list" ? "default" : "outline"} className="h-9 w-9" onClick={() => setView("list")}><LayoutList className="h-4 w-4" /></Button>
               </div>
             </div>
-            {pageItems.length === 0 ? (
-              <div className="text-center py-16 text-sm text-muted-foreground border rounded-lg">
-                Aucun produit ne correspond à ces filtres.
-              </div>
+
+            {loading ? (
+              <div className="text-center py-16 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin inline" /></div>
+            ) : pageItems.length === 0 ? (
+              <div className="text-center py-16 text-sm text-muted-foreground border rounded-lg">Aucun produit.</div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className={view === "grid" ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" : "space-y-3"}>
                 {pageItems.map(p => <ProductCard key={p.id} {...p} />)}
               </div>
             )}
+
             {totalPages > 1 && (
-              <div className="flex justify-center mt-8 gap-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
-                  <Button key={n} onClick={() => setPage(n)} size="sm" variant={n === safePage ? "default" : "ghost"} className="h-9 w-9 p-0">{n}</Button>
-                ))}
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <Button size="sm" variant="outline" disabled={safePage <= 1} onClick={() => setPage(safePage - 1)}>Précédent</Button>
+                <span className="text-sm">{safePage} / {totalPages}</span>
+                <Button size="sm" variant="outline" disabled={safePage >= totalPages} onClick={() => setPage(safePage + 1)}>Suivant</Button>
               </div>
             )}
           </div>

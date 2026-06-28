@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Star, Heart, ShoppingCart, Truck, Shield, Minus, Plus, ChevronRight } from "lucide-react";
+import { Star, Heart, ShoppingCart, Truck, Shield, Minus, Plus, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MarketplaceLayout } from "@/components/marketplace/MarketplaceLayout";
@@ -9,6 +9,7 @@ import { mockProducts, formatDZD } from "@/data/mockData";
 import { useTranslation } from "@/contexts/I18nContext";
 import { useCart, useWishlist } from "@/hooks/useMarketplace";
 import { toast } from "@/hooks/use-toast";
+import { usePublicProduct, usePublicProducts } from "@/hooks/usePublicCatalog";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -17,8 +18,15 @@ export default function ProductDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0);
   const { add } = useCart();
   const { has, toggle } = useWishlist();
+  const { product: dbProduct, loading } = usePublicProduct(id);
+  const { data: similar } = usePublicProducts({ shopId: dbProduct?.shop_id });
 
-  const product = mockProducts.find(p => String(p.id) === id) ?? mockProducts[0];
+  const mockMatch = mockProducts.find(p => String(p.id) === id) ?? mockProducts[0];
+  const product: any = dbProduct ?? mockMatch;
+
+  if (loading) {
+    return <MarketplaceLayout><div className="container py-16 text-center"><Loader2 className="h-5 w-5 animate-spin inline" /></div></MarketplaceLayout>;
+  }
 
   if (!product) {
     return (
@@ -32,13 +40,9 @@ export default function ProductDetailPage() {
     );
   }
 
-  const fallback = mockProducts.filter(p => p.id !== product.id);
-  const images = [
-    product.image,
-    fallback[0]?.image,
-    fallback[1]?.image,
-    fallback[2]?.image,
-  ].filter(Boolean) as string[];
+  const baseImages: string[] = dbProduct?.images?.length ? dbProduct.images : [product.image];
+  const fallbackImgs = mockProducts.filter(p => String(p.id) !== String(product.id)).map(p => p.image).slice(0, 3);
+  const images = [...baseImages, ...fallbackImgs].filter(Boolean) as string[];
 
   const isFav = has(String(product.id));
 
@@ -152,7 +156,7 @@ export default function ProductDetailPage() {
         <section className="mt-12">
           <h2 className="font-heading text-xl font-bold mb-4">{t("product.similar")}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {fallback.slice(0, 4).map(p => <ProductCard key={p.id} {...p} />)}
+            {(similar.length > 0 ? similar.filter(p => p.id !== product.id) : mockProducts.filter(p => String(p.id) !== String(product.id))).slice(0, 4).map((p: any) => <ProductCard key={p.id} {...p} />)}
           </div>
         </section>
       </div>

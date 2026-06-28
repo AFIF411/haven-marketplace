@@ -6,10 +6,15 @@ import { ProductCard } from "@/components/marketplace/ProductCard";
 import { ShopCard } from "@/components/marketplace/ShopCard";
 import { mockProducts, mockShops, mockCategories } from "@/data/mockData";
 import { useTranslation } from "@/contexts/I18nContext";
+import { usePublicShops, usePublicProducts } from "@/hooks/usePublicCatalog";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 export default function HomePage() {
   const { t } = useTranslation();
+  const { data: dbShops } = usePublicShops();
+  const { data: dbProducts } = usePublicProducts();
+  const shopsToShow = [...dbShops, ...mockShops].slice(0, 6);
+  const productsToShow = [...dbProducts, ...mockProducts].slice(0, 8);
 
   const features = [
     { icon: Truck, title: t("home.features.delivery"), desc: t("home.features.deliveryDesc") },
@@ -90,7 +95,7 @@ export default function HomePage() {
           </Button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {mockProducts.map(p => <ProductCard key={p.id} {...p} />)}
+          {productsToShow.map((p: any) => <ProductCard key={p.id} {...p} />)}
         </div>
       </section>
 
@@ -102,7 +107,7 @@ export default function HomePage() {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockShops.map(s => <ShopCard key={s.id} {...s} />)}
+          {shopsToShow.map((s: any) => <ShopCard key={s.id} {...s} />)}
         </div>
       </section>
 
