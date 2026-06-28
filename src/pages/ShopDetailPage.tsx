@@ -23,12 +23,6 @@ export default function ShopDetailPage() {
   const shop = dbShop;
   const productsToShow = dbProducts;
 
-  if (loading) {
-    return <MarketplaceLayout><div className="container py-16 text-center"><Loader2 className="h-5 w-5 animate-spin inline" /></div></MarketplaceLayout>;
-  }
-  if (!shop) {
-    return <MarketplaceLayout><div className="container py-16 text-center text-sm text-muted-foreground">Boutique introuvable ou non publiée.</div></MarketplaceLayout>;
-  }
 
   return (
     <MarketplaceLayout>
