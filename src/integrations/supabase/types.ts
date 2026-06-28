@@ -375,6 +375,7 @@ export type Database = {
       }
       shops: {
         Row: {
+          admin_note: string | null
           category: string | null
           cover_url: string | null
           created_at: string
@@ -397,6 +398,7 @@ export type Database = {
           wilaya: string | null
         }
         Insert: {
+          admin_note?: string | null
           category?: string | null
           cover_url?: string | null
           created_at?: string
@@ -419,6 +421,7 @@ export type Database = {
           wilaya?: string | null
         }
         Update: {
+          admin_note?: string | null
           category?: string | null
           cover_url?: string | null
           created_at?: string
