@@ -89,7 +89,7 @@ export default function ProductsPage() {
               </div>
               <div className="flex items-center gap-2">
                 <select value={sort} onChange={e => setSort(e.target.value as Sort)} className="h-9 px-2 rounded-md border bg-background text-sm">
-                  <option value="relevance">{t("products.sortRelevance") ?? "Pertinence"}</option>
+                  <option value="relevance">Pertinence</option>
                   <option value="price-asc">Prix croissant</option>
                   <option value="price-desc">Prix décroissant</option>
                   <option value="rating">Mieux notés</option>
