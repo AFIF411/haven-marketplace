@@ -6,6 +6,7 @@
 // ============================================================
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { pickShopCover, pickShopLogo } from "@/lib/shopImages";
 
 export interface PublicShop {
   id: string;
@@ -54,18 +55,38 @@ export function usePublicShops() {
         .select("id,name,slug,category,logo_url,cover_url,rating,reviews_count,products_count,verified,description,wilaya")
         .eq("status", "active")
         .order("created_at", { ascending: false });
-      setData((rows ?? []).map(r => ({
-        id: r.id, name: r.name, slug: r.slug,
-        category: r.category ?? "Général",
-        logo: r.logo_url ?? FALLBACK_LOGO,
-        cover: r.cover_url ?? FALLBACK_IMG,
-        rating: Number(r.rating ?? 0),
-        reviews: r.reviews_count ?? 0,
-        products: r.products_count ?? 0,
-        verified: !!r.verified,
-        description: r.description ?? undefined,
-        wilaya: r.wilaya ?? undefined,
-      })));
+      const shops = rows ?? [];
+      // Récupère la 1ère image produit publiée par boutique pour adapter la cover.
+      const ids = shops.map((s: any) => s.id);
+      const firstImageByShop: Record<string, string> = {};
+      if (ids.length) {
+        const { data: prods } = await supabase
+          .from("products")
+          .select("shop_id,images,created_at")
+          .in("shop_id", ids)
+          .eq("status", "active")
+          .order("created_at", { ascending: false });
+        for (const p of prods ?? []) {
+          const sid = (p as any).shop_id as string;
+          const imgs = Array.isArray((p as any).images) ? (p as any).images : [];
+          if (!firstImageByShop[sid] && imgs[0]) firstImageByShop[sid] = imgs[0];
+        }
+      }
+      setData(shops.map((r: any) => {
+        const productImage = firstImageByShop[r.id] ?? null;
+        return {
+          id: r.id, name: r.name, slug: r.slug,
+          category: r.category ?? "Général",
+          logo: pickShopLogo({ logo: r.logo_url, productImage, category: r.category, name: r.name }),
+          cover: pickShopCover({ cover: r.cover_url, productImage, category: r.category, name: r.name }),
+          rating: Number(r.rating ?? 0),
+          reviews: r.reviews_count ?? 0,
+          products: r.products_count ?? 0,
+          verified: !!r.verified,
+          description: r.description ?? undefined,
+          wilaya: r.wilaya ?? undefined,
+        };
+      }));
       setLoading(false);
     })();
   }, []);
@@ -121,11 +142,18 @@ export function usePublicShop(id?: string) {
         .select("id,name,slug,category,logo_url,cover_url,rating,reviews_count,products_count,verified,description,wilaya")
         .eq("id", id).eq("status", "active").maybeSingle();
       if (r) {
+        // 1ère image produit pour adapter le visuel
+        const { data: prod } = await supabase
+          .from("products")
+          .select("images")
+          .eq("shop_id", r.id).eq("status", "active")
+          .order("created_at", { ascending: false }).limit(1).maybeSingle();
+        const productImage = Array.isArray((prod as any)?.images) ? (prod as any).images[0] : null;
         setShop({
           id: r.id, name: r.name, slug: r.slug,
           category: r.category ?? "Général",
-          logo: r.logo_url ?? FALLBACK_LOGO,
-          cover: r.cover_url ?? FALLBACK_IMG,
+          logo: pickShopLogo({ logo: r.logo_url, productImage, category: r.category, name: r.name }),
+          cover: pickShopCover({ cover: r.cover_url, productImage, category: r.category, name: r.name }),
           rating: Number(r.rating ?? 0),
           reviews: r.reviews_count ?? 0,
           products: r.products_count ?? 0,
