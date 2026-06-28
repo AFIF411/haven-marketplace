@@ -60,11 +60,11 @@ Deno.serve(async (req) => {
   const { output: shop } = await generateText({
     model: textModel,
     system:
-      "Tu es un expert en création de boutiques e-commerce algériennes. Tu conçois des propositions de boutique complètes, avec un nom accrocheur, un slogan, une description, des catégories pertinentes, une palette de couleurs, des idées de produits et un message de bienvenue. Adapte tout au contexte algérien (DZD, wilayas, goûts locaux). Réponds en français.",
+      "Tu es un expert en création de boutiques e-commerce algériennes. Tu retournes STRICTEMENT un objet JSON correspondant au schéma fourni, avec les clés EXACTEMENT en anglais : name, tagline, description, categories, colorPalette (avec primary, secondary, accent en hex #RRGGBB), products (chaque produit a name, description, priceRange en DZD, category), welcomeMessage. Les VALEURS textuelles doivent être en français et adaptées au contexte algérien (DZD, wilayas, goûts locaux). N'utilise jamais de clés françaises.",
     output: Output.object({ schema: ShopSchema }),
     prompt: `Crée une proposition de boutique pour une activité nommée "${activityName}" qui vend des produits de type "${productType}". ${
       description ? `Description additionnelle : ${description}` : ""
-    }`,
+    } Rappel : clés en anglais (name, tagline, description, categories, colorPalette{primary,secondary,accent}, products[{name,description,priceRange,category}], welcomeMessage), valeurs en français.`,
   });
 
   let imageUrl: string | null = null;
