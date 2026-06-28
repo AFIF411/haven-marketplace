@@ -295,16 +295,115 @@ export default function VendorEditProductPage() {
           </div>
         </div>
 
+        {/* Banner: live validation summary */}
+        <div className={`rounded-lg border p-4 flex items-start gap-3 ${
+          liveReport.valid ? "bg-success/5 border-success/30" : "bg-destructive/5 border-destructive/30"
+        }`}>
+          {liveReport.valid
+            ? <CheckCircle2 className="h-5 w-5 text-success shrink-0 mt-0.5" />
+            : <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />}
+          <div className="text-sm">
+            <div className="font-medium">
+              {liveReport.valid
+                ? "Prêt à publier — toutes les vérifications sont vertes."
+                : `${liveReport.errors.length} problème(s) à corriger avant publication`}
+            </div>
+            {!liveReport.valid && (
+              <ul className="mt-1 list-disc ps-5 text-muted-foreground space-y-0.5">
+                {liveReport.errors.slice(0, 4).map((e, i) => (
+                  <li key={i}><span className="font-medium text-foreground">{e.field}</span> : {e.message}</li>
+                ))}
+              </ul>
+            )}
+            {liveReport.warnings.length > 0 && (
+              <div className="mt-2 text-xs text-muted-foreground flex items-start gap-1">
+                <AlertTriangle className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+                <span>{liveReport.warnings.length} avertissement(s) — voir détail à la publication.</span>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="flex gap-3 flex-wrap">
-          <Button size="lg" disabled={saving} onClick={() => save(true)}>
-            {saving ? <Loader2 className="h-4 w-4 me-2 animate-spin" /> : <Save className="h-4 w-4 me-2" />}
-            Enregistrer et republier
+          <Button size="lg" disabled={saving} onClick={requestPublish}>
+            <ShieldCheck className="h-4 w-4 me-2" />
+            Vérifier et republier
           </Button>
           <Button size="lg" variant="outline" disabled={saving} onClick={() => save(false)}>
-            Enregistrer sans republier
+            {saving ? <Loader2 className="h-4 w-4 me-2 animate-spin" /> : <Save className="h-4 w-4 me-2" />}
+            Enregistrer comme brouillon
           </Button>
         </div>
       </div>
+
+      {/* Pre-publish review dialog */}
+      <Dialog open={reviewOpen} onOpenChange={setReviewOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5" />
+              Validation avant republication
+            </DialogTitle>
+            <DialogDescription>
+              Nous vérifions vos données pour éviter qu'un produit soit publié avec des erreurs.
+            </DialogDescription>
+          </DialogHeader>
+
+          {report && (
+            <div className="space-y-4 text-sm">
+              {report.errors.length > 0 ? (
+                <div className="rounded-md border border-destructive/40 bg-destructive/5 p-3">
+                  <div className="flex items-center gap-2 font-medium text-destructive mb-2">
+                    <AlertCircle className="h-4 w-4" /> Erreurs bloquantes
+                  </div>
+                  <ul className="list-disc ps-5 space-y-1">
+                    {report.errors.map((e, i) => (
+                      <li key={i}><span className="font-medium">{e.field}</span> : {e.message}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <div className="rounded-md border border-success/40 bg-success/5 p-3 flex items-center gap-2 text-success">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span className="font-medium">Toutes les vérifications sont valides.</span>
+                </div>
+              )}
+
+              {report.warnings.length > 0 && (
+                <div className="rounded-md border border-warning/40 bg-warning/5 p-3">
+                  <div className="flex items-center gap-2 font-medium text-warning mb-2">
+                    <AlertTriangle className="h-4 w-4" /> Avertissements (non bloquants)
+                  </div>
+                  <ul className="list-disc ps-5 space-y-1 text-muted-foreground">
+                    {report.warnings.map((w, i) => <li key={i}>{w}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              <div className="rounded-md bg-muted/40 p-3 text-xs text-muted-foreground">
+                Après confirmation, le statut deviendra
+                <Badge variant="secondary" className="mx-1">
+                  {form.stock > 0 ? "Publié" : "Rupture de stock"}
+                </Badge>
+                et le produit sera visible {form.stock > 0 ? "immédiatement" : "(masqué tant que le stock = 0)"} dans la boutique.
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setReviewOpen(false)}>
+              Corriger
+            </Button>
+            <Button
+              disabled={saving || !report?.valid}
+              onClick={() => save(true)}
+            >
+              {saving ? <Loader2 className="h-4 w-4 me-2 animate-spin" /> : <ShieldCheck className="h-4 w-4 me-2" />}
+              Confirmer la republication
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
