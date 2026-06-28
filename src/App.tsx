@@ -83,6 +83,7 @@ import NotificationsPage from "./pages/client/NotificationsPage";
 import SupportPage from "./pages/client/SupportPage";
 import PaymentHistoryPage from "./pages/client/PaymentHistoryPage";
 import BecomeVendorPage from "./pages/client/BecomeVendorPage";
+import VendorApplicationStatusPage from "./pages/client/VendorApplicationStatusPage";
 
 // Vendor additionnel
 import VendorSubscriptionPage from "./pages/vendor/VendorSubscriptionPage";
@@ -175,6 +176,7 @@ const App = () => (
               <Route path="/account/support" element={<ProtectedRoute allowedRoles={['client','viewer']}><SupportPage /></ProtectedRoute>} />
               <Route path="/account/payments" element={<ProtectedRoute allowedRoles={['client','viewer']}><PaymentHistoryPage /></ProtectedRoute>} />
               <Route path="/account/become-vendor" element={<ProtectedRoute allowedRoles={['client','viewer']}><BecomeVendorPage /></ProtectedRoute>} />
+              <Route path="/account/vendor-status" element={<ProtectedRoute allowedRoles={['client','viewer','vendeur']}><VendorApplicationStatusPage /></ProtectedRoute>} />
               <Route path="/wishlist" element={<ProtectedRoute allowedRoles={['client','viewer']}><WishlistPage /></ProtectedRoute>} />
 
               {/* ============================================================
