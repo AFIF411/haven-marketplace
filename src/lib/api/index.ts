@@ -380,18 +380,19 @@ export const ordersApi = {
     const total = subtotal + input.shippingFee - (input.discount || 0);
     const number = `CMD-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
 
-    const { data: order, error: oErr } = await supabase.from("orders").insert({
+    const orderInsert = {
       number, user_id: userId,
       customer_name: `${input.shippingAddress.firstName} ${input.shippingAddress.lastName}`,
       customer_phone: input.shippingAddress.phone,
       subtotal, shipping_fee: input.shippingFee,
       discount: input.discount || 0, total,
-      shipping_address: input.shippingAddress as unknown as Record<string, unknown>,
+      shipping_address: input.shippingAddress as unknown,
       delivery_mode: input.deliveryMode,
       payment_method: input.paymentMethod,
-      payment_status: input.paymentMethod === "cod" ? "unpaid" : "paid",
-      status: "pending", notes: input.notes,
-    }).select("*").single();
+      payment_status: input.paymentMethod === "cod" ? "unpaid" : "paid" as const,
+      status: "pending" as const, notes: input.notes,
+    };
+    const { data: order, error: oErr } = await supabase.from("orders").insert(orderInsert as never).select("*").single();
     if (oErr) throw oErr;
 
     const itemsPayload = input.items.map(i => ({
