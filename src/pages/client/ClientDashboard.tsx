@@ -1,5 +1,5 @@
 import { Link, Navigate } from "react-router-dom";
-import { ShoppingBag, Heart, MapPin, Star } from "lucide-react";
+import { ShoppingBag, Heart, MapPin, Star, Store, ArrowRight } from "lucide-react";
 import { DashboardLayout } from "@/components/marketplace/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
 import { mockOrders, formatDZD } from "@/data/mockData";
