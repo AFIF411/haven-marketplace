@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { VendorGate } from "@/components/VendorGate";
 import NotFound from "./pages/NotFound";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import { RoleSwitcher } from "@/components/common/RoleSwitcher";
