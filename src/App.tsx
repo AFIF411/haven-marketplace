@@ -82,6 +82,7 @@ import OrderTrackingPage from "./pages/client/OrderTrackingPage";
 import NotificationsPage from "./pages/client/NotificationsPage";
 import SupportPage from "./pages/client/SupportPage";
 import PaymentHistoryPage from "./pages/client/PaymentHistoryPage";
+import BecomeVendorPage from "./pages/client/BecomeVendorPage";
 
 // Vendor additionnel
 import VendorSubscriptionPage from "./pages/vendor/VendorSubscriptionPage";
