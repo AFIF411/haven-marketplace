@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/contexts/I18nContext";
+import { useCart } from "@/hooks/useMarketplace";
 import brandLogo from "@/assets/logo-oneclick-tijara.png";
 
 const categories = [
@@ -14,6 +15,8 @@ export function MarketplaceHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
+  const { cart } = useCart();
+  const cartCount = cart.items.reduce((sum, it) => sum + (it.quantity || 0), 0);
   const { t, lang, setLang } = useTranslation();
   const navigate = useNavigate();
 
@@ -68,9 +71,14 @@ export function MarketplaceHeader() {
           <Button variant="ghost" size="icon" asChild>
             <Link to="/wishlist"><Heart className="h-5 w-5" /></Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link to="/cart">
+          <Button variant="ghost" size="icon" asChild className="relative">
+            <Link to="/cart" aria-label={`Panier (${cartCount})`}>
               <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -end-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </Link>
           </Button>
 

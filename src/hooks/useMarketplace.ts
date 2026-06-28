@@ -41,13 +41,23 @@ export const useCategories = () => useAsync<Category[]>(() => categoriesApi.list
 export function useCart() {
   const [cart, setCart] = useState<Cart>({ items: [], subtotal: 0, shipping: 0, total: 0 });
   const refresh = useCallback(() => cartApi.get().then(setCart), []);
-  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => {
+    refresh();
+    const handler = () => refresh();
+    window.addEventListener("cart:changed", handler);
+    return () => window.removeEventListener("cart:changed", handler);
+  }, [refresh]);
+  const broadcast = (next: Cart) => {
+    setCart(next);
+    window.dispatchEvent(new CustomEvent("cart:changed"));
+    return next;
+  };
   return {
     cart,
-    add: async (...args: Parameters<typeof cartApi.add>) => setCart(await cartApi.add(...args)),
-    updateQty: async (pid: ID, q: number) => setCart(await cartApi.updateQty(pid, q)),
-    remove: async (pid: ID) => setCart(await cartApi.remove(pid)),
-    clear: async () => setCart(await cartApi.clear()),
+    add: async (...args: Parameters<typeof cartApi.add>) => broadcast(await cartApi.add(...args)),
+    updateQty: async (pid: ID, q: number) => broadcast(await cartApi.updateQty(pid, q)),
+    remove: async (pid: ID) => broadcast(await cartApi.remove(pid)),
+    clear: async () => broadcast(await cartApi.clear()),
     refresh,
   };
 }
