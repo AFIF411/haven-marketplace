@@ -36,6 +36,9 @@ export interface PublicProduct {
   badge?: string;
   description?: string;
   stock?: number;
+  category_id?: string | null;
+  category?: string | null;
+  category_slug?: string | null;
 }
 
 const FALLBACK_IMG = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600";
