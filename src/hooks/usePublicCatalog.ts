@@ -142,11 +142,18 @@ export function usePublicShop(id?: string) {
         .select("id,name,slug,category,logo_url,cover_url,rating,reviews_count,products_count,verified,description,wilaya")
         .eq("id", id).eq("status", "active").maybeSingle();
       if (r) {
+        // 1ère image produit pour adapter le visuel
+        const { data: prod } = await supabase
+          .from("products")
+          .select("images")
+          .eq("shop_id", r.id).eq("status", "active")
+          .order("created_at", { ascending: false }).limit(1).maybeSingle();
+        const productImage = Array.isArray((prod as any)?.images) ? (prod as any).images[0] : null;
         setShop({
           id: r.id, name: r.name, slug: r.slug,
           category: r.category ?? "Général",
-          logo: r.logo_url ?? FALLBACK_LOGO,
-          cover: r.cover_url ?? FALLBACK_IMG,
+          logo: pickShopLogo({ logo: r.logo_url, productImage, category: r.category, name: r.name }),
+          cover: pickShopCover({ cover: r.cover_url, productImage, category: r.category, name: r.name }),
           rating: Number(r.rating ?? 0),
           reviews: r.reviews_count ?? 0,
           products: r.products_count ?? 0,
