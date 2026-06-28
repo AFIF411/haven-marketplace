@@ -156,7 +156,7 @@ export default function ProductDetailPage() {
         <section className="mt-12">
           <h2 className="font-heading text-xl font-bold mb-4">{t("product.similar")}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {fallback.slice(0, 4).map(p => <ProductCard key={p.id} {...p} />)}
+            {(similar.length > 0 ? similar.filter(p => p.id !== product.id) : mockProducts.filter(p => String(p.id) !== String(product.id))).slice(0, 4).map((p: any) => <ProductCard key={p.id} {...p} />)}
           </div>
         </section>
       </div>
