@@ -38,17 +38,14 @@ export function useVendorShop() {
       if (!shopRow) { setLoading(false); return; }
       setShop(shopRow as VendorShopSummary);
 
-      const [{ count: productCount }, { data: orders }] = await Promise.all([
-        supabase.from("products").select("id", { count: "exact", head: true }).eq("shop_id", shopRow.id),
-        supabase.from("orders").select("id, total").eq("shop_id", shopRow.id),
-      ]);
+      const { count: productCount } = await supabase
+        .from("products").select("id", { count: "exact", head: true }).eq("shop_id", shopRow.id);
 
       if (cancelled) return;
-      const revenue = (orders ?? []).reduce((s, o: { total: number | null }) => s + Number(o.total ?? 0), 0);
       setStats({
         productCount: productCount ?? 0,
-        orderCount: orders?.length ?? 0,
-        revenue,
+        orderCount: 0,
+        revenue: 0,
         visitorCount: 0,
       });
       setLoading(false);
