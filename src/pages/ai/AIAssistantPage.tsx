@@ -25,10 +25,14 @@ export default function AIAssistantPage() {
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({
       api: `${SUPABASE_URL}/functions/v1/chat`,
-      headers: () => ({
-        Authorization: `Bearer ${token ?? SUPABASE_KEY}`,
-        apikey: SUPABASE_KEY,
-      }),
+      headers: async () => {
+        const { data } = await supabase.auth.getSession();
+        const access = data.session?.access_token;
+        return {
+          Authorization: `Bearer ${access ?? SUPABASE_KEY}`,
+          apikey: SUPABASE_KEY,
+        };
+      },
     }),
     onError: (e) => toast({ title: "Erreur IA", description: e.message, variant: "destructive" }),
   });
