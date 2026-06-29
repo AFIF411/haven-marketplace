@@ -109,13 +109,15 @@ export function usePublicProducts(opts?: { shopId?: string }) {
       if (opts?.shopId) q = q.eq("shop_id", opts.shopId);
       const { data: rows } = await q;
       setData((rows ?? []).map((r: any) => {
-        const imgs = Array.isArray(r.images) ? r.images : [];
+        const imgs = Array.isArray(r.images) ? r.images.filter(Boolean) : [];
+        const catName = r.categories?.name ?? null;
+        const smart = pickProductImage({ name: r.name, category: catName });
         return {
           id: r.id, shop_id: r.shop_id, name: r.name,
           price: Number(r.price),
           originalPrice: r.original_price ? Number(r.original_price) : undefined,
-          image: imgs[0] ?? FALLBACK_IMG,
-          images: imgs,
+          image: imgs[0] ?? smart,
+          images: imgs.length ? imgs : [smart],
           rating: Number(r.rating ?? 0),
           reviews: r.reviews_count ?? 0,
           shop: r.shops?.name ?? "Boutique",
@@ -123,10 +125,11 @@ export function usePublicProducts(opts?: { shopId?: string }) {
           description: r.description ?? undefined,
           stock: r.stock ?? 0,
           category_id: r.category_id ?? null,
-          category: r.categories?.name ?? null,
+          category: catName,
           category_slug: r.categories?.slug ?? null,
         };
       }));
+
       setLoading(false);
     })();
   }, [opts?.shopId]);
