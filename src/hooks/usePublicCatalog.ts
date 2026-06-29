@@ -7,6 +7,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { pickShopCover, pickShopLogo } from "@/lib/shopImages";
+import { pickProductImage } from "@/lib/productImages";
+
 
 export interface PublicShop {
   id: string;
@@ -107,13 +109,15 @@ export function usePublicProducts(opts?: { shopId?: string }) {
       if (opts?.shopId) q = q.eq("shop_id", opts.shopId);
       const { data: rows } = await q;
       setData((rows ?? []).map((r: any) => {
-        const imgs = Array.isArray(r.images) ? r.images : [];
+        const imgs = Array.isArray(r.images) ? r.images.filter(Boolean) : [];
+        const catName = r.categories?.name ?? null;
+        const smart = pickProductImage({ name: r.name, category: catName });
         return {
           id: r.id, shop_id: r.shop_id, name: r.name,
           price: Number(r.price),
           originalPrice: r.original_price ? Number(r.original_price) : undefined,
-          image: imgs[0] ?? FALLBACK_IMG,
-          images: imgs,
+          image: imgs[0] ?? smart,
+          images: imgs.length ? imgs : [smart],
           rating: Number(r.rating ?? 0),
           reviews: r.reviews_count ?? 0,
           shop: r.shops?.name ?? "Boutique",
@@ -121,10 +125,11 @@ export function usePublicProducts(opts?: { shopId?: string }) {
           description: r.description ?? undefined,
           stock: r.stock ?? 0,
           category_id: r.category_id ?? null,
-          category: r.categories?.name ?? null,
+          category: catName,
           category_slug: r.categories?.slug ?? null,
         };
       }));
+
       setLoading(false);
     })();
   }, [opts?.shopId]);
@@ -179,13 +184,14 @@ export function usePublicProduct(id?: string) {
         .select("id,shop_id,name,price,original_price,images,rating,reviews_count,badge,description,stock,shops!inner(name,status)")
         .eq("id", id).eq("status", "active").maybeSingle();
       if (r) {
-        const imgs = Array.isArray((r as any).images) ? (r as any).images : [];
+        const imgs = Array.isArray((r as any).images) ? (r as any).images.filter(Boolean) : [];
+        const smart = pickProductImage({ name: r.name });
         setProduct({
           id: r.id, shop_id: (r as any).shop_id, name: r.name,
           price: Number(r.price),
           originalPrice: (r as any).original_price ? Number((r as any).original_price) : undefined,
-          image: imgs[0] ?? FALLBACK_IMG,
-          images: imgs,
+          image: imgs[0] ?? smart,
+          images: imgs.length ? imgs : [smart],
           rating: Number(r.rating ?? 0),
           reviews: (r as any).reviews_count ?? 0,
           shop: (r as any).shops?.name ?? "Boutique",
@@ -193,6 +199,7 @@ export function usePublicProduct(id?: string) {
           description: r.description ?? undefined,
           stock: (r as any).stock ?? 0,
         });
+
       }
       setLoading(false);
     })();
