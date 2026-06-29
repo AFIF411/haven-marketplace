@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { pickShopCover, pickShopLogo } from "@/lib/shopImages";
-import { pickProductImage } from "@/lib/productImages";
+import { pickProductImage, resolveProductImage } from "@/lib/productImages";
 
 
 export interface PublicShop {
