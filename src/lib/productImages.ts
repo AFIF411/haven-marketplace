@@ -81,3 +81,32 @@ export function pickProductImage(opts: {
   }
   return DEFAULT;
 }
+
+/** True si le nom du produit correspond à un mot-clé image connu. */
+export function hasKeywordMatch(name?: string | null, category?: string | null): boolean {
+  const hay = `${norm(name)} ${norm(category)}`;
+  return KEYWORD_IMAGES.some(([rx]) => rx.test(hay));
+}
+
+/**
+ * Résout l'image finale d'un produit.
+ * - Une image uploadée par le vendeur (non Unsplash/placeholder) est prioritaire.
+ * - Sinon, si le nom matche un mot-clé connu, on force l'image thématique
+ *   (évite "Deglet Nour" affiché avec une mangue stockée par défaut).
+ * - Sinon on garde l'image stockée, puis fallback intelligent.
+ */
+export function resolveProductImage(opts: {
+  name?: string | null;
+  category?: string | null;
+  storedImages?: (string | null | undefined)[];
+}): string {
+  const stored = (opts.storedImages ?? []).find(Boolean) as string | undefined;
+  const isGeneric = (u?: string) =>
+    !u || /images\.unsplash\.com|placeholder|picsum\.photos/i.test(u);
+
+  if (stored && !isGeneric(stored)) return stored;
+  if (hasKeywordMatch(opts.name, opts.category)) {
+    return pickProductImage({ name: opts.name, category: opts.category });
+  }
+  return stored ?? pickProductImage({ name: opts.name, category: opts.category });
+}
